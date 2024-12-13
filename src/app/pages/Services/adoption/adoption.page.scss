@@ -1,0 +1,46 @@
+ion-grid.md{
+    ion-card{
+        margin: 5px;
+        border-radius: 10px;
+        white-space: nowrap;
+        
+        
+        ion-img::part(image){
+            aspect-ratio: 1;
+            object-fit: cover;
+            object-position: center top;
+            
+
+        }
+        ion-card-title, ion-card-subtitle,ion-card-content{
+            overflow: hidden;
+        }
+         ion-card-content{
+           
+            text-overflow: ellipsis;
+        }
+        ion-card-header{
+            margin: 0px 12px;
+            padding: 2px 10px;
+            ion-card-title{
+             
+
+                font-weight: 600;
+                
+            }
+            ion-card-subtitle{
+               
+
+                font-size: x-small;
+            }
+        }
+        ion-card-content{
+            padding: 8px 2px;
+            margin: 0px 12px;
+        
+
+            color: var(--ion-color-primary);
+
+        }
+    }
+}

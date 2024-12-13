@@ -1,0 +1,198 @@
+<ion-header [translucent]="true" class="custom-header-2">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cart</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="scroll-content" [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Cart</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid *ngIf="!Loading && products.length > 0" [fixed]="true">
+    <div class="product-wrapper" *ngFor="let item of products">
+      <ion-row routerDirection="forward" [routerLink]="['/product-detail', item.p_id]">
+        <ion-col size="4">
+          <ion-thumbnail class="product-image">
+            <ion-thumbnail item-start>
+              <img [src]="imgUrl2 + item.imgUrl" alt=""/>
+            </ion-thumbnail>
+          </ion-thumbnail>
+        </ion-col>
+        <ion-col size="8" class="product-details">
+          <ion-row>
+            <ion-col>
+              <ion-label>
+                <h2 class="line-wrapper-2">{{item.name}}</h2>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row class="products-features">
+            <ion-col size="auto" class="ion-no-padding"><ion-note>{{item.brand}}</ion-note></ion-col>
+            <ion-col size="auto" class="ion-no-padding"><ion-note>{{item.category}}</ion-note></ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-no-padding">
+              <ion-note style="font-size: 8px;">Eligible for Free Shipping</ion-note>
+              <ion-note style="font-size: 8px;"><strong>Est. Delivery 5-6 days</strong></ion-note>
+            </ion-col>
+          </ion-row>
+          <ion-row class="price">
+            <ion-col class="ion-no-padding">
+              <ion-note class="price-old">{{item.specialprice | currency:'INR'}}</ion-note>
+              <ion-text class="price-final">{{item.price | currency:'INR'}}</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-align-items-center" style="display: flex; justify-content: space-between;">
+        <ion-col size="8">
+          <div class="quantity-items">
+            <ion-button fill="clear" (click)="decrementQuantity(item)" [disabled]="item.quantity === 0" class="quantity-button">-</ion-button>
+            <span class="checkout-product-price ng-binding">{{item.quantity}}</span>
+            <ion-button fill="clear" (click)="incrementQuantity(item)" [disabled]="item.quantity === 10" class="quantity-button">+</ion-button>
+          </div>
+        </ion-col>
+        <ion-col size="4" style="display: flex; justify-content: center;">
+          <ion-button fill="clear" class="delete-button" (click)="presentConfirmationAlert(item)">
+            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+
+  <!-- Data loading skeleton -->
+  <div class="product-skeleton-wrapper" *ngIf="Loading">
+    <ion-item button="true" *ngFor="let item of [1, 2, 3, 4, 5, 6]">
+      <ion-grid [fixed]="true">
+        <ion-row>
+          <ion-col size="4">
+            <ion-thumbnail class="product-image">
+              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col size="8" class="product-details">
+            <ion-row>
+              <ion-col>
+                <ion-label>
+                  <ion-skeleton-text [animated]="true" style="border-radius: 5px; height: 1rem;"></ion-skeleton-text>
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="7">
+                <ion-label>
+                  <ion-skeleton-text [animated]="true" style="border-radius: 5px; height: 1rem;"></ion-skeleton-text>
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-skeleton-text [animated]="true" style="border-radius: 15px; height: 2rem; width: 80%;"></ion-skeleton-text>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-skeleton-text [animated]="true" style="border-radius: 15px; height: 2rem; width: 80%;"></ion-skeleton-text>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </div>
+
+  <!-- If no data -->
+  <div id="no-data-msg-container" *ngIf="!Loading && products.length === 0">
+    <ion-label class="content">
+      <ion-text>Cart Empty</ion-text>
+      <ion-icon name="cart-outline" size="large"></ion-icon>
+    </ion-label>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="full" class="ion-text-capitalize" fill="clear" shape="round" (click)="viewSummary(true)">View Order Summary</ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+<ion-modal (ionModalDidDismiss)="viewSummary(false)" [isOpen]="orderSummaryModalState" [initialBreakpoint]="0.5" [breakpoints]="[0.5, 0.75]">
+  <ng-template>
+    <ion-header class="custom-header-2">
+      <ion-toolbar>
+        <ion-title class="ion-text-center"><ion-note>Order Summary</ion-note></ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-grid>
+        <!-- Subtotal -->
+        <ion-row class="checkout-subtotal">
+          <ion-col>
+            <ion-label>
+              <ion-text>Subtotal</ion-text>
+            </ion-label>
+          </ion-col>
+          <ion-col class="ion-text-end">
+            <ion-label>
+              <ion-text>{{ getSubtotal() + delivery() | currency:'INR' }}</ion-text>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <!-- Shipping charge -->
+        <ion-row class="checkout-shipping">
+          <ion-col>
+            <ion-text>Shipping charge</ion-text>
+          </ion-col>
+          <ion-col class="ion-text-end">
+            <ion-label>
+              <ion-text>{{ 0 | currency:'INR' }}</ion-text>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <!-- Discount -->
+        <ion-row class="checkout-discount">
+          <ion-col>
+            <ion-text>Discount</ion-text>
+          </ion-col>
+          <ion-col class="ion-text-end">
+            <ion-label>
+              <ion-text>{{ 0 | currency:'INR' }}</ion-text>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <!-- Tax -->
+        <ion-row class="checkout-tax">
+          <ion-col>
+            <ion-text>Tax</ion-text>
+          </ion-col>
+          <ion-col class="ion-text-end">
+            <ion-label>
+              <ion-text>{{ 0 | currency:'INR' }}</ion-text>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <!-- Total -->
+        <ion-row class="checkout-total">
+          <ion-col>
+            <h2>Total</h2>
+          </ion-col>
+          <ion-col class="ion-text-end">
+            <h2>{{ getSubtotal() + delivery() | currency:'INR' }}</h2>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <!-- Checkout Button placed below the totals -->
+      <ion-button expand="full" class="checkout-button" fill="clear" shape="round" (click)="goToCheckout()">
+        Checkout
+      </ion-button>      
+    </ion-content>
+  </ng-template>
+</ion-modal>
+

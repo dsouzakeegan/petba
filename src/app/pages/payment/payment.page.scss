@@ -1,0 +1,218 @@
+// ion-content::part(scroll) {
+//     padding-top: var(--ion-safe-area-top, 0);
+//   }
+
+.bold-text {
+    font-weight: bold;
+  }
+
+  .paypal-icon {
+    color: #003087; 
+  }
+  
+  .cash-icon {
+    color: #4caf50; 
+  }
+  
+
+  .custom-button {
+    --border-radius: 10x; 
+    --background: #4caf50; 
+    --color: #fff; 
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5; 
+  }
+  
+
+  .outer-card {
+    background-image: linear-gradient(to bottom, #303038, #0b0b11); 
+  }
+  
+
+.inner-card {
+  background-image: linear-gradient(to bottom, #303038, #000000); 
+  border-radius: 30px;
+}
+
+
+ion-card-header {
+  margin-bottom: 10px; 
+}
+
+ion-radio-group {
+  margin-top: 10px; 
+}
+
+.outer-card strong {
+  font-size: 1.3rem; /* Adjust the font size as needed */
+}
+
+
+
+.paymentOption{
+  background-image: linear-gradient(to bottom, #303038, #0b0b11); 
+  border-radius: 30px;
+ 
+}
+
+.paymentOption ion-item {
+  --background: transparent; 
+  --inner-background-checked: transparent; 
+}
+.paymentOption strong{
+  font-size: 1.3rem;
+}
+
+
+
+.custom-footer{
+    margin-inline-end: 20px;
+    padding: 10px; 
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.blue-footer {
+  background-color: #3498db; /* Blue color for PayPal */
+}
+
+.green-footer {
+  background-color: #2ecc71; /* Green color for Cash on Delivery */
+}
+
+.rounded-gradient {
+  border-radius: 15px; /* Adjust the border-radius as per your preference */
+  overflow: hidden;
+}
+
+.product-row {
+  padding: 10px; /* Adjust padding as needed */
+}
+
+.divider {
+  border-bottom: 1px solid #ccc; /* Define the style of the divider line */
+  margin: 10px 0; /* Adjust margin as needed */
+}
+
+
+.product-row {
+  padding: 0px; /* Adjust padding as needed */
+}
+
+.product-info {
+  display: flex;
+  align-items: flex-start;
+  padding-left: 30px;
+  padding-right: 30px; /* Align items to the top */
+}
+
+.product-number {
+  margin-right: 18px; /* Adjust margin as needed */
+}
+
+.product-details {
+  flex-grow: 1;
+}
+
+.divider {
+  border-bottom: 1px solid #ccc;
+  margin-top: 1px ; 
+  margin-bottom: 1px;
+  margin-left: 40px ;
+  margin-right: 40px ;  /* Adjust margin as needed */
+}
+
+.quantity-text {
+  opacity: 0.7; /* Adjust opacity as needed */
+}
+
+
+
+.summmmaary {
+  padding: 10px; /* Remove padding */
+}
+
+
+.payment-options {
+  display: flex;
+  justify-content: space-between;
+}
+
+.light-blue-box {
+  background-color: #e6f3ff; /* Light blue color */
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.sky-blue-box {
+  background-color: #a6d4ff; /* Sky blue color */
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.light-blue-box p {
+  margin: 0; /* Remove default margin */
+}
+
+.amount-text {
+  color: #fff; /* White text color */
+}
+
+.custom-button {
+ 
+  background-color: #007bff; /* Primary button color (Bootstrap blue) */
+}
+.div-color-1 {
+  background-color: #007bff; /* Blue color */
+  padding: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.div-color-2 {
+  background-color: #cce5ff; /* Light blue color */
+  padding: 10px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.payment-text {
+  color: white; /* White text color */
+  margin: 0; /* Remove default margin */
+}
+
+.amount-text {
+  color: #007bff; /* Blue color */
+  margin-top: 10px; /* Add some space between the text and buttons */
+}
+
+.custom-button {
+  margin-top: 10px; /* Add some space between the text and buttons */
+}
+
+
+.small-text {
+  font-size: smaller; /* Make the text smaller */
+  opacity: 0.7; /* Make the text transparent */
+}
+.hidden {
+  display: none;
+}
+
+.reveal-quantity {
+  cursor: pointer;
+}
+
+
+.no-background ion-radio {
+  --background: transparent;
+}
+
+.no-background ion-item {
+  --background: transparent;
+}
+
+.no-background ion-label {
+  --color: inherit;
+}
+

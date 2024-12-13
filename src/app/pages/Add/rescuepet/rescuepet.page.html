@@ -1,0 +1,221 @@
+<ion-header [translucent]="true"  class="ion-no-border custom-header">
+  <ion-toolbar>
+    <ion-title>
+      <b>
+        {{TITLE}}
+      </b>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="pageDismiss()">
+        cancel
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content #content [fullscreen]="true" style="--background :none">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">pet</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid [fixed]="true" >
+  <form (ngSubmit)="addPet(myPet,content)" #myPet="ngForm">
+ 
+    <!-- ADD IMAGES -->
+<ion-row class="Image-row ">
+  <ion-col class="ion-no-padding image-add" size="auto"  *ngIf="images.length < 6"> 
+    <ion-card [class.img-error]="images.length == 0 && myPet.submitted" (click)="addImg()">
+      <ion-button fill="clear" class="image" color="primary">
+        <ion-icon name="images-outline"  slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-card>
+    <ion-button (click)="addImg()" class="add-image  image" color="primary" fill="clear" shape="round">
+      <ion-icon name="add-circle-sharp" size="large" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-col>
+
+  <!-- ADDED -->
+  <ion-col class="ion-no-padding image-added " size="auto"  *ngFor="let item of images; let i = index"> 
+    <ion-card  (click)="setPreviewState(true,item)">
+      <!-- <ion-button fill="clear" color="medium"> 
+        <ion-icon name="image-outline"  slot="icon-only"></ion-icon>
+      </ion-button> -->
+      <img class="image-src" [src]="item" alt=""/> 
+    </ion-card> 
+    <ion-button (click)="removeImg(i)" class="rm-image image" color="danger" fill="clear"  shape="round">
+      <ion-icon name="remove-circle-sharp" size="large" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-col>
+  <!-- PREVIEW MODAL -->
+<ion-modal class="image-preview-modal" [isOpen]="isPreviewOpen" >
+  <ng-template>     
+    <ion-fab *ngIf="isPreviewOpen" slot="fixed" vertical="top" horizontal="start">
+      <ion-fab-button (click)="setPreviewState(false)">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab> 
+    <app-image-viewer style="height: 100dvh;" [Image]="previewImage"></app-image-viewer>
+  </ng-template>
+</ion-modal> 
+</ion-row>
+<ion-row class=""  *ngIf="images.length == 0 && myPet.submitted && !pet.img1">
+  <ion-col>
+    <div class="error-info-section" >
+      <ion-note> Please add atleast one picture of the pet.</ion-note>
+    </div>
+  </ion-col>
+</ion-row>
+
+
+<!-- ANIMAL TYPE -->
+<ion-card>
+  <!-- SELECT TYPE OF ANIMAL [SELECT LIST] -->
+  <ion-row class="field" >
+    <ion-col  class="ion-no-padding" size="12">
+      <ion-item class="select-field">
+        <ion-select interface="popover" label-placement="stacked" [(ngModel)]="pet.animalType" name="animalType" required>
+          <div class="field-label" slot="label">Type of Animal
+          </div>
+          <ion-select-option [value]="item.animal_id" *ngFor="let item of animal">{{item.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col> 
+  </ion-row>
+  <!-- SELECT TYPE OF ANIMAL [INPUT]  -->
+  <!-- <ion-row class="field" *ngIf="pet.animal == '0'">
+    <ion-col  class="ion-no-padding" size="12">
+      <ion-input  fill="solid" labelPlacement="stacked"  placeholder="" [(ngModel)]="pet.animalName" name="animalName" required>
+        <div class="field-label" slot="label">Type of Animal
+        </div>
+      </ion-input>
+    </ion-col>
+  </ion-row> -->
+  </ion-card>
+<!-- Gender -->
+<ion-card>
+<ion-row class="field" >
+  <ion-col  class="ion-no-padding" size="12">
+    <ion-item class="select-field">
+      <ion-select interface="popover" label-placement="stacked"  [(ngModel)]="pet.gender" name="gender" required>
+        <div class="field-label" slot="label">Gender</div>
+        <ion-select-option [value]="item.id" *ngFor="let item of gender">{{item.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-col>
+  </ion-row>
+
+</ion-card>
+
+
+<!-- Condition TYPE -->
+<ion-card>
+  <ion-row class="field" >
+    <ion-col  class="ion-no-padding" size="12">
+      <ion-item class="select-field">
+        <ion-select interface="popover" label-placement="stacked"  [(ngModel)]="pet.condition_id" name="condition_id" required>
+          <div class="field-label" slot="label">Type Of Condition
+          </div>
+          <ion-select-option [value]="item.id" *ngFor="let item of conditions">{{item.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+    </ion-row>
+
+
+<!-- Condition Level -->
+    <ion-row class="field" >
+      <ion-col  class="ion-no-padding" size="12">
+        <ion-item class="select-field">
+          <ion-select interface="popover" label-placement="stacked"  [(ngModel)]="pet.conditionLevel" name="conditionLevel" required>
+            <div class="field-label" slot="label">Level Of Condition</div>
+            <ion-select-option [value]="item.id" *ngFor="let item of conditionLevel"> {{item.name}} </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      </ion-row>
+</ion-card>
+<!-- Condition Level -->
+<!-- <ion-card>
+  <ion-row class="field" >
+      <ion-col  class="ion-no-padding" size="12">
+        <ion-item class="select-field">
+          <ion-select interface="popover" label-placement="stacked"  [(ngModel)]="pet.conditionLevel" name="conditionLevel" required>
+            <div class="field-label" slot="label">Level Of Condition</div>
+            <ion-select-option [value]="item.id" *ngFor="let item of conditionLevel"> {{item.name}} </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      </ion-row>
+</ion-card>-->
+
+  
+
+
+<!-- Place -->
+<ion-card>
+
+
+<!-- ADDRESS -->
+<ion-row class="field" >
+  <ion-col  class="ion-no-padding" size="12">
+    <ion-textarea  fill="solid" labelPlacement="stacked" [rows]="1" [autoGrow]="true" placeholder="" 
+    [(ngModel)]="pet.address" name="address" required>
+      <div class="field-label" slot="label">Address 
+      </div> 
+    </ion-textarea>
+  </ion-col>
+</ion-row>
+
+<!-- Select City -->
+  <ion-row class="field" >
+    <ion-col  class="ion-no-padding" size="12">
+      <ion-input class="custom-placeholder" fill="solid" labelPlacement="stacked" 
+       placeholder="Add City" 
+       [(ngModel)]="pet.city" name="city" required [readonly]="true" (click)="selectCity()">
+        <div class="field-label" slot="label">City
+        </div> 
+      </ion-input>
+    </ion-col>
+    </ion-row>
+  </ion-card>
+
+<!-- DESCRIPTION -->
+<ion-card>
+  <ion-row class="field" >
+    <ion-col  class="ion-no-padding" size="12">
+      <ion-textarea  fill="solid" labelPlacement="stacked" [autoGrow]="true" placeholder="" [minlength]="30"
+      [(ngModel)]="pet.description" name="description" required>
+        <div class="field-label" slot="label">Description
+        </div> 
+      </ion-textarea>
+    </ion-col>
+    </ion-row>
+</ion-card>
+
+<!-- GET MAP -->
+<!-- <ion-card style="background:none;">
+  <div class="map" style="width: 100%;aspect-ratio: 1/1.5;">
+    <app-map [editable]="true" (coords)="getPostion($event)"></app-map>
+  </div>
+  <ion-item style="--background: #233a44 ;color: #fff;"><ion-label style="font-size: 12px;" >
+  using Current Location may not be accurate please drag the marker for accurate position 
+  </ion-label></ion-item>
+  </ion-card> -->
+  
+<!-- SUBMIT BUTTON -->
+<ion-row class=" ion-justify-content-center " >
+  <ion-col  class="ion-padding-bottom ion-margin-bottom" size="auto">
+    <ion-button style="    
+    --padding-bottom: 20px;
+    --padding-top: 20px;
+    width: 15rem;" [disabled]="myPet.invalid" fill="outline" [color]="getSubmitColor(myPet)" expand="block" shape="round" type="submit">
+      Submit
+    </ion-button>
+  </ion-col></ion-row> 
+<!-- FORM END -->
+</form>
+  </ion-grid>
+</ion-content>

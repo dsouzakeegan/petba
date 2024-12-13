@@ -1,0 +1,66 @@
+<ion-header [translucent]="true" class="custom-header-2">
+  <ion-toolbar class="black-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Donation</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true" class="class-name">
+  <div class="container">
+    <!-- Card for preset amount -->
+    <ion-card class="translucent-card">
+      <ion-card-header>
+        <ion-card-title class=" text_style"><strong>Preset Amount</strong></ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p class="donation-text">Thank you for considering a donation. Your generosity helps us to continue our mission.</p>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              <ion-button expand="block" color="primary" class="donate-button" fill="outline" (click)="donate(50)">
+                 {{50 | currency:"INR"}} <ion-icon slot="icon-only" name="cash-outline"></ion-icon>
+              </ion-button>
+            </ion-col>
+            <ion-col size="6">
+              <ion-button expand="block" color="primary" class="donate-button" fill="outline" (click)="donate(100)">
+                {{100 | currency:"INR"}} <ion-icon slot="icon-only" name="cash-outline"></ion-icon>
+             </ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              <ion-button expand="block" color="primary" class="donate-button" fill="outline" (click)="donate(200)">
+                {{200 | currency:"INR"}} <ion-icon slot="icon-only" name="cash-outline"></ion-icon>
+             </ion-button>
+            </ion-col>
+            <ion-col size="6">
+              <ion-button expand="block" color="primary" class="donate-button" fill="outline" (click)="donate(500)">
+                {{500 | currency:"INR"}} <ion-icon slot="icon-only" name="cash-outline"></ion-icon>
+             </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Card for user's choice -->
+    <ion-card class="full-translucent-card">
+      <ion-card-header>
+        <ion-card-title class="text_style"><strong>Your Amount</strong></ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- Input field for custom amount -->
+        
+          <ion-label class=" text_style" position="floating">Your Amount</ion-label>
+          <ion-input type="number" [(ngModel)]="customAmount" class="ion-text-center manual_amount_input"  ></ion-input>
+
+        <ion-button expand="block" color="primary" class="donate-button" (click)="donate(customAmount)">
+          Donate Now
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

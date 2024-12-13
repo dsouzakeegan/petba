@@ -1,0 +1,204 @@
+<ion-header [translucent]="true" id="header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="editNumber()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>verifyOtp</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding ion-text-center">
+  <div style="opacity: 0;" id="recaptcha-container"></div>
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">verifyOtp</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-text><h3>Verfication</h3></ion-text>
+  <ion-text><p>Enter the One Time Password sent to {{phoneNumber}}</p></ion-text>
+<!-- Otp Input Fields -->
+  <ion-grid class="inputs">
+<ion-row>
+  <ion-col size="2">
+    <ion-input [readonly]="true" type="text" value="{{otp.substring(0,1)}}" id="ip1"></ion-input>
+  </ion-col>
+  <ion-col size="2">
+    <ion-input [readonly]="true" type="text" value="{{otp.substring(1,2)}}" id="ip2"></ion-input>
+  </ion-col>
+  <ion-col size="2">
+    <ion-input [readonly]="true" type="text" value="{{otp.substring(2,3)}}" id="ip3"></ion-input>
+  </ion-col>
+  <ion-col size="2">
+    <ion-input [readonly]="true" type="text" value="{{otp.substring(3,4)}}" id="ip4"></ion-input>
+  </ion-col>
+  <ion-col size="2">
+    <ion-input [readonly]="true" type="text" value="{{otp.substring(4,5)}}" id="ip5"></ion-input>
+  </ion-col>
+  <ion-col size="2">
+    <ion-input [readonly]="true" type="text" value="{{otp.substring(5,6)}}" id="ip6"></ion-input>
+  </ion-col>
+</ion-row>
+  </ion-grid>
+
+<!-- Action -->
+<ion-note>
+  Didn't receive OTP?
+  <ion-text color="primary" *ngIf="countdown === 0" (click)="resendOtp()">Resend OTP</ion-text>
+  <ion-text color="primary" *ngIf="countdown > 0" >{{ formatTime(countdown) }}</ion-text>
+</ion-note>
+
+<!-- <ion-grid class="buttons">
+  <ion-row>
+    <ion-col size="4">
+      <ion-button (click)="set('0')">0</ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button (click)="set('1')">1</ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button (click)="set('2')">2</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="4">
+      <ion-button (click)="set('3')">3</ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button (click)="set('4')">4</ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button (click)="set('5')">5</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="4">
+      <ion-button (click)="set('6')">6</ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button (click)="set('7')">7</ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button (click)="set('8')">8</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="4">
+      <ion-button (click)="clear()">Clear</ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button (click)="set('9')">9</ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button (click)="back()">Back</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid> -->
+
+
+<!-- <ion-popover [isOpen]="isConfrimationPopoverOpen" [showBackdrop]="true" class="confirmation-popover"  alignment="center"  [keepContentsMounted]="true" [backdropDismiss]="false">
+  <ng-template>
+    <ion-content>
+      <ion-card class="ion-no-margin">
+        <ion-card-header style="padding-bottom: 0.6rem;">
+          <ion-card-subtitle >
+            <ion-text color="dark">
+              Confirm your Number
+            </ion-text>
+          </ion-card-subtitle>
+        </ion-card-header>
+      
+        <ion-card-content style="padding-bottom: 0;">
+         <b><ion-text color="dark">One Time Password(OTP)</ion-text></b> will be sent to this <ion-text color="primary">{{phoneNumber}}</ion-text> number. Are you sure ?
+        </ion-card-content>
+        <ion-item>
+            <ion-button slot="start" class="ion-text-capitalize ion-no-margin ion-padding " style=" --ripple-color:transparent" (click)="editNumber()" fill="clear" shape="round">No, edit number</ion-button>
+            <ion-button slot="end" class="ion-text-capitalize ion-padding ion-no-margin " style="--box-shadow: none;" shape="round" (click)="sendOtp()" fill="outline">Send OTP</ion-button>
+        </ion-item>
+      </ion-card> 
+    </ion-content>
+  </ng-template>
+</ion-popover> -->
+<ion-popover [isOpen]="isSendingOtpPopoverOpen" [showBackdrop]="true" class="sendotp-popover"  alignment="center"  [keepContentsMounted]="true" [backdropDismiss]="false">
+  <ng-template>
+    <ion-content>
+     <div style="
+     /* aspect-ratio: 4/3; */
+     display: grid; place-content: center;
+     justify-items: center;
+     margin:1rem 0.5rem;
+    padding: 0.8rem 0.5rem;
+     gap: 2rem;">
+      <ion-spinner style="
+         --size: 2rem;
+        width: var(--size);
+        height: var(--size);
+        " name="circular" color="primary"></ion-spinner>
+        <ion-label class="ion-text-center">
+          <p style="margin-bottom: 1rem;">
+          <ion-text style="font-size: 1rem;font-weight: 500;" color="dark">
+            Sending <b>OTP</b>
+          </ion-text>
+          </p>
+          <ion-note
+          style="    display: inline-block;
+          font-size: 0.65rem;"
+          >Do not share the <b>OTP</b> with anyone for your safety. <b>OTP</b> will be sent to your message inbox.</ion-note>
+        </ion-label>
+     </div>
+    </ion-content> 
+  </ng-template>
+</ion-popover>
+</ion-content>
+<ion-footer>
+  <ion-grid class="buttons">
+    <ion-row>
+      <ion-col size="4">
+        <ion-button (click)="set('0')">0</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button (click)="set('1')">1</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button (click)="set('2')">2</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        <ion-button (click)="set('3')">3</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button (click)="set('4')">4</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button (click)="set('5')">5</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        <ion-button (click)="set('6')">6</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button (click)="set('7')">7</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button (click)="set('8')">8</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        <ion-button (click)="clear()">Clear</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button (click)="set('9')">9</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button (click)="back()">Back</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
+<div id="footer"></div>
+

@@ -1,0 +1,40 @@
+.error-text{
+    ion-note{
+
+        font-size: 0.75rem;
+    }
+}
+
+.input-fields{
+    ion-icon{
+        font-size: 1.5rem;
+    }
+    ion-input{
+        
+        --padding-bottom: 10px;
+        border-bottom: 1px solid rgba(var(--background-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 0.065);
+        .field-label{
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            font-size: 1.1rem;
+        }
+    }
+    ion-input.has-focus{
+        --highlight-color-focused: rgba(var(--ion-color-primary-rgb),0.8);
+    }
+    ion-input.ng-invalid.ion-touched.ng-touched:not(.ng-pristine){
+        ion-icon,.field-label{
+            color: var(--ion-color-danger);
+        }
+        .field-label{
+            color: var(--ion-text-color, #000);
+        }
+    }
+    ion-input.ng-valid
+    // .ion-touched.ng-touched.ng-dirty.ion-dirty
+    {
+        ion-icon,.field-label{
+            color: var(--ion-color-success);
+        }
+    }
+}

@@ -1,0 +1,161 @@
+ion-thumbnail{
+    --size:100%;
+    --border-radius:15px;
+}
+ion-modal::part(content){
+    border-radius: 20px 20px 0 0;
+}
+
+
+.line-wrapper-2{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: clip;
+}
+.product-details ion-row {
+    &.products-features{
+        ion-col ion-note{
+            font-size: 0.7rem;
+        }
+    }
+    ion-col{
+    
+        .Shipping-charge{
+            font-size: 12px;
+            // font-weight: 500;
+            color: var(--ion-color-dark);
+        }
+    
+    
+            .price-old{
+                font-size: 8px;
+                text-decoration: line-through;
+            }
+            .price-discount-percent{
+                margin: 0 0px 0px 5px;
+                // background: red;
+                border-radius: 4px;
+                color: var(--ion-color-dark);
+                // color:#fff;
+                font-weight:600;
+                
+            }
+            .price-final{
+                font-weight: 500;
+            }
+        
+        ion-note{
+            padding-inline: 5px;
+            }
+        &:not(:last-child)
+        {
+            ion-note{
+            border-right: 1px solid currentColor; 
+            
+            }
+        }
+    }
+}
+ion-item{
+    // --background: var(--ion-color-light);
+    --background: var(--ion-background-color, #fff);
+
+        &::part(native){
+            padding: 0px;
+            // padding-left: 10px;
+            
+        }
+}
+ .checkout{
+     .checkout-Total{
+    color: var(--ion-color-dark);
+     }
+    ion-row{
+        padding: 0px 8px;
+    }
+    .checkout-btn{
+        ion-button{
+            height: 3rem;
+    
+        }
+    }
+ }
+
+
+ .quantity-items {
+    display: flex;
+    align-items: center;
+    padding :5px;
+
+  }
+
+  
+  .checkout-product-price {
+    font-size: 18px;
+    margin: 0 10px;
+  }
+  .text_style_cart_empty {
+    display: flex;
+    align-items: center; /* Vertically center the text */
+    justify-content: center; /* Horizontally center the text */
+    height: 10vh; /* Adjust the height as needed */
+  }
+  
+
+  .disabled-card {
+    opacity: 0.5; /* Reduce opacity to visually indicate that the card is disabled */
+    pointer-events: none; /* Disable pointer events to prevent interaction with the card */
+  }
+  
+  .empty-cart-message {
+    text-align: center; /* Center align the message */
+    padding: 20px; /* Add padding to the message */
+  }
+  
+  .scroll-content {
+    overscroll-behavior: contain; /* or `auto` depending on your preference */
+}
+
+
+#no-data-msg-container {
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    // font-size: large;
+    // font-weight: 500;
+    // color: rgba(var(--ion-color-dark-rgb),0.5);
+    width: 60%;
+
+.content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-direction: column-reverse;
+}
+    font-size: 16px;
+    line-height: 22px;
+    color: #8c8c8c;
+    margin: 0;
+  }
+  
+  .checkout-button {
+    --background: transparent; /* Transparent background */
+    --color: #1e90ff; /* Set the text color to a blue similar to the image */
+    --border-color: transparent; /* No visible border */
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    text-align: center;
+    font-size: 16px; /* Adjust font size to fit the design */
+    font-weight: 500; /* Make the font slightly bolder */
+    text-transform: none; /* Avoid text-transform to keep it as-is */
+  }
+  
+  ion-footer {
+    background-color: #000; /* Black background for the footer */
+  }
+  

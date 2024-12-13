@@ -1,0 +1,83 @@
+ion-card{
+    border-radius:20px;
+    }
+    ion-item{
+        &::part(native){
+            padding: 0;
+        }
+     div.main-wrapper{
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        padding: 0px 10px;
+        padding: 10px 10px;
+     }
+        ion-thumbnail{
+            --size: 8rem;   
+            --border-radius:20px;
+        }
+        ion-grid{
+            padding: 10px 5px;
+       
+        .title{
+            
+            ion-text{
+                font-size: 16px;
+                font-weight: 600;
+            }
+        }
+        .auth{
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            ion-col .auth-container{
+                display: flex;
+                align-items: center;
+                flex-wrap: nowrap;
+                white-space: nowrap;
+                justify-content: flex-start;
+            
+                ion-avatar{
+                    
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    aspect-ratio: 1;
+                }
+                ion-note{
+                    padding-inline: 5px;
+                    font-size: xx-small;
+                    overflow: hidden;
+                    max-width: 100px;
+                }
+            }
+            .blog-likes{
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                gap: 3px;
+                color: var(--ion-color-step-600, #666666);
+                ion-icon{
+                    font-size: 0.65rem;
+                }
+                ion-note{
+                    font-size: 0.65rem;
+                }
+            }
+        }
+        .date{
+            ion-col{
+                ion-note{
+
+                    font-size: 0.65rem;
+                }
+            }
+        }
+
+    }
+ }
+ion-content{
+    --background:var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
+}
+
+ 

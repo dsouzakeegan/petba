@@ -1,0 +1,10 @@
+.product-item{
+    padding: 20px 20px 20px 15px;
+}
+ion-thumbnail{
+    --border-radius:8px;
+    background: #fff;
+    ion-img{
+        object-fit: contain;
+    }
+}

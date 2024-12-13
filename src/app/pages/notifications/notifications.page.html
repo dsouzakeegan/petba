@@ -1,0 +1,91 @@
+<ion-header [translucent]="true" class="custom-header-2">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Notifications</ion-title><ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+    <ion-buttons slot="end" *ngIf="notifications.length > 0"> 
+      <ion-button  class="ion-text-capitalize" color="primary" size="small" (click)="clearAll_Prompt()">clear all</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-refresher slot="fixed" (ionRefresh)="RefreshNotification($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Notifications</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-list  class="ion-no-padding"  lines="none" >
+    <div class="Loaded-wrapper" *ngIf="Loading == false">
+      <ion-item-group *ngFor="let item of notifications" >
+        <ion-item-divider *ngIf="item.notifications.length > 0" [sticky]="true">
+          <ion-label>{{item.date}}</ion-label>
+        </ion-item-divider>
+          <ion-item button="true" (contextmenu)="removeNotification(notify.notification_id)" lines="inset" (click)="goto(notify)"  *ngFor="let notify of item.notifications">
+          <ion-avatar aria-hidden="true" slot="start">
+            <img alt="" [src]="notify.profileImg" />
+          </ion-avatar>
+          <ion-grid [fixed]="true">
+            <!-- <ion-row>
+              <ion-label>
+                <ion-note slot="end" class="notification-time ion-margin-end  ion-float-right">23 mins</ion-note>   
+              </ion-label>
+            </ion-row> -->
+            <ion-row class="notification-content">
+              <ion-label>
+                <ion-text >
+                  <h2 class="notification-content__title line-wrapper-2 ">
+                    {{notify.title}}
+                  </h2>
+                </ion-text>
+                <ion-note class="line-wrapper-2 notification-content__message" > {{notify.message}}</ion-note>
+              </ion-label>
+            </ion-row>
+          </ion-grid>
+          </ion-item>
+      </ion-item-group>
+    </div> 
+    
+        <!-- Skeleton loading -->
+        <div class="skeleton-wrapper" *ngIf="Loading == true">
+          <ion-item-group *ngFor="let item of [1,2,3,4,5,6]" >
+            <ion-item-divider>
+              <ion-skeleton-text [animated]="true" ></ion-skeleton-text>
+            </ion-item-divider>
+              <ion-item button="true" lines="inset" >
+              <ion-avatar aria-hidden="true" slot="start">
+                <ion-skeleton-text [animated]="true" ></ion-skeleton-text>
+              </ion-avatar>
+              <ion-grid [fixed]="true">
+                <ion-row class="notification-content">
+              <ion-skeleton-text [animated]="true" ></ion-skeleton-text>
+              <ion-skeleton-text [animated]="true" style="width: 60%;" ></ion-skeleton-text>
+                 
+                </ion-row>
+              </ion-grid>
+              </ion-item>
+          </ion-item-group>
+        </div>
+      </ion-list>
+
+       <!-- if no data -->
+  <div id="no-data-msg-container"  *ngIf="Loading==false && notifications.length == 0">
+    <ion-label class="content">
+      <ion-text >
+        No new notifications 
+      </ion-text>
+      <ion-icon name="notifications-outline" size="large"></ion-icon>
+    </ion-label>
+  </div>
+</ion-content>

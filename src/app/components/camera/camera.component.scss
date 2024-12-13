@@ -1,0 +1,200 @@
+ion-content, .cameraPreview {
+    --background: transparent;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+  }
+  
+  #controls {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 2 !important;
+  }
+  
+  .button-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .progress-circle {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .circle-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #000;
+  }
+  
+  .circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(#22a6b3 0%, #22a6b3 var(--progress), transparent var(--progress));
+    z-index: 1;
+  }
+  
+  .tick-button {
+    margin-top: 10px;
+    width: 50px;
+    height: 50px;
+    background-color: #22a6b3;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 3 !important;
+  }
+  
+  
+  .custom-alert {
+    --background: #1e1e1e;
+    --color: #ffffff;
+    --border-radius: 12px;
+    --box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+  }
+  
+  .custom-alert-header {
+    --color: #ffcc00;
+    --font-size: 1.2em;
+    --font-weight: bold;
+  }
+  
+  .custom-alert-message {
+    --font-size: 1em;
+    --color: #f8f8f8;
+  }
+  
+  .custom-alert-button {
+    --background: #ffcc00;
+    --color: #1e1e1e;
+    --border-radius: 20px;
+    --padding: 0.5em 1.5em;
+    --box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  // .custom-loading {
+  //   --spinner-color: #ffcc00;
+  //   --spinner-size: 50px;
+  //   --background: rgba(0, 0, 0, 0.5);
+  // }
+  
+  .custom-loading {
+    --spinner-color: #ffcc00; /* Change to your desired color */
+    --spinner-size: 80px; /* Increase the spinner size */
+    --background: rgba(0, 0, 0, 0.5); /* Ensure there's enough contrast */
+  }
+  
+  
+  .button-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .back-button-overlay {
+    position: absolute;
+    top: 50%;
+    left: 10px; /* Adjust as needed */
+    transform: translateY(-50%);
+    font-size: 24px; /* Adjust icon size */
+    color: white; /* Adjust icon color */
+  }
+  
+  // .progress-circle {
+  //   position: relative;
+  //   width: 100px; /* Adjust size */
+  //   height: 100px; /* Adjust size */
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   background-color: #f44336; /* Adjust background color */
+  //   border-radius: 50%;
+  //   cursor: pointer;
+  // }
+  
+  .tick-button {
+    font-size: 36px; /* Adjust checkmark size */
+    color: green; /* Adjust checkmark color */
+  }
+  
+  // .circle-inner {
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   height: 100%;
+  //   width: 100%;
+  //   text-align: center;
+  // }
+  .custom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .overlay-content {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    max-width: 80%;
+  }
+  
+  .overlay-content p {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .overlay-content ion-button {
+    --background: #ffcc00;
+    --color: #1e1e1e;
+    --border-radius: 20px;
+    width: 100%;
+  }
+  

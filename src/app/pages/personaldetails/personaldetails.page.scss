@@ -1,0 +1,92 @@
+.div_class{
+    background-color: rgb(58, 58, 58);
+    padding: 2px;
+    
+     border-radius: 9px;
+}
+form{
+  padding: 15px;
+ }
+
+.edit_card  {
+  
+  color: white;
+}
+
+.edit_card formControlName{
+  color: grey;
+}
+
+
+.div_class_outer{
+    background-color: rgb(132, 128, 128);
+    padding: 10px;
+    
+    border-radius: 7px;
+    width: 100%;
+    height: 100%; 
+}
+
+
+  
+  .details-heading {
+    padding-left: 20px;  
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  .donation_button_style{
+    border-radius: 40px;
+  }
+
+
+  .ion-content-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+.custom-button {
+
+    --background: rgb(170, 170, 170);
+    --padding: 16px 32px;
+  }
+
+  .optional-text {
+    color: orange;
+  }
+
+
+
+
+
+
+
+
+
+
+/* Apply these styles to customize the label */
+ion-label {
+  font-size: 14px; /* Label font size */
+}
+
+/* Apply these styles to customize the floating label */
+ion-label.floating {
+  font-size: 12px; /* Floating label font size */
+}
+
+/* Apply these styles to customize the input text */
+ion-input input {
+  font-size: 14px; /* Input text font size */
+}
+
+/* Apply these styles to customize the border color when focused */
+ion-input.input-has-focus {
+  --border-color: #007bff; /* Border color when focused */
+}
+
+/* Apply these styles to customize the placeholder color when focused */
+ion-input.input-has-focus::placeholder {
+  color: #777; /* Placeholder color when focused */
+}

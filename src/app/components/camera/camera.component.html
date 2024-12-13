@@ -1,0 +1,36 @@
+<ion-content fullscreen>
+  <!-- Camera Preview -->
+  <div id="cameraPreview" class="cameraPreview"></div>
+
+  <!-- Controls -->
+  <div id="controls">
+    <div class="button-container">
+      <div class="progress-circle" (click)="startAudioRecording()">
+        <div *ngIf="isRecording" class="circle">
+          <div class="circle-inner">
+            <span>{{ progress }}%</span>
+          </div>
+        </div>
+        <div *ngIf="!isRecording && !showTickButton" class="circle-inner">
+          <!-- <span>Start</span> -->
+        </div>
+      </div>
+      <div *ngIf="showTickButton" class="tick-button" (click)="anotherFunction()">
+        &#10004; <!-- Unicode for check mark -->
+      </div>
+    </div>
+
+    <!-- Back Button Overlay -->
+    <ion-button fill="clear" class="back-button-overlay" (click)="goBack()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Custom Square Overlay -->
+  <div *ngIf="showMessage" class="custom-overlay">
+    <div class="overlay-content">
+      <p>{{ messageText }}</p>
+      <ion-button expand="full" color="primary" (click)="refreshPage()">Refresh</ion-button>
+    </div>
+  </div>
+</ion-content>

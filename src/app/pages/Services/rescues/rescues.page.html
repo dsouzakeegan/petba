@@ -1,0 +1,275 @@
+<div class="wrapp"></div>
+<ion-header [translucent]="true" class="custom-header" #header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{pageTitle}}</ion-title>
+    <ion-button
+      fill="clear"
+      *ngIf="tabSelected == 'my' "
+      slot="end"
+      (click)="tabChange('all')"
+      >Rescues</ion-button
+    >
+    <ion-button
+      fill="clear"
+      *ngIf="tabSelected == 'all' "
+      slot="end"
+      (click)="tabChange('my')"
+      >My Rescues</ion-button
+    >
+  </ion-toolbar>
+  <!-- SORT FILTER -->
+  <ion-toolbar
+    *ngIf="tabSelected=='all'"
+    style="
+      border-top: 2px solid var(--ion-color-custom-light);
+      border-bottom: 2px solid var(--ion-color-custom-light);
+    "
+  >
+    <ion-buttons>
+      <ion-button
+        style="
+          width: 50%;
+          border-right: 1.5px solid var(--ion-color-custom-light);
+          padding-right: 4px;
+        "
+        expand="block"
+        (click)="presentSort()"
+        >Sort</ion-button
+      >
+      <ion-button style="width: 50%" expand="block" (click)="openFilterPage()"
+        >Filter</ion-button
+      >
+    </ion-buttons>
+  </ion-toolbar>
+  <!-- <ion-toolbar>
+
+   <ion-segment [swipeGesture]="true" [value]="tabSelected" (ionChange)="tabChanged($event)">
+     <ion-segment-button value="all">
+       <ion-label>All</ion-label>
+     </ion-segment-button>
+     <ion-segment-button value="my">
+       <ion-label>My Rescues</ion-label>
+     </ion-segment-button>
+   </ion-segment>
+
+ </ion-toolbar> -->
+</ion-header>
+
+<ion-content
+  [fullscreen]="true"
+  role="feed"
+  [scrollEvents]="true"
+  [fullscreen]="true"
+  [appHideHeader]="header"
+>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Rescues</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="skeleton-wrapper" *ngIf="Loading == true ">
+    <ion-grid class="ion-no-padding">
+      <ion-list
+        class="ion-no-padding"
+        lines="full"
+        *ngFor="let item of [1,2,3,4,5]"
+      >
+        <ion-row class="img">
+          <ion-col size="12">
+            <ion-thumbnail
+              style="
+                width: 100%;
+                height: 100%;
+                aspect-ratio: 3/1.6;
+                --border-radius: 30px;
+              "
+            >
+              <ion-skeleton-text></ion-skeleton-text>
+            </ion-thumbnail>
+          </ion-col>
+        </ion-row>
+        <ion-row class="context">
+          <ion-col size="12" class="ion-padding-horizontal ion-padding-top">
+            <ion-skeleton-text
+              [animated]="true"
+              style="height: 1rem; width: 100%; border-radius: 3px"
+            ></ion-skeleton-text>
+            <!-- <ion-skeleton-text [animated]="true" style="height: 0.6rem;width: 100%;"></ion-skeleton-text> -->
+          </ion-col>
+        </ion-row>
+        <ion-row class="location">
+          <ion-col
+            size="12"
+            class="ion-align-self-center ion-text-nowrap ion-padding-horizontal"
+          >
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 100%; height: 0.4rem; border-radius: 3px"
+            ></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-grid>
+  </div>
+
+  <div class="wrapper" *ngIf="Loading == false">
+    <!-- ALL RESCUES -->
+    <ion-grid class="ion-no-padding" *ngIf="tabSelected=='all'">
+      <!-- <ion-list [routerLink]="['/rescue',item]" [routerDirection]="'forward'"class="ion-no-padding" lines="full" *ngFor="let item of [1]" role="article">
+    <ion-row class="img">
+      <ion-col size="12">
+        <img src="https://www.thesprucepets.com/thmb/hxDM4lV5tgU972B0L3NRJ0ZBzXM=/1500x0/filters:no_upscale():strip_icc()/what-is-an-exotic-pet-1046040188-a7d0e5d3c55645bbb184b7b9b81d839a.jpg"/>
+      </ion-col>
+    </ion-row>
+    <ion-row class="context">
+      <ion-col size="12">
+        <ion-text class="line-wrapper-2">{{Dummy_title}}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row class="location">
+      <ion-col size="auto" class="ion-align-self-center ion-text-nowrap ">
+        <p><span><ion-icon name="location"></ion-icon></span>
+         Margao,Martires Dias Road, Malbhat,Margao - Goa 12345678901234567890
+        </p>
+      </ion-col>
+      <ion-col size="auto">
+      </ion-col>
+    </ion-row>
+    </ion-list> -->
+      <ion-list
+        [routerLink]="['/rescue',item.id]"
+        [routerDirection]="'forward'"
+        class="ion-no-padding"
+        lines="full"
+        *ngFor="let item of allrescueList"
+        crole="article"
+      >
+        <ion-row class="img">
+          <ion-col size="12">
+            <img [src]="imgUrl + item?.img1" #img (error)="img.src = '../../../assets/error/pet-fallback.jpg'"/>
+          </ion-col>
+        </ion-row>
+        <!-- <ion-row *ngIf="item.status == '0'"> -->
+        <ion-row class="context" *ngIf="item.status == '0'">
+          <ion-col size="12">
+            <ion-text class="line-wrapper-2">{{item.description}}</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row class="location" *ngIf="item.status == '0'">
+          <ion-col size="auto" class="ion-align-self-center ion-text-nowrap">
+            <p>
+              <span><ion-icon name="location"></ion-icon></span>
+              {{item.city}},{{item.address}}
+            </p>
+          </ion-col>
+          <ion-col size="auto"> </ion-col>
+        </ion-row>
+        <!-- </ion-row> -->
+        <ion-row
+          *ngIf="item.status == '1'"
+          class="rescued-note ion-justify-content-center"
+        >
+          <ion-col size="auto">
+            <ion-chip color="success" [outline]="true">
+              <ion-label>Pet has been rescued</ion-label>
+              <ion-icon
+                style="font-size: 30px"
+                color="danger"
+                name="heart-circle-outline"
+              ></ion-icon>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+      <ion-infinite-scroll
+        (ionInfinite)="onIonInfinite($event)"
+        *ngIf="noMoreAllRescueListData == false"
+      >
+        <ion-infinite-scroll-content
+          loadingText=""
+          loadingSpinner="crescent"
+        ></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-grid>
+    <!-- MY RESCUES -->
+    <ion-grid class="ion-no-padding" *ngIf="tabSelected=='my'" fixed="true">
+      <!-- <ion-list  class="ion-no-padding"  [routerLink]="['/rescue',item]" [routerDirection]="'forward'" lines="full" *ngFor="let item of  [1]" role="article">
+<ion-row class="img">
+  <ion-col size="12">
+    <img src="https://a57.foxnews.com/static.foxbusiness.com/foxbusiness.com/content/uploads/2022/04/896/504/iStock-1324099927.jpg?ve=1&tl=1"/>
+  </ion-col>
+</ion-row>
+<ion-row class="context">
+  <ion-col size="12">
+    <ion-text class="line-wrapper-2">{{Dummy_title}}</ion-text>
+  </ion-col>
+</ion-row>
+<ion-row class="location">
+  <ion-col size="auto" class="ion-align-self-center ion-text-nowrap ">
+    <p><span><ion-icon name="location"></ion-icon></span>
+     Margao,Martires Dias Road, Malbhat,Margao - Goa 12345678901234567890
+    </p>
+  </ion-col>
+  <ion-col size="auto">
+  </ion-col>
+</ion-row>
+</ion-list> -->
+      <ion-list
+        class="ion-no-padding"
+        [routerLink]="['/rescue',item.id]"
+        [routerDirection]="'forward'"
+        lines="full"
+        *ngFor="let item of  myRescueList"
+        role="article"
+      >
+        <ion-row class="img">
+          <ion-col size="12">
+            <img [src]="imgUrl+item.img1" #myResimg (error)="myResimg.src = '../../../assets/error/pet-fallback.jpg'" />
+          </ion-col>
+        </ion-row>
+        <ion-row class="context" *ngIf="item.status == '0'">
+          <ion-col size="12">
+            <ion-text class="line-wrapper-2">{{item.description}}</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row class="location" *ngIf="item.status == '0'">
+          <ion-col size="auto" class="ion-align-self-center ion-text-nowrap">
+            <p>
+              <span><ion-icon name="location"></ion-icon></span>
+              {{item.city}},{{item.address}}
+            </p>
+          </ion-col>
+          <ion-col size="auto"> </ion-col>
+        </ion-row>
+        <ion-row
+          *ngIf="item.status == '1'"
+          class="rescued-note ion-justify-content-center"
+        >
+          <ion-col size="auto">
+            <ion-chip color="success" [outline]="true">
+              <ion-label>Pet has been rescued</ion-label>
+              <ion-icon
+                style="font-size: 30px"
+                color="danger"
+                name="heart-circle-outline"
+              ></ion-icon>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+      <ion-infinite-scroll
+        (ionInfinite)="onIonInfinite($event)"
+        *ngIf="noMoreMyRescueListData == false"
+      >
+        <ion-infinite-scroll-content
+          loadingText=""
+          loadingSpinner="crescent"
+        ></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-grid>
+  </div>
+</ion-content>

@@ -1,0 +1,85 @@
+
+<ion-header [translucent]="true" class="ion-no-border custom-header-3">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+<ion-button (click)="cancel()">
+ <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+</ion-button>
+    </ion-buttons>
+    <ion-title class="ion-no-padding">Rescue City</ion-title>
+    <ion-buttons slot="end">
+<ion-button [disabled]="rescueCities.length == 0" (click)="Add()">
+ Add
+</ion-button>
+    </ion-buttons>
+    
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar 
+    class="custom-searchBar ion-no-padding"
+    color="light"
+    search-icon="search"
+    show-clear-button="always" clear-icon="close" 
+    (ionInput)="getQuery($event)"  [debounce]="1000" 
+    >
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="rescue-city-selected" *ngIf="rescueCities.length > 0">
+    <ion-chip [outline]="true" *ngFor="let item of rescueCities">
+      <ion-icon name="location-sharp" color="primary"></ion-icon>
+      <ion-label>{{item.city}} </ion-label>
+      <ion-icon  (click)="removeCity(item.city_id)" color="primary" name="close"></ion-icon>
+    </ion-chip>
+  </div>
+  <div [ngSwitch]="type" *ngIf="Loading == false">
+
+    <!-- STATES -->
+  <ion-list *ngSwitchCase="'search'">
+    <ion-item lines="inset" *ngIf="SearchPARAMS.isSearching == true" >
+      <ion-label class="ion-text-center"><ion-note style="font-size: 0.68rem;">Searching for '{{SearchPARAMS.query}}' </ion-note></ion-label>
+    </ion-item>
+    <ion-item lines="inset" *ngIf="SearchPARAMS.couldNotFind == true" >
+      <ion-label class="ion-text-center"><ion-note style="font-size: 0.68rem;">Could not find results for '{{SearchPARAMS.query}}' </ion-note></ion-label>
+    </ion-item>
+    <ion-item lines="inset" [button]="true" *ngFor="let item of SearchCities"  (click)="SelectCity({city:item.city,city_id:item.city_id})">
+      <ion-label>{{item.city}} <ion-note style="font-size: 0.68rem;"> {{item.district}}, {{item.state}}</ion-note></ion-label>
+    </ion-item>
+  </ion-list>  
+
+    <!-- STATES -->
+  <ion-list *ngSwitchCase="'state'">
+    <ion-item lines="inset" [button]="true" *ngFor="let state of States" (click)="CheckType('district',state)">
+      <ion-label>{{state}}</ion-label>
+    </ion-item>
+  </ion-list>  
+
+  <!-- DISTRICT -->
+  <ion-list *ngSwitchCase="'district'">
+    <ion-item lines="inset" [button]="true" *ngFor="let district of districts" (click)="CheckType('city',district)">
+      <ion-label>{{district}}</ion-label>
+    </ion-item>
+  </ion-list>  
+
+  <!-- CITY -->
+  <ion-list *ngSwitchCase="'city'">
+    <ion-item lines="inset" [button]="true" *ngFor="let city of cities"  (click)="SelectCity(city)">
+      <ion-label>{{city.city}}</ion-label>
+    </ion-item>
+  </ion-list>  
+</div>
+
+<!-- Loading -->
+<ion-list *ngIf="Loading == true">
+  <ion-item class="ion-no-padding" lines="none">
+    <ion-label class="ion-text-center">
+      <ion-spinner name="lines-sharp-small"></ion-spinner>
+    </ion-label>
+  </ion-item>
+</ion-list>
+<ion-infinite-scroll *ngIf="Loading==false  && type != 'search'" (ionInfinite)="doInfinite($event)" [disabled]=" noRecord === true " position="bottom" threshold="800px" >
+  <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
+</ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,88 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>FILTER</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">FILTER</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+
+  
+  <div class="filter-container">
+    <div class="filter-group">
+      <ion-segment color="warning" [value]="FilterTabSelected" (ionChange)="tabChanged($event.target.value)">
+        <ion-segment-button [value]="Fgroup.group_id" *ngFor="let Fgroup of filterGroup;">
+          <ion-label>{{Fgroup.group_name}}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  
+  
+    <div [ngSwitch]="FilterTabSelected" class="filter-options">
+      <ion-grid  class="ion-no-padding"  *ngFor="let item of filter" >
+      <ion-list lines="none"   *ngSwitchCase="item.group_id" >
+        <ion-list-header><ion-label color="warning">{{item.group_name}}</ion-label></ion-list-header>
+        <ion-item [button]="true" *ngFor="let filterItem of item.filters">
+          <ion-checkbox labelPlacement="end" alignment="center" justify="start" (ionChange)="checked($event,filterItem)" [checked]="filterItem.checked"> {{filterItem.name}}</ion-checkbox>
+         
+        </ion-item>
+        <!-- FOR PRICE -->
+          <ion-row *ngIf="FilterTabSelected == 0">
+            <ion-col class="ion-text-center ion-align-self-flew-start" size="2"> 
+                <ion-note style="font-size: 0.73rem;">
+              {{PRICE.lower}}
+                </ion-note>
+          </ion-col>
+         <ion-col  size="8">
+            <ion-range class="price-range"
+            aria-label="Price range"
+            [dualKnobs]="true" [value]="{ lower: this.PRICE.lower, upper: this.PRICE.upper }"
+            [min]="RANGE.MIN"
+            [max]="RANGE.MAX"
+            [pinFormatter]="pinFormatter"
+            [step]="RANGE.STEP"
+            [pin]="true"
+            [ticks]="false"
+            [snaps]="true"
+            (ionInput)="getPriceRange($event)"
+          >
+        </ion-range> </ion-col>
+        <ion-col class="ion-text-center ion-align-self-flew-start" size="2">  
+          <ion-note style="font-size: 0.73rem;" *ngIf="PRICE.upper <= RANGE.MAXLIMIT">
+          {{PRICE.upper}}
+        </ion-note>
+          <ion-note style="font-size: 0.73rem;" *ngIf="PRICE.upper > RANGE.MAXLIMIT">
+          {{RANGE.MAXLIMIT}}+
+        </ion-note>
+      </ion-col>
+          </ion-row>
+      </ion-list>
+
+      </ion-grid>
+    </div>
+  </div>
+ 
+
+
+
+
+
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button class="ion-text-capitalize ion-padding clear-btn" expand="block" (click)="clearFilter()" color="medium" [disabled]="hasFiltersSelected == false" fill="clear"> Clear</ion-button>
+      <ion-button class="ion-text-uppercase ion-padding apply-btn" expand="block" color="warning" (click)="apply()" fill="solid"> Apply</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
+

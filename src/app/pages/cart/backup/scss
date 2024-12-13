@@ -1,0 +1,80 @@
+ion-thumbnail{
+    --size:100%;
+    --border-radius:15px;
+}
+
+
+.line-wrapper-2{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: clip;
+}
+.product-details ion-row {
+    &.products-features{
+        ion-col ion-note{
+            font-size: 0.7rem;
+        }
+    }
+    ion-col{
+    
+        .Shipping-charge{
+            font-size: 12px;
+            // font-weight: 500;
+            color: var(--ion-color-dark);
+        }
+    
+    
+            .price-old{
+                font-size: 8px;
+                text-decoration: line-through;
+            }
+            .price-discount-percent{
+                margin: 0 0px 0px 5px;
+                // background: red;
+                border-radius: 4px;
+                color: var(--ion-color-dark);
+                // color:#fff;
+                font-weight:600;
+                
+            }
+            .price-final{
+                font-weight: 500;
+            }
+        
+        ion-note{
+            padding-inline: 5px;
+            }
+        &:not(:last-child)
+        {
+            ion-note{
+            border-right: 1px solid currentColor; 
+            
+            }
+        }
+    }
+}
+ion-item{
+    --background: var(--ion-color-light);
+
+        &::part(native){
+            padding: 0px;
+            // padding-left: 10px;
+            
+        }
+}
+ .checkout{
+     .checkout-Total{
+    color: var(--ion-color-dark);
+     }
+    ion-row{
+        padding: 0px 8px;
+    }
+    .checkout-btn{
+        ion-button{
+            height: 3rem;
+    
+        }
+    }
+ }

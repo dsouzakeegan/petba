@@ -1,0 +1,17 @@
+ion-searchbar{
+    // width: 80%;
+    transition: width 200ms linear
+}
+ion-buttons{
+    transition: width 200ms linear,scale 200ms linear;
+}
+    ion-toolbar:has(ion-searchbar.searchbar-has-focus){
+        ion-buttons{
+            width: 0;
+            scale: 0;
+        }
+        // ion-searchbar{
+        //     // width: 100%;
+        //     // transition-delay: 10ms;
+        // }
+    }

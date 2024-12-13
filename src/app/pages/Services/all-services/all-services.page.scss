@@ -1,0 +1,21 @@
+ion-grid{
+    ion-row{
+        ion-col{
+            .card-container{
+                
+    display: grid;
+    place-content: center;
+    aspect-ratio: 4 / 1;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+   
+    // background: url(var(--imgService));
+    .text{
+        color: #fff;
+        text-shadow: -1px 0px 4px black, 0px 0px 10px black, 0px 0px 20px black;
+    }
+            }
+        }
+    }
+}

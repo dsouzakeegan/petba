@@ -1,0 +1,24 @@
+
+ion-grid{
+    max-width: max-content;
+    ion-row{
+            place-content: center;
+    }
+    ion-item{
+        border-radius: 10px;
+            --background: var(--ion-color-light);
+    }
+    &.inputs{
+    
+        ion-input{
+            // width: 2.5rem;
+            // height: 2.5rem;
+            border:none;
+            border-radius: 5px;
+            text-align: center;
+            outline: none;
+            // letter-spacing: 1.5px;
+        }
+    }
+
+}

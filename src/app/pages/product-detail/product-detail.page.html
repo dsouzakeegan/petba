@@ -1,0 +1,417 @@
+<ion-header [translucent]="true" class="custom-header-transparent">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+
+    <!-- beta -->
+    <ion-buttons slot="end">
+      <ion-button  class="cart-btn" [routerLink]="['/cart']" routerDirection="forward"> 
+        <ion-icon name="cart-outline" slot="" ></ion-icon>
+      </ion-button>
+      <div class="cart-items-count" *ngIf="cartTotal > 0 && !ProductLoading" [routerLink]="['/cart']" routerDirection="forward"> {{cartTotal}} 
+      </div>
+    </ion-buttons>
+    <!-- <ion-title>productDetail</ion-title> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="top-no-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">productDetail</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div class="page-loading-wrapper" *ngIf="ProductLoading === false">
+    <!-- Product Image -->
+    <div class="product-image-slider">
+      <app-image-slider
+        [ratio]="1"
+        [Images]="productImage"
+        [objectFit]="'contain'"
+        [thumbs]="false"
+      ></app-image-slider>
+    </div>
+    <ion-grid class="product-detail">
+      <ion-row class="product-brand">
+        <ion-col size="auto">
+          <ion-note>{{proDetails.brand}}</ion-note>
+        </ion-col>
+      </ion-row>
+
+      <!-- Product Title -->
+      <ion-row class="product-detail-title">
+        <!-- <ion-col><ion-label>{{proDetails.name}}</ion-label></ion-col> -->
+        <ion-col><ion-label [innerHTML]="proDetails.name"></ion-label></ion-col>
+      </ion-row>
+     
+      <!-- Stock Status -->
+      <ion-row class="ion-text-capitalize" *ngIf="In===true">
+        <ion-col size="auto" *ngIf="In===true"
+          ><ion-label
+            ><ion-text color="primary">In stock</ion-text></ion-label
+          ></ion-col
+        >
+        <!-- <ion-col size="auto" *ngIf="In==false"><ion-label><ion-text color="danger">Out Of stock</ion-text></ion-label></ion-col> -->
+      </ion-row>
+
+      <!-- Product Pricing -->
+      <ion-row
+        class="product-detail-price ion-align-items-baseline"
+        *ngIf="price"
+      >
+        <!-- <ion-col size="auto" style="padding-bottom: 0;"  *ngIf="save">
+        <ion-text  class="product-detail-price-off" color="success"> {{save}}% off</ion-text>
+      </ion-col> -->
+        <ion-col size="auto" style="padding-bottom: 0" *ngIf="oldpri">
+          <ion-note class="product-detail-price-old"
+            >{{oldpri | currency : 'INR'}}</ion-note
+          >
+        </ion-col>
+        <ion-col size="auto" style="padding-bottom: 0">
+          <ion-text class="product-detail-price-new"
+            >{{price | currency : 'INR'}}</ion-text
+          >
+        </ion-col>
+        <ion-col size="auto" style="padding-bottom: 0" *ngIf="save">
+          <ion-text class="product-detail-price-off" color="success">
+            {{save}}% off</ion-text
+          >
+        </ion-col>
+      </ion-row>
+
+      <!-- Quantity Selector -->
+      <ion-row *ngIf="price">
+        <ion-col size="auto" style="padding-top: 0">
+          <ion-note class="product-detail-price-old"
+            >Inclusive of all taxes</ion-note
+          >
+        </ion-col>
+      </ion-row>
+
+      <!-- SIZE  NOT impleanted-->
+      <!-- <ion-row class="product-detail-quantity" *ngIf=" weight.length > 0">
+      <ion-col size="auto">
+        <ion-card class="ion-no-margin ion-padding-horizontal">
+        <ion-select justify="start"  (ionChange)="selectedQuantity($event)" interface="action-sheet" label="Size" placeholder="select">
+          <ion-select-option value="1">xl</ion-select-option>
+          <ion-select-option value="2">xxl</ion-select-option>
+          <ion-select-option value="3">xxxl</ion-select-option>
+          <ion-select-option value="3">l</ion-select-option>
+        </ion-select>
+      </ion-card>
+      </ion-col>
+    </ion-row> -->
+
+      <!-- quantity actionsheet-->
+      <!-- <ion-row class="product-detail-quantity" *ngIf="stock.length > 0">
+        <ion-col size="auto">
+          <ion-card class="ion-no-margin ion-padding-horizontal">
+            <ion-select
+              justify="start"
+              [value]="qty_sele"
+              (ionChange)="selectedQuantity($event)"
+              interface="action-sheet"
+              label="Quantity"
+              placeholder="select"
+            >
+              <ion-select-option
+                [value]="quantity"
+                *ngFor="let quantity of stock"
+                >{{quantity}}</ion-select-option
+              >
+            </ion-select>
+          </ion-card>
+        </ion-col>
+      </ion-row>  -->
+
+
+      <ion-row class="product-detail-quantity" *ngIf="stock.length > 0">
+        <ion-col size="auto">
+          <ion-card class="ion-no-margin ion-padding-horizontal">
+            <ion-row>
+              <ion-buttons>
+                <ion-label class="ion-padding-end">Quantity</ion-label>
+                <ion-button (click)="removeQuantity()" style="--ripple-color: transparent"
+                  ><ion-icon name="remove-sharp" slot="icon-only"></ion-icon
+                ></ion-button>
+                <ion-label style="width: 3rem;text-align: center;" color="dark">{{qty_sele}}</ion-label>
+                <ion-button  (click)="addQuantity()"  color="primary" style="--ripple-color: transparent"
+                  ><ion-icon name="add-sharp" slot="icon-only"></ion-icon
+                ></ion-button>
+              </ion-buttons>
+            </ion-row>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <!-- Delivery Details -->
+      <ion-row class="product-delivery" *ngIf="deliv || freeD || freeDiOr">
+        <ion-col size="12">
+          <ion-card class="ion-no-margin">
+            <ion-item lines="none">
+              <ion-icon slot="start" name="cube-outline"></ion-icon>
+              <div class="content">
+                <!-- SHIPPING FEE FREE-->
+                <!-- <ion-label  *ngIf="freeD" class="product-delivery-free"><p><span class="free-ship-text">Free Delivery</span> <span class="free-ship-price">₹80</span></p></ion-label> -->
+                <!-- DELIVERY CHARGES -->
+                <ion-label *ngIf="deliv" class="product-delivery-fee"
+                  ><p>
+                    <span>{{delivery | currency : 'INR'}}</span>| Delivery
+                    Charges
+                  </p></ion-label
+                >
+                <!-- FREE DELIVERY OVER 500 Amt -->
+                <div class="" *ngIf="freeDiOr ">
+                  <ion-label class="product-delivery-free"
+                    ><p>
+                      <span class="free-ship-text">Free Delivery</span>
+                      <span class="free-ship-price"
+                        >{{delivery | currency : 'INR'}}</span
+                      >| Delivery Charges
+                    </p></ion-label
+                  >
+                  <ion-label
+                    ><ion-note
+                      >on order over {{80| currency : 'INR'}}</ion-note
+                    ></ion-label
+                  >
+                </div>
+                <!-- SHIPPING FREE -->
+                <div class="" *ngIf="freeD">
+                  <ion-label class="product-delivery-free"
+                    ><p>
+                      <span class="free-ship-text">Free Delivery</span>
+                      <span class="free-ship-price">₹80</span>| No Delivery
+                      Charges
+                    </p></ion-label
+                  >
+                  <!-- <ion-label><ion-note>if ordered within 01h:12m:30s</ion-note></ion-label> -->
+                </div>
+                <!-- SHIPPING FREE -->
+                <!-- <ion-label class="product-delivery-free"><p><span class="free-ship-text">Free Delivery</span> <span class="free-ship-price">₹40</span>| Delivery  By 27th Jan, Saturday</p></ion-label>
+              <ion-label><ion-note>if ordered within 01h:12m:30s</ion-note></ion-label> -->
+              </div>
+            </ion-item>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <!-- PRODUCT DESCRIPTION -->
+      <ion-row class="product-description" *ngIf="proDetails.description">
+        <ion-col size="12 ">
+          <ion-card class="ion-no-margin">
+            <ion-card-header>
+              <ion-card-subtitle
+                ><ion-text color="dark"
+                  >Product Description</ion-text
+                ></ion-card-subtitle
+              >
+            </ion-card-header>
+            <ion-card-content>
+              <p>
+                <!-- <span class="product-description-text" [class.readMore]="More" [innerHTML]="proDetails.description"> -->
+                <span
+                  class="product-description-text"
+                  [class.readMore]="proDetails.description.length >215 && More"
+                  [innerHTML]="proDetails.description"
+                ></span>
+              </p>
+              <div
+                class="more-less"
+                *ngIf="proDetails.description.length > 215"
+              >
+                <span
+                  class="product-description-action"
+                  *ngIf="!More"
+                  (click)="More = true"
+                  ><b>More</b></span
+                >
+                <span
+                  class="product-description-action"
+                  *ngIf="More"
+                  (click)="More = false"
+                  ><b>Less</b></span
+                >
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <!-- Related Products -->
+      <div class="other-Products" *ngIf="relatedpro.length >  0">
+        <ion-row
+          class="title"
+          style="text-transform: capitalize; padding: 16px 5px 0px 0px"
+        >
+          <ion-col>
+            <ion-text
+              style="
+                font-weight: 500;
+                font-size: 1.15rem;
+                padding-inline: 10px 0;
+              "
+            >
+              Related Products
+            </ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row class="item-tray">
+          <ion-col class="products" size="auto" *ngFor="let item of relatedpro">
+            <ion-card
+              button="true"
+              routerDirection="forward"
+              [routerLink]="['/product-detail' ,item.product_id]"
+            >
+              <div class="product-image-off">
+                <img alt="" [src]="img[1]" [src]="imgUrl2+item.image" />
+                <!-- <span class="product-off" *ngIf="true">300% off</span> -->
+              </div>
+              <ion-card-content>
+                <ion-card-title>
+                  <h5 class="line-wrapper-2 product-name">{{item.name}}</h5>
+                </ion-card-title>
+                <ion-note class="category-name ion-text-nowrap">
+                  <!-- Need category here ? -->
+                </ion-note>
+                <ion-row class="ion-align-items-center product-price">
+                  <ion-text class="price"
+                    >{{item.price | currency:"INR":true}}</ion-text
+                  >
+                  <ion-note *ngIf="true" class="price-original"
+                    >{{item.price+60 |currency:"INR":true}}</ion-note
+                  >
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </div>
+      <!-- <div class="other-Products" *ngIf="true">
+      <ion-row class="title" style="text-transform: capitalize;padding: 16px 5px 0px 0px;">
+        <ion-col>
+          <ion-text style=" font-weight: 500;
+          font-size: 1.15rem;
+          padding-inline: 10px 0;">
+            Related Products
+          </ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="item-tray">
+        <ion-col class="products" size="auto" *ngFor="let item of [1,1,2,3,4,5,4]">
+          <ion-card  button="true" routerDirection="forward" [routerLink]="['/product-detail' ,item]">
+            <div class="product-image-off">
+              <img  alt="" [src]="img[1]" />
+              <span class="product-off" *ngIf="true">300% off</span>
+            </div>
+            <ion-card-content>
+              <ion-card-title>
+                <h5  class="line-wrapper-2 product-name">Burger King</h5>
+              </ion-card-title>
+              <ion-note  class="category-name ion-text-nowrap">Food</ion-note>
+              <ion-row class="ion-align-items-center product-price">
+
+                <ion-text class="price">{{300 | currency:"INR":true}}</ion-text>
+                <ion-note *ngIf="true" class="price-original">{{340 |currency:"INR":true}}</ion-note>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div> -->
+    </ion-grid>
+  </div>
+  <div class="Skeleton-loading-wrapper" *ngIf="ProductLoading === true">
+    <ion-grid class="ion-no-padding">
+      <!-- Image SKULL -->
+      <ion-row>
+        <ion-col size="12">
+          <ion-skeleton-text
+            style="aspect-ratio: 3/2; margin: 0"
+          ></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+      <!-- PRODUCT CATEGORY  -->
+      <ion-row>
+        <ion-col size="4">
+          <ion-skeleton-text
+            [animated]="true"
+            style="height: 0.8rem; margin: 10px 10px; border-radius: 5px"
+          ></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+      <!-- PRODUCT NAME -->
+      <ion-row>
+        <ion-col size="10">
+          <ion-skeleton-text
+            [animated]="true"
+            style="height: 1rem; margin: 0px 10px; border-radius: 5px"
+          ></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+      <!-- PRODUCT DELIVERY -->
+      <ion-row>
+        <ion-col size="12" style="padding-inline: 10px">
+          <ion-skeleton-text
+            [animated]="true"
+            style="margin: 15px 0px; aspect-ratio: 6 / 1; border-radius: 5px"
+          ></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+      <!-- PRODUCT DESCRIPTION -->
+      <ion-row>
+        <ion-col size="12" style="padding-inline: 10px">
+          <ion-skeleton-text
+            [animated]="true"
+            style="margin: 0px 0px; aspect-ratio: 1; border-radius: 5px"
+          ></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+<!-- <ion-footer class="action-btn" *ngIf="ProductLoading == false">
+  <ion-toolbar>
+    <ion-buttons >
+      <ion-button  class="cart"  (click)="addToCart()" color="primary" fill="solid" >{{addToCartButtonText}}</ion-button>
+      
+      
+      <ion-button  *ngIf="In" class="cart"  color="primary" fill="solid" >Add to cart</ion-button>
+      <ion-button   *ngIf="true"  class="cart"  color="danger" fill="solid" >Out of Stock</ion-button>
+
+      
+      <ion-button class="wishlist" [disabled]="alreadyAddedToWishlist==true" (click)="addToWishList()" color="primary" fill="clear">{{wishListButtonText}}</ion-button>
+      <ion-button class="wishlist"  (click)="addToWishList()" color="primary" style="--ripple-color:transparent">
+      <ion-icon [name]="alreadyAddedToWishlist==true?'heart':'heart-outline'" [size]="'large'" slot="icon-only"></ion-icon>  
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>  -->
+
+<ion-footer *ngIf="ProductLoading === false">
+  <ion-toolbar>
+    <div class="action-btn">
+      <div class="btn-chat btn">
+        <ion-button (click)="addToCart()" [strong]="true">
+          <!-- <ion-icon class="" slot="start" name="logo-whatsapp"></ion-icon> -->
+          {{addToCartButtonText}}
+        </ion-button>
+      </div>
+
+      <div class="btn-call btn">
+        <ion-button
+          (click)="addToWishList()"
+          color="primary"
+          style="--ripple-color: transparent"
+        >
+          <ion-icon
+            [name]="alreadyAddedToWishlist===true?'heart':'heart-outline'"
+            [size]="'large'"
+            slot="icon-only"
+          ></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,150 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>rescuepet</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">rescuepet</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-grid [fixed]="true">
+    <!-- ADD IMAGES -->
+<ion-row class="Image-row">
+  <ion-col class="ion-no-padding image-add" size="auto"  > 
+    <ion-card (click)="addImg()">
+      <ion-button fill="clear" color="primary">
+        <ion-icon name="images-outline"  slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-card>
+    <ion-button (click)="addImg()" class="add-image" color="primary" fill="clear" shape="round">
+      <ion-icon name="add-circle-sharp" size="large" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-col>
+  <ion-col class="ion-no-padding image-added" size="auto"  *ngFor="let item of images; let i = index"> 
+    <!-- {{item}} -->
+    <ion-card>
+      <ion-button fill="clear" color="medium">
+        <ion-icon name="image-outline"  slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-card>
+    <ion-button (click)="removeImg(i)" class="rm-image" color="danger" fill="clear"  shape="round">
+      <ion-icon name="remove-circle-sharp" size="large" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-col>
+</ion-row>
+    <!-- ADD IMAGE END -->
+<ion-card>
+<!-- SELECT TYPE OF ANIMAL [SELECT LIST] -->
+<ion-row class="field" >
+  <ion-col  class="ion-no-padding" size="12">
+    <ion-item>
+      <ion-select interface="popover" label-placement="stacked">
+        <div class="field-label" slot="label">Type of Animal<ion-text color="danger">(required)</ion-text></div>
+        <ion-select-option value="orange">other</ion-select-option>
+        <ion-select-option value="apple" *ngFor="let item of [1]">Dog</ion-select-option>
+        <ion-select-option value="banana">Cat</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-input  label-placement="stacked">
+        <div class="field-label" slot="label">Animaltype<ion-text color="danger">(required)</ion-text></div>
+      </ion-input>
+    </ion-item>
+  </ion-col>
+</ion-row>
+<!-- SELECT TYPE OF GENDER [SELECT LIST] -->
+<ion-row class="field" >
+  <ion-col  class="ion-no-padding" size="12">
+    <ion-item>
+      <ion-select interface="popover" label-placement="stacked">
+        <div class="field-label" slot="label">Gender<ion-text color="danger">(required)</ion-text></div>
+        <ion-select-option value="orange">Male</ion-select-option>
+        <ion-select-option value="banana">Female</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-col>
+</ion-row>
+<!-- Type of Condition [SELECT LIST] -->
+<ion-row class="field" >
+  <ion-col  class="ion-no-padding" size="12">
+    <ion-item>
+      <ion-select interface="popover" label-placement="stacked">
+        <div class="field-label" slot="label">Type of Condition<ion-text color="danger">(required)</ion-text></div>
+        <ion-select-option value="orange">Skin Infection</ion-select-option>
+        <!-- <ion-select-option value="banana"></ion-select-option> -->
+      </ion-select>
+    </ion-item>
+  </ion-col>
+</ion-row>
+<!-- Condition Level [SELECT LIST] -->
+<ion-row class="field" >
+  <ion-col  class="ion-no-padding" size="12">
+    <ion-item>
+      <ion-select interface="popover" label-placement="stacked">
+        <div class="field-label" slot="label">Condition Level<ion-text color="danger">(required)</ion-text></div>
+        <ion-select-option value="orange">High</ion-select-option>
+        <ion-select-option value="banana">Medium</ion-select-option>
+        <ion-select-option value="banana">Low</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-col>
+</ion-row>
+</ion-card>
+
+<ion-card>
+  
+<!-- Description -->
+<ion-row class="field" >
+  <ion-col  class="ion-no-padding" size="12">
+    <ion-item>
+      <ion-textarea [rows]="5" label-placement="stacked">
+        <div class="field-label" slot="label">Description<ion-text color="danger">(required)</ion-text></div>
+      </ion-textarea>
+    </ion-item>
+  </ion-col>
+</ion-row>
+</ion-card>
+
+<!-- SELECT City [SELECT LIST] -->
+<ion-card>
+<ion-row class="field" >
+  <ion-col  class="ion-no-padding" size="12">
+    <ion-item>
+      <ion-label>Margao</ion-label>
+     <ion-button expand="full" fill="clear" >Select City <ion-icon name="location"></ion-icon></ion-button>
+    </ion-item>
+  </ion-col>
+</ion-row>
+</ion-card>
+
+<!-- Get Address-->
+<ion-card>
+<ion-row class="field" >
+  <ion-col  class="ion-no-padding" size="12">
+    <ion-item>
+      <ion-label>Margao</ion-label>
+     <ion-button expand="full" fill="clear" >Get Address<ion-icon name="location"></ion-icon></ion-button>
+    </ion-item>
+  </ion-col>
+</ion-row>
+</ion-card>
+
+<!-- GET MAP -->
+<ion-card>
+<div class="map" style="width: 100%;aspect-ratio: 1;"></div>
+<ion-item style="--background: #233a44 ;color: #fff;"><ion-label style="font-size: 12px;" >
+using Current Location may not be accurate please drag the marker for accurate position 
+</ion-label></ion-item>
+</ion-card>
+
+<!-- SAVE -->
+<ion-card>
+  <ion-button class="ion-no-margin" (click)="goBack()" expand="block" fill="solid">Save</ion-button>
+</ion-card>
+  </ion-grid>
+</ion-content>

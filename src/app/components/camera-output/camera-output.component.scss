@@ -1,0 +1,97 @@
+.cancel {
+    position: absolute;
+    top: 10px; /* Adjust this value based on how much space you want */
+    right: 10px; /* Adjust this value based on how much space you want */
+    z-index: 3; /* Ensure it's above other elements */
+  }
+
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    background: linear-gradient(135deg, #e0f7fa, #ffffff); /* Add a subtle gradient */
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    width: auto;
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative; /* Required for the .cancel div to be positioned relative to the modal */
+    transition: transform 0.3s ease; /* Add a smooth transition effect */
+    height: 100%;
+  }
+  
+  .modal-content:hover {
+    transform: translateY(-10px); /* Lift the modal slightly on hover */
+  }
+  
+  .response-image {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 25px;
+    border-radius: 50%;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    object-fit: cover;
+  }
+  
+  p {
+    font-size: 1.6rem;
+    color: #444;
+    margin-bottom: 25px;
+    line-height: 1.4;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  ion-icon {
+    --color: black;
+  }
+  
+  ion-button {
+    --background: linear-gradient(135deg, #007bff, #0056b3); /* Add a gradient background */
+    --color: white;
+    --border-radius: 25px;
+    --padding: 1rem 2.5rem;
+    --box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    font-size: 1.2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+  }
+  
+  ion-button:hover {
+    transform: translateY(-5px);
+    --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  ion-button:focus {
+    --background: linear-gradient(135deg, #004080, #002b60);
+    --box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.3);
+  }
+  
+  .modal-header {
+    font-size: 2rem;
+    color: #007bff;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+  
+  @media (min-width: 768px) {
+    .modal-content {
+      width: 100%;
+      max-width: 550px;
+    }
+  
+    .response-image {
+      width: 220px;
+      height: 220px;
+    }
+  
+    p {
+      font-size: 1.8rem;
+    }
+  
+    ion-button {
+      font-size: 1.3rem;
+    }
+  }
+  

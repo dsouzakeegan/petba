@@ -1,0 +1,96 @@
+.filter-container{
+    display: grid;
+    grid-template-columns: 35% 65%;
+    height: 100%;
+    width: 100%;
+    .filter-group,.filter-options{
+        height: 100%;
+    }
+    .filter-group{
+        box-shadow: 3px 0px 7px 0px #00000033;
+        z-index: 2;
+        padding: 5px;
+        ion-segment{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            ion-segment-button{
+                width: 100%;
+            }
+        }
+    }
+    .filter-options{
+        // z-index: 1;
+        padding: 5px;
+        ion-list{
+            ion-list-header{
+                ion-label{
+                    overflow: hidden;
+                    text-wrap: wrap;
+                    /* text-overflow: ellipsis;*/
+                    
+                }
+            }
+            // background: var(--ion-color-custom-light);
+            background: var(--background);
+            ion-item{
+                --background: var(--background);
+                ion-checkbox {
+                    // --size: 32px;
+                    // --checkbox-background-checked: #6815ec;
+                    --checkbox-background-checked: var(--ion-color-warning);
+                    --checkmark-color: var(--ion-color-light);
+                    &::part(container) {
+                      border-radius: 6px;
+                    //   border: 2px solid #6815ec;
+                      border: 2px solid var(--ion-color-warning);
+                    }
+                  }
+                  
+            }
+        }
+    }
+}
+
+ion-footer{
+    ion-button{
+        &.apply-btn{
+            --color: #fff;
+        }
+        width: 50%;
+        &::part(native){
+            padding: 20px 10px;
+        }
+    }
+}
+
+
+.price-range{
+
+        // padding-inline: 30px;
+        // --bar-background: #a2d2ff;
+        // --bar-background: var(--ion-color-warning-tint);
+        --bar-background: #ffd94817;
+        // --bar-background-active: #bde0fe;
+        --bar-background-active: #bde0fe;
+        --bar-background-active: var(--ion-color-warning);
+        --bar-height: 8px;
+        --bar-border-radius: 8px;
+        // --knob-background: #ffc8dd;
+        --knob-background: var(--ion-color-warning);
+        // --knob-size: 20px;
+        --knob-size: 1.7rem;
+        // --pin-background: #ffafcc;
+        --pin-background: transparent;
+        --pin-color: var(--ion-color-dark); ;
+        // --pin-color: var(--ion-color-warning);
+        &::part(pin){
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        &::part(bar){
+            outline: 1px solid  var(--ion-color-medium);
+            outline: 1px solid  #cacaca;
+        }
+     
+}

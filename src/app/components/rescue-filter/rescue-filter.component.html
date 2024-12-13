@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>FILTER</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">FILTER</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+<div class="filter-container">
+  <div class="filter-group">
+    <ion-segment color="warning" [value]="FilterTabSelected" (ionChange)="tabChanged($event.target.value)">
+      <ion-segment-button [value]="Fgroup.id" *ngFor="let Fgroup of OptionGroups;">
+        <ion-label>{{Fgroup.OptionGroupName}}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+
+  <div [ngSwitch]="FilterTabSelected" class="filter-options">
+    <ion-grid  class="ion-no-padding"  *ngFor="let item of Options" >
+    <ion-list lines="none"   *ngSwitchCase="item.groupId" >
+      <ion-list-header><ion-label color="warning">{{item.OptionGroupName}}</ion-label></ion-list-header>
+      <ion-item [button]="true" *ngFor="let filterItem of item.filters">
+        <ion-checkbox labelPlacement="end" alignment="center" justify="start" (ionChange)="checked($event,filterItem,item.OptionGroupName)" [checked]="filterItem.checked"> {{filterItem.name}}</ion-checkbox>
+       
+      </ion-item>
+    </ion-list>
+    </ion-grid>
+  </div>
+</div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button class="ion-text-capitalize ion-padding clear-btn" expand="block" color="medium" fill="clear" [disabled]="hasFilter === false" (click)="clearFilter()"> Clear</ion-button>
+      <ion-button class="ion-text-uppercase ion-padding apply-btn" expand="block" color="warning" fill="solid"  [disabled]="hasFilter === false"  (click)="confirm()"> Apply</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

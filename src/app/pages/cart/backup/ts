@@ -1,0 +1,44 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-cart',
+  templateUrl: './cart.page.html',
+  styleUrls: ['./cart.page.scss'],
+})
+export class CartPage implements OnInit {
+counter:number=1;
+Loading:boolean=true;
+  constructor() { }
+
+  ngOnInit() {
+    this.getCartProducts();
+  }
+  getCartProducts()
+  {
+setTimeout(() => {
+  this.Loading=false
+}, 2000);
+  }
+  quantity(action:'add'|'remove')
+  {
+    if(action === 'add' && this.counter < 99)
+    {
+this.counter++;
+}
+else if(action === 'remove')
+{
+  if(this.counter > 1)
+  {
+    this.counter--;
+//  if(this.counter == 0)
+//  {
+  
+//     console.warn("item removed from cart")
+  
+//  }
+    
+  }
+  }
+
+  }
+}

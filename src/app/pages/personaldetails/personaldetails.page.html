@@ -1,0 +1,53 @@
+<ion-header [translucent]="true" class="custom-header-2">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Personal Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="false" class="ion-content-center">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Personal Details</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <form [formGroup]="detailsForm" (ngSubmit)="handleDonation()">
+
+  <div class="div_class_outer">
+      <p class="details-heading"><strong>Your details</strong> </p>
+      <div class="div_class">
+        <ion-card class="edit_card">                
+          <ion-input formControlName="fullName" class="custom-fill" label="Full Name" label-placement="floating" fill="solid" placeholder="Enter full name" ></ion-input>
+        </ion-card>
+      
+        <ion-card class="edit_card">
+          <ion-input   formControlName="mobile" class="custom-fill" 
+          [maskito]="phoneMask"  [(ngModel)]="num"
+        [maskitoElement]="maskPredicate"
+          label="Mobile" label-placement="floating" fill="solid" placeholder="Mobile" inputmode="tel" ></ion-input>
+        </ion-card>
+     
+        <ion-card class="edit_card">
+          <ion-input formControlName="email" class="custom-fill" label="Email" label-placement="floating" fill="solid" placeholder="Enter email"></ion-input>
+        </ion-card>
+      
+        <ion-card class="edit_card">
+          <ion-input formControlName="billingAddress" class="custom-fill" label="Billing Address (Optional)" label-placement="floating" fill="solid" placeholder="eg: 123, Main St, San Francisco, CA, 66801"></ion-input>
+        </ion-card>
+      
+        <ion-card class="edit_card">
+          <ion-input formControlName="pincode" class="custom-fill" label="Pincode  (Optional)" label-placement="floating" fill="solid" placeholder="eg: 407XXX"></ion-input>
+        </ion-card>
+      </div>
+    </div>
+<br>
+
+    <ion-button color="warning" shape="round" class="custom-button"  (click)="handleDonation()" expand="full">
+      Donate {{donationAmount | currency:"INR"}}</ion-button>
+
+  </form>
+</ion-content>

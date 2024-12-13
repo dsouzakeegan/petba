@@ -1,0 +1,172 @@
+<ion-header [translucent]="true" class="custom-header-2">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Select Address </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-content-align" >
+  <ion-list *ngIf="isLoading" style=" background: transparent; padding: 5px; padding-bottom: 10px;">
+    <ion-list lines="full" *ngFor=" let item of [].constructor(4)" style=" padding: 5px; margin: 10px 0;">
+      <div style="margin-bottom: 5px;">
+        <ion-skeleton-text [animated]="true" style="width: 50%; height: 10px;"></ion-skeleton-text>
+      </div>
+      <div style="margin-bottom: 5px;">
+        <ion-skeleton-text [animated]="true" style="width: 80%; height: 10px;"></ion-skeleton-text>
+      </div>
+      <div >
+        <ion-skeleton-text [animated]="true" style="width: 70%; height: 10px;"></ion-skeleton-text>
+      </div>
+      <div style="margin-top: 15px ;">
+      <ion-skeleton-text [animated]="true" style="width: 40%; height: 10px;"></ion-skeleton-text>
+    </div>
+    </ion-list>   
+    
+  </ion-list>
+  
+  
+
+
+
+ <div  *ngIf="!isLoading"> 
+  <ion-radio-group [ngModel] = "selectedCardIndex">
+
+  <ion-card  *ngFor="let address of AddressList; let i = index"[class.selected]= 'selectedCardIndex === i' [class.non-selected]="selectedCardIndex != i" (click)="selectCard(i)">
+    <ion-card-content>
+      
+      <ion-grid class="ion-no-padding">
+          
+<ion-row>
+  <ion-col size="12" class="container">
+    <div class="radio-container">
+      
+      <ion-radio [value]="i" labelPlacement="end" >
+        <ion-row>
+          <ion-col size="12" class="ion-text-left">
+            <ion-text><strong>Name:</strong> {{ address.f_name }} {{ address.l_name }} {{ address.adrs_id }}</ion-text>
+          </ion-col>
+          <ion-col size="auto" class="ion-text-left ion-text-wrap">
+            <ion-text><strong>Address:</strong> {{ address.address }}, {{ address.landmark }}, {{ address.locality }}, {{ address.city }}, {{ address.state }}, {{ address.pincode }}
+            </ion-text>
+           </ion-col>
+            <ion-col size="12" class="ion-text-left">
+            <ion-text><strong>Phone:</strong> {{ address.shipping_phone }}</ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-radio>
+
+      <!-- <ion-radio [ngModel]="selectedCardIndex === i"></ion-radio> -->
+    </div>
+  </ion-col>
+  
+         
+  <!-- <ion-col size="9">
+    <ion-label><strong>Name:</strong> {{ address.f_name }} {{ address.l_name }} {{ address.adrs_id }}</ion-label>
+    <br>
+    <ion-label><strong>Address:</strong> {{ address.address }}, {{ address.landmark }}, {{ address.locality }}, {{ address.city }}, {{ address.state }}, {{ address.pincode }}</ion-label>
+    <br>
+    <br>
+    <ion-label><strong>Phone:</strong> {{ address.shipping_phone }}</ion-label>
+  </ion-col> -->
+</ion-row>        
+</ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-radio-group>
+
+ 
+  <ion-card >
+    <ion-card-header>
+      <ion-row align-items-center justify-content-between> 
+        <ion-col size="auto">
+          <ion-card-title>ADD NEW ADDRESS</ion-card-title>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button fill="clear" (click)="toggleCard()">
+            <ion-icon name="{{ isCardOpen ? 'remove' : 'add' }}"></ion-icon> 
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    
+
+    <ion-card-content *ngIf="isCardOpen">
+      
+      <ion-item>
+        <ion-label position="stacked">First Name</ion-label>
+        <ion-input type="text" placeholder="Enter your first name" [(ngModel)]="newAddress.first_name" required></ion-input>
+      </ion-item>
+      
+      
+      <ion-item>
+        <ion-label position="stacked">Last Name</ion-label>
+        <ion-input type="text" placeholder="Enter your last name" [(ngModel)]="newAddress.last_name" required></ion-input>
+      </ion-item>
+      
+     
+      <ion-item>
+        <ion-label position="stacked">Address</ion-label>
+        <ion-input type="text" placeholder="Enter address" [(ngModel)]="newAddress.address" required></ion-input>
+      </ion-item>
+      
+     
+      <ion-item>
+        <ion-label position="stacked">Landmark</ion-label>
+        <ion-input type="text" placeholder="Enter landmark" [(ngModel)]="newAddress.landmark" required></ion-input>
+      </ion-item>
+      
+     
+      <ion-item>
+        <ion-label position="stacked">Locality</ion-label>
+        <ion-input type="text" placeholder="Enter locality" [(ngModel)]="newAddress.locality" required></ion-input>
+      </ion-item>
+      
+      
+      <ion-item>
+        <ion-label position="stacked">Phone</ion-label>
+        <ion-input type="text" placeholder="Enter phone number" [(ngModel)]="newAddress.phone" required></ion-input>
+      </ion-item>
+      
+      
+      <ion-item>
+        <ion-label position="stacked">Pincode</ion-label>
+        <ion-input type="text" placeholder="Enter area pincode" [(ngModel)]="newAddress.pincode" required></ion-input>
+      </ion-item>
+      
+    
+      <ion-item>
+        <ion-label position="stacked">City</ion-label>
+        <ion-input type="text" placeholder="Enter city" [(ngModel)]="newAddress.city" required></ion-input>
+      </ion-item>
+      
+            <ion-item>
+        <ion-label position="stacked">State/Province</ion-label>
+        <ion-select [(ngModel)]="newAddress.state" placeholder="Select state/province" required>
+          <ion-select-option *ngFor="let state of stateList" [value]="state.value">{{ state.name }}</ion-select-option>
+        </ion-select>
+      </ion-item>       
+         
+      <ion-button fill="clear" (click)="addCard()" [disabled]="!isFormValid()">Add</ion-button>
+      <br>
+    </ion-card-content>   
+  </ion-card>
+ </div> 
+</ion-content>
+
+
+
+<br>
+<br>
+<br>
+<ion-footer class="gradient-footer">
+  <ion-toolbar class="bottom-toolbar">
+    <div class="button-container">
+      <ion-button fill="clear" *ngIf="isAddressSelected" (click)="goToPaymentPage(addressID)">
+        Make Payment
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

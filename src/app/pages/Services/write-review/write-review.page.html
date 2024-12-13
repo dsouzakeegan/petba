@@ -1,0 +1,65 @@
+<ion-header [translucent]="true" class="custom-header-transparent">
+  <ion-toolbar>
+    <!-- <ion-title>writeReview</ion-title> -->
+    <ion-buttons slot="start">
+      <ion-button (click)="back()" >
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" > 
+ 
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">writeReview</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-text-center ion-text-capitalize ion-padding-bottom ion-margin-bottom">
+      <ion-col size="12">
+          <h5>
+            How would you rate us ?
+          </h5>
+      </ion-col>
+      <ion-col size="12">
+        <ion-row>
+          <ion-col class="rate-stars">
+            <ion-icon (click)="getRate(rate)" name="star-sharp" *ngFor="let rate of [1,2,3,4,5];index as i" [color]="getColor(rate)"></ion-icon> 
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-text-capitalize ion-padding-vertical">
+      <ion-col  class="ion-padding-horizontal ion-text-center "  size="12">
+        <h6 class="ion-no-margin  ">Give us your review</h6>
+      </ion-col>
+
+      <ion-col size="12" class="ion-padding text-input">
+        <!-- <ion-item> -->
+          <ion-textarea
+          [(ngModel)]="review"
+           [counter]="true"
+          [maxlength]="500"
+          [counterFormatter]="customCounterFormatter" [disabled]="isSending" [rows]="10" [autoGrow]="true" fill="outline" placeholder="How was your experience with us ?">
+          </ion-textarea>
+        <!-- </ion-item> -->
+      </ion-col>
+    </ion-row>
+    <!-- BUTTON -->
+    <!-- <ion-row>
+      <ion-col>
+        <ion-button expand="block" [strong]="true" class="ion-text-capitalize ion-padding" [color]="getColor(1)" ><ion-text >Submit review</ion-text></ion-button>
+      </ion-col>
+    </ion-row> -->
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="submitReview()" expand="block" [disabled]="rating == 0 || review.trim().length == 0" [strong]="true" class="ion-text-capitalize ion-padding" [color]="getColor(0)" fill="outline"><ion-text >Submit review</ion-text></ion-button>
+  </ion-toolbar>
+</ion-footer>

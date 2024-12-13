@@ -1,0 +1,14 @@
+{
+  "name": "petba",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "proxy": [
+  {
+    "path": "/api",
+    "proxyUrl": "https://petba.in/Api/api/index.php/"
+  }
+]
+
+}

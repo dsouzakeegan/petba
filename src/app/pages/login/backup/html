@@ -1,0 +1,70 @@
+
+<!-- 
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content [fullscreen]="true">
+<div id="login-container">
+  
+
+  <!-- <ion-card>
+    <ion-card-header class="ion-text-center">
+      <ion-card-title color="success">Login</ion-card-title>
+    </ion-card-header> -->
+  <!-- <ion-card-content> -->
+      <ion-grid [formGroup]="loginForm">
+        <ion-row>
+          <ion-col>
+            <ion-input   color="success"  type="email" fill="outline" label="Email"
+             labelPlacement="floating" errorText="invalid field" formControlName="username" [clearInput]="true">
+              <ion-icon name="person" slot="start"></ion-icon>
+            </ion-input>
+          </ion-col>
+        </ion-row> 
+        <ion-row>
+          <ion-col>
+            <ion-input  color="success" label="Password" fill="outline" id="password" labelPlacement="floating"
+             placeholder="" type="password"  formControlName="password" errorText="password must be atleast 8 characters" [clearOnEdit]="true">
+              <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+              <ion-button (click)="togglePsswdVisibility()" fill="clear" slot="end" aria-label="Show/hide">
+                <ion-icon color="medium" slot="icon-only" [name]="eyeIcon" aria-hidden="true"></ion-icon>
+                <!-- <ion-icon  color="medium" slot="icon-only" name="eye-off-outline"></ion-icon> -->
+              </ion-button>
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>  
+            
+              <!-- <ion-button  class="ion-text-capitalize ion-float-right" fill="clear" color="primary" expand="block" size="small"   routerDirection="root" [routerLink]="['/send-otp']"    aria-label="forgot password">Forgot Password? </ion-button> -->
+              <ion-button  class="ion-text-capitalize ion-float-right" fill="clear" color="primary" expand="block" size="small"  (click)="forgotPassword()"   aria-label="forgot password">Forgot Password? </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button class="ion-margin-top ion-text-capitalize" expand="block" color="success" strong="true" (click)="login(loginForm)" [disabled]="loginForm.status == 'INVALID'">login</ion-button>
+            <ion-label justify-items-center align-items-center style="display: flex;align-items: center;justify-content: center;">don't have an Account ?
+               <!-- <ion-button class="ion-text-capitalize"  routerDirection="root" [routerLink]="['/signup']"  size="small" fill="clear" color="success">signup</ion-button> -->
+               <ion-text   class="ion-padding-start" routerDirection="root" [routerLink]="['/signup']"   color="success">Signup</ion-text>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
+      
+      
+
+    <!-- </ion-card-content> -->
+  <!-- </ion-card> -->
+
+</div>
+
+
+ 
+</ion-content>

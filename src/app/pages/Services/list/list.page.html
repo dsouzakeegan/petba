@@ -1,0 +1,100 @@
+<ion-header [translucent]="true " #toolbar class="custom-header">
+  <ion-toolbar >
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-capitalize">
+      <b>{{title}}</b>
+    </ion-title>
+  </ion-toolbar>
+  <!-- SORT FILTER -->
+  <ion-toolbar
+    style="border-top:2px solid var(--ion-color-custom-light);border-bottom:2px solid var(--ion-color-custom-light);">
+    <ion-buttons>
+      <ion-button style="width: 50%; border-right: 1.5px solid var(--ion-color-custom-light);padding-right: 4px;"
+        expand="block" (click)="presentSort()">Sort</ion-button>
+      <ion-button style="width: 50%;" expand="block" (click)="openFilterPage()">Filter</ion-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" [fullscreen]="true" [appHideHeader]="toolbar">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">list</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <!-- CONTENT LOADED -->
+  <div class="list-wrapper" *ngIf="Loading == false ">
+    <ion-item-sliding *ngFor="let item of list">
+      <ion-item-options side="start">
+        <ion-item-option (click)="goto('https://maps.google.com/?q='+item.latitude+','+item.longitude)" 
+         color="success" [expandable]="true">locate<ion-icon name="compass-outline"
+            size="large"></ion-icon></ion-item-option>
+      </ion-item-options>
+
+      <ion-item lines="none" class="list" [button]="true" [routerLink]="['/list-details',this._TYPE,item.id]">
+        <ion-thumbnail class="list-img">
+          <ion-img [src]="item.img" (ionError)="item.img = imgPlaceholder "></ion-img>
+        </ion-thumbnail>
+        <ion-grid class="list-content">
+          <ion-row class="service-name"><ion-col class="ion-no-padding ion-text-nowrap"
+              size="12"><ion-text>{{item.bName}}</ion-text></ion-col></ion-row>
+          <ion-row class="service-pname"><ion-col class="ion-no-padding ion-text-nowrap" size="12"><ion-text
+                color="medium">{{item.pName}}</ion-text></ion-col></ion-row>
+          <ion-row class="service-details">
+            <!-- <ion-col *ngIf="item.rating == '0'" class="ion-no-padding ion-text-capitalize rating" size="auto"><ion-text color="dark-contrast">no ratings yet</ion-text></ion-col> -->
+            <ion-col *ngIf="item.rating != '0'" class="ion-no-padding rating" size="auto"><ion-text
+                [color]="getRColor(item.rating,0,1)">{{item.rating}}<ion-icon
+                  name="star"></ion-icon></ion-text></ion-col>
+            <ion-col *ngIf="item.open_time || item.close_time" class="ion-no-padding timming" size="auto"><ion-text
+                color="success" class="open_time">{{item.open_time}}</ion-text><span
+                *ngIf="item.open_time && item.close_time">-</span><ion-text class="close_time"
+                color="danger">{{item.close_time}}</ion-text></ion-col>
+          </ion-row>
+          <ion-row *ngIf="item.fee" class="service-fees-location"><ion-col class="ion-no-padding fee"
+              size="auto"><ion-text>{{item.fee| currency :'INR'}}</ion-text></ion-col>
+            <ion-col *ngIf="item.city" class="ion-no-padding ion-padding-horizontal location"
+              size="auto"><ion-note><ion-icon name="location-sharp"></ion-icon>{{item.city}}</ion-note></ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+
+
+      <ion-item-options side="end" >
+        <ion-item-option color="primary" [expandable]="true"  (click)="goto('tel:'+item.phoneNumber)">
+          <ion-icon name="call"
+            size="large"></ion-icon>Call
+          </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" *ngIf="noMoreData === false">
+      <ion-infinite-scroll-content loadingText="Please Wait" loadingSpinner="dots"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+
+  <!-- SKELETON LOADING -->
+  <div class="skeleton-wrapper" *ngIf="Loading == true ">
+    <ion-item class="list" lines="none" [button]="true" *ngFor="let a of [1,2,3,4,5,6,7]">
+      <ion-thumbnail class="list-img">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-grid class="list-content">
+        <ion-row class="service-name"><ion-col class="ion-no-padding" size="12"> <ion-skeleton-text
+              style="width: 50%; height: 1rem;" [animated]="true"></ion-skeleton-text></ion-col></ion-row>
+        <ion-row class="service-pname"><ion-col class="ion-no-padding" size="12"> <ion-skeleton-text
+              style="width: 40%; height: 1rem;" [animated]="true"></ion-skeleton-text></ion-col></ion-row>
+        <ion-row class="service-details">
+          <ion-col class="ion-no-padding " size="12"><ion-skeleton-text style="width: 100%; "
+              [animated]="true"></ion-skeleton-text></ion-col>
+        </ion-row>
+        <ion-row class="service-fees-location">
+          <ion-col class="ion-no-padding " size="12"><ion-skeleton-text style="width: 50%; "
+              [animated]="true"></ion-skeleton-text></ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </div>
+
+</ion-content>

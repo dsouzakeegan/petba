@@ -1,0 +1,204 @@
+<ion-header [translucent]="true" class="custom-header-2">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Order Summary</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Order Summary</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid [fixed]="true" class="ion-no-padding" *ngIf="Loading === false">
+    <!-- Order Details -->
+<ion-row class="title-section">
+  <ion-col size="12">
+   <h5 class="title">
+     View order Details
+   </h5>
+  </ion-col>
+</ion-row>
+<ion-row class="container ">
+  <ion-col size="12"> 
+    <ion-row class="sub-container">
+  <ion-col size="6"><ion-note class="detail-title">Order-Date</ion-note></ion-col>
+  <ion-col size="6"><ion-note class="detail-text" color="dark">{{order_detail.date_modified | date:'dd-MMM-yyyy'}}</ion-note></ion-col>
+  <ion-col size="6"><ion-note class="detail-title">Order #</ion-note></ion-col>
+  <ion-col size="6"><ion-note class="detail-text" color="dark">{{order_detail.order_id}}</ion-note></ion-col>
+  <ion-col size="6"><ion-note class="detail-title">Order Total</ion-note></ion-col>
+  <ion-col size="6"><ion-note class="detail-text" color="dark">{{order_detail.price| currency :'INR'}}</ion-note></ion-col>
+</ion-row>
+</ion-col>
+</ion-row>
+
+
+
+
+<!-- Shipment Details -->
+<ion-row class="title-section">
+  <ion-col size="12">
+   <h5 class="title">
+    Shipment details
+   </h5>
+  </ion-col>
+</ion-row>
+<ion-row class="container ">
+  <ion-col size="12"> 
+      <ion-row class="sub-container ">
+      <ion-col size="12"><ion-note class="detail-title">Delivery</ion-note></ion-col><ion-col size="12">
+        <ion-note class="detail-text" color="dark">
+          Free Delivery
+        </ion-note>
+      </ion-col>
+    </ion-row> 
+      <ion-row class="sub-container "    [ngClass]="{
+        '1' : 'pending', '2' : 'pending', 
+        '3' : 'completed','5' : 'completed','11' : 'completed','15' : 'completed',
+       '7' : 'canceled', '8' : 'canceled','10' : 'canceled','14' : 'canceled','16' : 'canceled',
+       }[order_detail.order_status_code]">
+      <ion-col size="12"><h5 class="detail-title ion-padding-vertical">{{order_detail.order_status}}</h5></ion-col>
+      <ion-col size="12"  *ngIf="order_detail.shipping_date">
+        <ion-note class="detail-text" color="dark">Estimated delivery date </ion-note>
+      </ion-col>
+      <ion-col size="12"  *ngIf="order_detail.shipping_date">
+        <ion-note class="detail-text detail-text-time">{{order_detail.shipping_date}}</ion-note>
+      </ion-col>
+      <ion-col size="12">
+        <ion-item  routerDirection="forward" [routerLink]="['/product-detail', order_detail.product_id]" class="product-info" lines="none" [button]="true">
+          <ion-thumbnail >
+            <img [src]="order_detail.image"/>
+          </ion-thumbnail>
+          <ion-label>
+            <ion-text class="line-wrapper-3 detail-text-info ion-padding-horizontal">
+             {{order_detail.name}}
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row class="sub-container " *ngIf="order_detail.company">
+      <ion-col size="12"><ion-note class="detail-title">Shipping Company</ion-note></ion-col>
+      <ion-col size="12">
+        <ion-note class="detail-text" color="dark">
+          {{order_detail.company}}
+        </ion-note>
+      </ion-col>
+    </ion-row>  
+    </ion-col>
+</ion-row>
+
+
+<!-- Payment information -->
+<ion-row class="title-section">
+  <ion-col size="12">
+   <h5 class="title">
+    Payment information
+   </h5>
+  </ion-col>
+</ion-row>
+<ion-row class="container ">
+  <ion-col size="12"> 
+    <!-- Payment Method -->
+      <ion-row class="sub-container">
+      <ion-col size="12"><ion-note class="detail-subtitle" color="dark" >Payment Method</ion-note></ion-col>
+      <ion-col size="12"><ion-note class="detail-text-info" color="dark">{{order_detail.payment_method}}</ion-note></ion-col>
+    </ion-row> 
+    <!-- Billing Address -->
+      <ion-row class="sub-container">
+      <ion-col size="12"><ion-note class="detail-subtitle" color="dark" >Billing Address</ion-note></ion-col>
+      <ion-col size="12" *ngIf="order_detail.address_1"><ion-note class="detail-text-info" color="dark">{{order_detail.address_1}}</ion-note></ion-col>
+      <ion-col size="12"><ion-note class="detail-text-info" color="dark">{{order_detail.city}}<span *ngIf="order_detail.city && order_detail.postcode">,</span> {{order_detail.postcode}}</ion-note></ion-col>
+    </ion-row> 
+    </ion-col>
+</ion-row>
+
+
+
+<!-- Shipping Address-->
+<ion-row class="title-section">
+  <ion-col size="12">
+   <h5 class="title">
+    Shipping Address
+   </h5>
+  </ion-col>
+</ion-row>
+<ion-row class="container ">
+  <ion-col size="12"> 
+      <ion-row class="sub-container" *ngIf="order_detail.address_1">
+        <ion-col size="12"><ion-note class="detail-subtitle" color="dark">Address</ion-note></ion-col>
+        <ion-col size="12"><ion-note class="detail-text-info" color="dark">{{order_detail.address_1}}</ion-note></ion-col>
+        <ion-col size="12"><ion-note class="detail-text-info" color="dark">{{order_detail.city}}<span *ngIf="order_detail.city && order_detail.postcode">,</span> {{order_detail.postcode}}</ion-note></ion-col>
+    </ion-row> 
+      <ion-row class="sub-container" *ngIf="order_detail.address_2">
+        <ion-col size="12"><ion-note class="detail-subtitle" color="dark">Alternate Address</ion-note></ion-col>
+        <ion-col size="12"><ion-note class="detail-text-info" color="dark">{{order_detail.address_2}}</ion-note></ion-col>
+        <ion-col size="12"><ion-note class="detail-text-info" color="dark">{{order_detail.city}}<span *ngIf="order_detail.city && order_detail.postcode">,</span> {{order_detail.postcode}}</ion-note></ion-col>
+    </ion-row> 
+      <ion-row class="sub-container" *ngIf="order_detail.address_2">
+        <ion-col size="12"><ion-note class="detail-subtitle" color="dark">Contact Details</ion-note></ion-col>    
+         <ion-col size="12"><ion-note class="detail-text-info" color="dark">{{order_detail.firstname}} {{order_detail.lastname}} </ion-note></ion-col>
+        <ion-col size="12"><ion-note class="detail-text-info" color="dark">{{order_detail.telephone}}</ion-note></ion-col>
+    </ion-row> 
+    </ion-col>
+</ion-row>
+
+    <!-- Order Summary -->
+    <!-- <ion-row class="title-section">
+      <ion-col size="12">
+       <h5 class="title">
+        Order Summary
+       </h5>
+      </ion-col>
+    </ion-row>
+    <ion-row class="container ">
+      <ion-col size="12"> 
+        <ion-row class="sub-container">
+          <ion-col size="6"><ion-note class="detail-title">Items</ion-note></ion-col>
+          <ion-col size="6"><ion-note class="detail-text" color="dark">{{3000 | currency :'INR'}}</ion-note></ion-col>
+          <ion-col size="6"><ion-note class="detail-title">Postage & Packing</ion-note></ion-col>
+          <ion-col size="6"><ion-note class="detail-text" color="dark">{{400 | currency :'INR'}}</ion-note></ion-col>
+          <ion-col size="6"><ion-note class="detail-title">Postage & Packing</ion-note></ion-col>
+          <ion-col size="6"><ion-note class="detail-text" color="dark">{{600 | currency :'INR'}}</ion-note></ion-col>
+          <ion-col size="6"><ion-note class="detail-title">Total before Tax</ion-note></ion-col>
+          <ion-col size="6"><ion-note class="detail-text" color="dark">{{500 | currency :'INR'}}</ion-note></ion-col>
+          <ion-col size="6"><ion-note class="detail-title">Tax</ion-note></ion-col>
+          <ion-col size="6"><ion-note class="detail-text" color="dark">{{250 | currency :'INR'}}</ion-note></ion-col>
+          <ion-col size="6"><ion-note class="detail-title">Total</ion-note></ion-col>
+          <ion-col size="6"><ion-note class="detail-text" color="dark">{{250 | currency :'INR'}}</ion-note></ion-col>
+          <ion-col size="6"><h5 class="detail-title">Order Total</h5></ion-col>
+          <ion-col size="6" ><h5 class="detail-text"><ion-text color="danger">{{5000 | currency :'INR'}}</ion-text></h5></ion-col>
+    </ion-row>
+    </ion-col>
+    </ion-row> -->
+  </ion-grid>
+  <!-- SKELETON WRAPPER -->
+<ion-grid *ngIf="Loading === true">
+  <!-- HEADER -->
+  <ion-row>
+    <ion-col size="12">
+      <ion-skeleton-text [animated]="true" style="aspect-ratio: 3/1;border-radius: 10px;"></ion-skeleton-text>
+    </ion-col>
+  </ion-row>
+  <!-- OPTIONS -->
+  <ion-row>
+    <ion-col size="12">
+      <ion-skeleton-text [animated]="true" style="aspect-ratio: 3/1.5;border-radius: 10px;"></ion-skeleton-text>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-skeleton-text [animated]="true" style="aspect-ratio: 3/1.5;border-radius: 10px;"></ion-skeleton-text>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngFor="let item of [1,2]">
+    <ion-col size="12">
+      <ion-skeleton-text [animated]="true" style="aspect-ratio: 4/1;border-radius: 10px;"></ion-skeleton-text>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+</ion-content>

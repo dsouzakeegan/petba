@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>productWishlist</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">productWishlist</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+      
+  <ion-grid [fixed]="false" >
+    <ion-row>
+      <ion-row class="item-tray">
+        <ion-col class="products" size="6" *ngFor="let item of [].constructor(31);">
+          <ion-card  button="true" routerDirection="forward" [routerLink]="['/product-detail' ,1]">
+            <div class="product-image-off">
+              <img  alt="" [src]="'https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/m/o/b/-original-imaghx9qkugtbfrn.jpeg?q=70'"[src]="" />
+              <span class="product-off" *ngIf="true">300% off</span>
+            </div>
+            <ion-card-content>
+              <ion-card-title>
+                <h5  class="line-wrapper-2 product-name">Apple iPhone 14 (Starlight, 128 GB)</h5>
+              </ion-card-title>
+              <ion-note  class="category-name ion-text-nowrap">
+                    <!-- Need category here ? -->
+                    Electronics
+              </ion-note>
+              <ion-row class="ion-align-items-center product-price">
+
+                <ion-text class="price">{{60000  | currency:"INR":true}}</ion-text>
+                <ion-note *ngIf="true" class="price-original">{{80000 |currency:"INR":true}}</ion-note>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-row>
+  </ion-grid>
+</ion-content>

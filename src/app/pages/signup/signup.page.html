@@ -1,0 +1,169 @@
+<!-- <ion-header [translucent]="true" class="custom-header-2">
+  <ion-toolbar>
+    <ion-title  class="ion-text-start">
+      <b>Sign Up</b>
+      <ion-note> ● create account</ion-note>
+     </ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content [fullscreen]="true">
+<h1 class="ion-padding-horizontal" style="font-size: 2.2rem;">
+  <b>Sign Up</b>
+</h1>
+    <ion-list lines="none" class="ion-padding ion-margin"  [formGroup]="signupForm">
+<div class="field">
+      <!-- First Name -->
+      <ion-label class="field-name"><ion-text>First Name</ion-text></ion-label>
+      <ion-item class="field-item">
+        <!-- <ion-icon 
+          name="mail-outline" slot="end" color="medium">
+        </ion-icon> -->
+        <ion-input formControlName="fname"   placeholder="First name"></ion-input>
+      </ion-item>
+      <div  class="error-text-wrapper"  *ngIf="!fname.pristine">
+        <div class="error-text" *ngIf="fname.errors?.['pattern'] && fname.dirty" ><ion-note color="danger">Please enter a valid name</ion-note></div>
+        <div class="error-text" *ngIf="fname.errors?.['required'] && fname.touched" ><ion-note color="danger">First name required</ion-note></div>
+        </div>
+</div>
+      <!-- Second Name -->
+      <div class="field">
+      <ion-label class="field-name"><ion-text>Last Name</ion-text></ion-label>
+      <ion-item class="field-item">
+        <!-- <ion-icon 
+          name="mail-outline" slot="end" color="medium">
+        </ion-icon> -->
+        <ion-input formControlName="lname" placeholder="Last name"></ion-input>
+      </ion-item>
+      <div  class="error-text-wrapper" *ngIf="!lname.pristine">
+        <div class="error-text" *ngIf="lname.errors?.['pattern'] && lname.dirty" ><ion-note color="danger">Please enter a valid name</ion-note></div>
+        <div class="error-text" *ngIf="lname.errors?.['required'] && lname.touched" ><ion-note color="danger">Last name required</ion-note></div>
+        </div>
+      </div>
+
+
+      <!-- Email -->
+      <div class="field">
+       
+      <ion-label class="field-name"><ion-text>Email</ion-text></ion-label>
+      <ion-item class="field-item">
+        <!-- <ion-icon 
+          name="mail-outline" slot="end" color="medium">
+        </ion-icon> -->
+        <ion-input  (ionBlur)="inputshow()" formControlName="email" inputmode="email"  placeholder="example@example.com"></ion-input>
+      </ion-item>
+          <div  class="error-text-wrapper" *ngIf="!email.pristine"> 
+          <div class="error-text" *ngIf="email.dirty && email.errors?.['pattern'] || email.errors?.['email'] " >
+            <ion-note color="danger">
+            Please give a valid email address.
+             <!-- example&#64;example.com  -->
+          </ion-note></div>
+          <div class="error-text" *ngIf="email.errors?.['required'] && email.touched" ><ion-note color="danger">Email required</ion-note></div>
+          </div>
+      </div>
+   
+      <!-- Mobile -->
+      <div class="field">
+      <ion-label class="field-name"><ion-text>Mobile</ion-text></ion-label>
+      <ion-item class="field-item ion-no-padding ">
+        <ion-row>
+          <ion-col size="11" class="ion-padding-start">
+            <ion-input type="text" formControlName="phone" 
+            placeholder="XXXX-XXXX-XX"
+            [maskito]="phoneMask" #phoneNumber [(ngModel)]="previousVerifiedPhone" 
+            [maskitoElement]="maskPredicate" inputmode="tel" [minlength]="10" [max]="10">
+          </ion-input></ion-col>
+          <!-- <ion-col size="1" class="item-icon ion-no-padding">
+          <ion-icon [name]="Verified? 'checkmark-outline':'add'" style="--ionicon-stroke-width: 3rem;"  (click)="verifyMobile()" color="primary"></ion-icon>
+        </ion-col> -->
+        </ion-row>
+      </ion-item>
+      <div  class="error-text-wrapper" *ngIf="!phone.pristine">
+        <div class="error-text" *ngIf="phone.errors?.['pattern'] && phone.dirty" ><ion-note color="danger">Please enter a valid 10 digit mobile number</ion-note></div>
+        <div class="error-text" *ngIf="phone.errors?.['required'] && phone.touched" ><ion-note color="danger">Mobile number required</ion-note></div>
+      </div>
+      </div>
+      
+      <!-- Password -->
+      <div class="field">
+       
+      <ion-label class="field-name"><ion-text>Password</ion-text></ion-label>
+      <ion-item class="field-item ion-no-padding ">
+       <ion-row>
+          <ion-col size="11" class="ion-padding-start">
+            <ion-input [type]="true ? 'password' : 'text'" #pass
+             formControlName="password"  [clearOnEdit]="false"
+            placeholder="Your password" >
+          </ion-input></ion-col>
+          <ion-col size="1" class="item-icon ion-no-padding"><ion-icon (click)="togglepasswordVisibilty(pass)" [name]="pass.type ==='password' ? 'eye-off' : 'eye'"
+            [color]="pass.type ==='password' ? 'medium' : 'primary'">
+          </ion-icon></ion-col>
+        </ion-row>
+      </ion-item>
+          <div  class="error-text-wrapper" *ngIf="!password.pristine">
+              <div class="error-text" *ngIf="password.errors?.['required'] && password.touched" ><ion-note color="danger">Password required</ion-note></div>
+              <div class="error-text" *ngIf="password.errors?.['minlength'] && password.dirty" ><ion-note color="danger">Password must have atleast {{password.errors?.['minlength'].requiredLength}} characters</ion-note></div>
+              <div class="error-text" *ngIf="password.errors?.['maxlength'] && password.dirty" ><ion-note color="danger">Password length cannot be more than {{password.errors?.['maxlength'].requiredLength}} characters</ion-note></div>
+          </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="field">
+
+        
+
+      <ion-label class="field-name"><ion-text>Confirm Password</ion-text></ion-label>
+      <ion-item class="field-item">
+        <ion-input type= "password"
+        formControlName="confirmPassword"
+          placeholder="Confirm password" [maxlength]="30"> 
+        </ion-input>
+      </ion-item>
+        <div  class="error-text-wrapper" *ngIf="!confirmPassword.pristine">
+          <div class="error-text" *ngIf="confirmPassword.errors?.['required'] && confirmPassword.touched " ><ion-note color="danger">Confirm your password </ion-note></div>
+          <div class="error-text" *ngIf="confirmPassword.errors?.['passwordMismatch'] && confirmPassword.dirty " ><ion-note color="danger">Password does not match</ion-note></div>
+        </div>
+      </div>
+      <!-- rescue cities Checkbox -->
+      <ion-row class="input-fields ion-justify-items-center">
+        <ion-col style="display: flex;justify-content: center;">
+          <ion-checkbox (ionChange)="checkIfUserRescue(rescueCheck)" #rescueCheck labelPlacement="end" color="success" class="ion-margin-vertical" [checked]="false" >
+            <ion-note>Care to rescue helpless animals?</ion-note>
+          </ion-checkbox>
+        </ion-col>
+      </ion-row>
+
+      <!-- Rescue cities Added -->
+            <div class="field" *ngIf="rescueCheck.checked">
+              <ion-item class="field-item" [button]="true" (click)="addRescueCity()" color="dark-light" >
+               <ion-label class="ion-text-center ion-text-nowrap">
+                <ion-text *ngIf="RescueCityAdded.length === 0" color="primary">Add Rescue City</ion-text>
+                <ion-note *ngIf="RescueCityAdded.length > 0"><ion-text  color="dark" style="font-weight: 500;">{{RescueAddedText}}</ion-text></ion-note>
+               </ion-label>
+              </ion-item>
+              <!-- <div  class="error-text-wrapper" *ngIf="!lname.pristine">
+                <div class="error-text" *ngIf="lname.errors?.['pattern'] && lname.dirty" ><ion-note color="danger">Please enter a valid name</ion-note></div>
+                <div class="error-text" *ngIf="lname.errors?.['required'] && lname.touched" ><ion-note color="danger">Last name required</ion-note></div>
+              </div> -->
+              </div>
+
+              
+
+<ion-button class="ion-margin-top ion-text-capitalize submit-btn" expand="block" color="dark" fill="solid" [strong]="true" shape="round" (click)="checkForm(rescueCheck)" >
+  Sign Up
+</ion-button>
+<!-- <ion-label justify-items-center align-items-center style="display: flex;align-items: center;justify-content: center;">Already have an account ?
+  <ion-text   class="ion-padding-start" routerDirection="root" [routerLink]="['/login']"   color="success"><b>Login</b></ion-text>
+</ion-label> -->
+
+  <!-- divider -->
+  <div class="divider"><ion-note>OR</ion-note></div>
+  <div class=" ion-text-center">
+    <ion-note class="ion-text-center"><small>Already have a Petba account ?</small></ion-note>
+  </div>
+  <ion-button class="ion-margin-top ion-text-capitalize submit-btn" expand="block" color="success" fill="solid" [strong]="true" shape="round" routerDirection="root"[routerLink]="['/login']" >
+    <ion-text>Sign In</ion-text>
+  </ion-button>
+    </ion-list>
+ 
+</ion-content>

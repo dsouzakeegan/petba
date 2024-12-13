@@ -1,0 +1,40 @@
+<!-- <swiper-container
+[loop]="true"
+[pagination]="true"
+[zoom]="true"
+[autoplay]="1000"
+[slidesPerView]="1"
+[effect]="'coverflow'">
+  <swiper-slide virtual="true" thumbs-swiper *ngFor="let image of img">
+    <div class="swiper-zoom-container">
+      <img [src]="image" />
+    </div>
+  </swiper-slide>
+</swiper-container> -->
+
+<swiper-container thumbs-swiper=".my-thumbs"
+[loop]="true"
+[pagination]="true"
+[zoom]="true"
+[autoplay]="1000"
+[slidesPerView]="1"
+[effect]="'coverflow'"
+
+>
+  <swiper-slide [virtual]="true" *ngFor="let image of Images;let i=index">
+    <div class="swiper-zoom-container">
+      <img [src]="image" [style.aspect-ratio]="ratio" [style.object-fit]="objectFit"  (error)="Images[i] =  ImgError" alt=""/> 
+    </div>
+  </swiper-slide>
+</swiper-container>
+
+<!-- thumbs swiper -->
+<swiper-container *ngIf="Images.length >= 4 || thumbs==true" class="my-thumbs thumbs-preview-img"
+ [slidesPerView]="4"
+ [slidesPerGroup]="1" 
+ >   
+  <swiper-slide virtual="true" *ngFor="let image of Images; let i=index">
+    <img [src]="image" (error)="Images[i]=ImgError" alt=""/>
+  </swiper-slide>
+
+</swiper-container>

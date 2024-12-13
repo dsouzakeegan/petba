@@ -1,0 +1,222 @@
+<ion-header [translucent]="true" class="custom-header-transparent">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title></ion-title> -->
+  </ion-toolbar>
+</ion-header>
+
+<!-- ionModal -->
+<ion-content [fullscreen]="true" appParallaxHeader [scrollEvents]="true" class="top-no-padding">
+
+  <div class="product-image-slider parallax-image image-container">
+    <app-image-slider ImgError="../../../assets/error/fallback-image.png"
+      [Images]="img.length > 0 ? img : ['../../../assets/error/pet-fallback.jpg']" 
+      [thumbs]="false"
+      [routerLink]="['/image-view']" [state]="{img : img}" 
+      class="increased-ratio-image-slider image"> 
+    </app-image-slider>  
+  </div>
+
+  <!-- <div class="" *ngIf="isLoading ==false"> -->
+  <div class="wrapper" [hidden]="isLoading == true" >
+    <ion-card class="custowrapperm-height-card ion-no-margin parallax-container" style="box-shadow: none; border-radius: 30px 30px 0px 0px;width: 100%;"
+      class="ion-no-margin parallax-container"  >
+
+      <ion-grid  style="border-radius: 20px;">
+        <ion-row class="pet-details-header">
+
+          <ion-col class="ion-no-padding pet-content">
+            <ion-row class="pet-name">
+            <ion-col size="12" style="padding-top: 15px;">
+                <h1 class="ion-no-margin" style="font-family: 'Arial', 'Helvetica', sans-serif; font-size: 25px; font-weight: bold;">
+                  <ion-text color="dark">
+                      <strong>{{pet.name}}</strong>
+                  </ion-text>
+              </h1>
+            </ion-col>
+             
+            </ion-row>
+            <ion-row class="location" style="margin-left: 5px;">
+              <ion-col size="12" class="ion-no-padding ">
+                <!-- Animal -->
+                <ion-label>
+                  <ion-icon name="paw" slot="start"></ion-icon>
+                  <ion-note> <b>{{pet.animalTypeName}}</b> <!-- - {{pet.breed}}--></ion-note><br>
+                </ion-label>
+                <!-- Location -->
+                <ion-label>
+                  <ion-icon name="location-outline" slot="start"></ion-icon>
+                  <ion-note>{{pet.city}}</ion-note>
+                </ion-label>
+                <ion-row>
+                  <ion-label style="color: black;font-size: 15px"><b>Detail</b></ion-label>
+                </ion-row>
+              </ion-col>
+              <ion-grid>
+              <ion-row>
+                <ion-col size="3">
+                  <ion-label>Sex : </ion-label><br>
+                  <ion-icon  class="sex-icon-col" 
+                    [name]="pet.gender === '1' ? 'male' : 'female'"
+                    [style.color]="pet.gender === '1' ? 'blue' : 'pink'">
+                  </ion-icon>
+                </ion-col>                
+                <ion-col size="4">
+                  <ion-label>Age :</ion-label><br>
+                  <span *ngIf="pet.dob"><b>{{pet.dob | age}}</b></span>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-label>Type :</ion-label><br>
+                  <span *ngIf="pet.breed"><b>{{pet.breed}}</b></span>
+                </ion-col>
+              </ion-row>
+              <!-- <ion-row>
+                <ion-col size="4">
+                  <ion-label>Anti Rabies</ion-label>
+                  <img src="../../../assets/icon/service/injection.png" alt="Anti Rabies" style="vertical-align: middle;"/>
+                  <span>{{pet.anti_rbs | age:'date'}}</span>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-label>Viral</ion-label>
+                  <img src="../../../assets/icon/service/syringe.png" alt="Viral" style="vertical-align: middle;"/>
+                  <span>{{pet.viral | age:'date'}}</span>
+                </ion-col>
+              </ion-row> -->
+            </ion-grid>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <!-- <ion-row class="description-title">
+          <ion-col size="auto" style="padding-bottom: 0;"><ion-text>
+              <h5 style="padding-bottom: 0;" class="ion-no-margin">About</h5>
+            </ion-text></ion-col>
+        </ion-row> -->
+        <ion-row class="description">
+          <ion-col size="12" style="padding-top: 0;">
+            <ion-text color="dark">
+              <p [class.text-limited]="pet.note.length >= 415 && !readMore" class="ion-no-margin pet-description ">
+                {{pet.note}}
+              </p>
+            </ion-text>
+          </ion-col>
+          <ion-col *ngIf="pet.note.length >= 415" style="display: flex;justify-content: center;align-items: center;"
+            size="12">
+            <ion-text (click)="readMore= !readMore"
+            style="align-items: center;display: flex;gap: 3px; font-size: 0.875rem;font-weight:500;">
+
+              <span *ngIf="readMore === false ">ReadMore</span>
+              <span *ngIf="readMore === true ">ReadLess</span>
+              <ion-icon [class.readless-icon]="readMore" class="readmore-icon" name="chevron-down-outline"></ion-icon>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </div>
+  <div class="skeleton-wrapper" *ngIf="isLoading == true">
+    <ion-card class="ion-no-margin">
+
+      <ion-grid>
+        <ion-row class="petName">
+          <ion-col size="7.5">
+            <ion-text color="dark">
+              <h3>
+                <ion-skeleton-text [animated]="true" style="width: 100%;height: 1.5rem;"></ion-skeleton-text>
+              </h3>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row class="location">
+          <ion-col class="" size="10" style="padding-top: 0;">
+            <ion-text color="primary" style="padding-top: 0;">
+              <ion-skeleton-text [animated]="true"
+                style="width: 100%;height: 0.75rem;margin-top: 0;"></ion-skeleton-text>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row class="description-title">
+          <ion-col size="4" style="padding-bottom: 0;"><ion-text>
+              <h5 style="padding-bottom: 0;" class="ion-no-margin">
+                <ion-skeleton-text
+                  style="width: 100%;height: 1.6rem;margin-bottom: 0;border-radius: 3px;"></ion-skeleton-text>
+              </h5>
+            </ion-text></ion-col>
+        </ion-row>
+        <ion-row class="description">
+          <ion-col size="12" style="padding-top: 0;"><ion-text color="dark">
+              <p class="ion-no-margin">
+                <ion-text *ngFor="let item of [100,100,100,100,100,100,100,100,100,100,100,100,100]">
+                  <ion-skeleton-text [animated]="true"
+                    style.width="{{item}}%"> </ion-skeleton-text>
+                </ion-text>
+              </p>
+            </ion-text></ion-col>
+        </ion-row>
+        <ion-row class="pet-details" style="padding: 0;">
+          <ion-col style="background: none;" size="3.8" *ngFor="let item of [1,2,3]">
+            <ion-skeleton-text [animated]="true"
+              style="width: 100%;aspect-ratio: 1; border-radius: 20px;"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+        <!-- <div class="action-btn">
+        <div class="btn-chat btn" >
+            <ion-button >
+              Adopt
+            </ion-button>
+        </div>
+        
+        <div   class="btn-call btn" >
+            <ion-button >
+              <ion-icon slot="icon-only" name="call"></ion-icon>
+            </ion-button>
+        </div>
+       </div > -->
+      </ion-grid>
+
+    </ion-card>
+  </div>
+</ion-content>
+
+
+
+<!-- CUSTOMER BUTTONS -->
+<ion-footer *ngIf="isLoading == false && (petDetailParams.c_id != petDetailParams.owner_id)" class="elevated-footer">
+  <ion-toolbar>
+    <div class="action-btn" style="padding-bottom: 10px;">
+      <div class="btn-chat btn">
+        <ion-button style="--background: linear-gradient(135deg, #d1c4e9, #9575cd);" (click)="startChat(pet)">
+          <!-- <ion-icon slot="start" name="paw-outline" style="color:#fff;"></ion-icon> -->
+         <b>Adopt</b> 
+        </ion-button>
+      </div>
+
+      <div class="btn-call btn">
+        <ion-button [href]="'tel:'+pet.telephone" style="--background: linear-gradient(135deg, #d1c4e9, #9575cd);">
+          <ion-icon slot="icon-only" name="call" style="color:#fff;"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-footer>
+
+<!-- ionModal -->
+
+
+<!-- OWNER EDIT BUTTONS -->
+<ion-footer *ngIf="isLoading ==false && (petDetailParams.c_id ==  petDetailParams.owner_id)" class="green-footer">
+      <div class="btn-chat btn">
+        <!-- <ion-button color="success"  (click)="presentConfirmationAlert()" >
+          </ion-button> -->
+        <ion-button [color]="pet.petFlag == '2'?'danger':'success'" (click)="presentConfirmationAlert()">
+          <ion-note *ngIf="pet.petFlag == '1'" color="light">Add For Adoption</ion-note>
+          <ion-note *ngIf="pet.petFlag == '2'" color="light">Remove From Adoption</ion-note>
+        </ion-button>
+  
+
+        <ion-button color="dark" (click)="editPet()">
+          <ion-icon color="light" slot="icon-only" name="pencil"></ion-icon>
+        </ion-button>
+    </div>
+</ion-footer>

@@ -1,0 +1,69 @@
+// ion-grid.md{
+//     padding-bottom: 0;
+//         .Image-row{
+//             display: flex;
+//             overflow: scroll;
+//             flex-direction: row;
+//             flex-wrap: nowrap;
+//             ion-card{
+//                 --background:var(--ion-color-custom-light);
+//                 border-radius: 1rem;
+//                 ion-button{
+//                 margin: 0;
+//                 width: 4rem;
+//                 aspect-ratio: 1;
+//             }
+//         }
+//         ion-col.image-added{
+//             // ion-card{
+//             //     // background-color: aqua;
+                
+//             // }
+//             // opacity: 0;
+//             // transform: scale(0);
+//             // transition: transform 150ms linear, opacity 180ms linear ;
+//             animation: Popup 200ms ease;
+//             animation-iteration-count: 1;
+//             animation-direction:forward;
+//             // &.active{
+//             //     transform: scale(1);
+//             //     opacity: 1;
+//             // }
+//             @keyframes Popup {
+//                 0% {
+//                     opacity: 0;transform: scale(0);
+//                 }
+//                 100%{opacity: 1;transform: scale(1);}
+//             }
+//         }
+        // ion-button.add-image{
+        //     --ripple-color:transparent;
+        // }
+//         ion-button.rm-image,ion-button.add-image{
+//         //    background-color: aliceblue; 
+//            border-radius: 50%;
+//            margin: 0;
+//            aspect-ratio: 1;
+    
+//            position: absolute;
+//            top: 0;
+//            right: 0;
+//             &::part(native){
+//                 padding: 0;
+//             }
+//     }
+//     }
+//     .field{
+//         ion-input,ion-select,ion-textarea{
+//             .field-label{
+//                 color: var(--ion-color-medium);
+//             }
+//             min-height: 80px;
+//         }
+//     }
+//     }
+    // body{
+    //     background: none;
+    // }
+
+    

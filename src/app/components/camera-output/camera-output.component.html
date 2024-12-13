@@ -1,0 +1,22 @@
+<ion-header> </ion-header>
+
+<ion-content class="ion-padding">
+  <div class="cancel">
+    <ion-buttons slot="end">
+        <ion-button (click)="dismiss()" color="dark">
+            <ion-icon slot="icon-only" name="close" color="dark"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+  </div>
+
+  <div class="modal-content">
+    <img
+      *ngIf="imageUrl"
+      [src]="imageUrl"
+      alt="Response Image"
+      class="response-image"
+    />
+    <p>{{ message }}</p>
+    <ion-button expand="block" (click)="refresh()">Check Again</ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,92 @@
+
+// ion-header{
+//     box-shadow: none;
+//     ion-toolbar{
+//         --background: rgba(var(--ion-background-color-rgb, rgb(255 255 255)),0.65);
+//         -webkit-backdrop-filter: blur(5px);
+//         backdrop-filter: blur(5px);
+//     }
+// }
+ion-list{
+    background: inherit;
+    ion-item{
+        &::part(native){
+            padding: 0px;
+            padding-left: 10px;
+            
+        }
+        ion-avatar{
+            --size: 4.75rem;
+            width: var(--size);
+            height: var(--size);
+            --border-radius: 5px;
+        }
+        // ion-grid{
+
+        //     ion-row{
+        //         max-width: 85%;
+        //     }
+        // }
+            --background: inherit;
+        --background: unset;
+    
+        ion-label{
+            overflow: hidden;
+        }
+    }
+    ion-item-divider{
+        border-top:1px solid var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.13))));
+        background: rgba(var(--ion-color-dark-light-rgb),0.65);
+        color: var(--ion-color-dark-light-contrast);
+        backdrop-filter:blur(5px);
+        ion-label > *{
+            font-weight: 600;
+        }
+    }
+}
+.notification-time{
+    font-size: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px 0px;
+    margin: 0px 5px;
+}
+.notification-content{
+    .notification-content__title{
+        // text-transform: capitalize;
+        font-size:0.9rem;
+        font-weight: 500;
+    }
+    .notification-content__message{
+        text-transform: lowercase;
+        font-size: 0.8rem;
+
+    }
+}
+
+
+#no-data-msg-container {
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    // font-size: large;
+    // font-weight: 500;
+    // color: rgba(var(--ion-color-dark-rgb),0.5);
+    width: 60%;
+
+.content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-direction: column-reverse;
+}
+    font-size: 16px;
+    line-height: 22px;
+    color: #8c8c8c;
+    margin: 0;
+  }
+  

@@ -1,0 +1,91 @@
+  <ion-header [translucent]="true" class="custom-header-2">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button icon="arrow-back"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Wishlist</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content [fullscreen]="true">
+    <ion-refresher slot="fixed" (ionRefresh)="Refresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large">Wishlist</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+<div class="wrapper" *ngIf="Loading == false">
+    <ion-grid [fixed]="false" *ngIf="wishedProducts.length > 0">
+      <ion-row>
+        <ion-row class="item-tray">
+          <ion-col class="products" size="6" sizeXl="2" *ngFor="let product of wishedProducts">
+            <ion-card  button="true" routerDirection="forward" [routerLink]="['/product-detail' ,product.p_id]">
+              <div class="product-image-off">
+                <img  alt="" [src]="'https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/m/o/b/-original-imaghx9qkugtbfrn.jpeg?q=70'"[src]="product.images" />
+                <span class="product-off" *ngIf="product.off">{{product.off}}% off</span>
+              </div>
+              <ion-card-content>
+                <ion-card-title>
+                  <h5  class="line-wrapper-1 product-name">{{product.name}}</h5>
+                </ion-card-title>
+                <ion-note  class="category-name ion-text-nowrap">
+                      <!-- Need category here ? -->
+                      {{product.categories}}
+                </ion-note>
+                <ion-row class="ion-align-items-center product-price">
+
+                  <ion-text class="price">{{product.price| currency:"INR":true}}</ion-text>
+                  <ion-note *ngIf="true" class="price-original">{{product.originalPrice |currency:"INR":true}}</ion-note>
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+            <ion-button (click)="presentConfirmationAlert(product)"  class="rm-product" color="danger" fill="clear"  shape="round">
+              <ion-icon name="trash-outline" size="" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-row>
+</ion-grid>
+<!-- NO DATA WISHED PRODUCTS -->
+<div id="no-data-msg-container"  *ngIf="wishedProducts.length == 0">
+  <ion-label class="content">
+    <ion-text >
+      No Wished Products
+    </ion-text>
+    <ion-icon name="cube-outline" size="large"></ion-icon>
+  </ion-label>
+</div>
+  </div>
+<div class="skeleton-wrapper" *ngIf="Loading == true">
+    <ion-grid [fixed]="false" >
+      <ion-row>
+        <ion-row class="item-tray" style="display: contents;">
+          <ion-col class="products" size="6" sizeXl="2" *ngFor="let product of [].constructor(6)">
+            <ion-card  style="width: 100%;aspect-ratio: 1 / 1.4;background: none; box-shadow: none;">
+              <ion-skeleton-text [animated]="true" style="height: 100%;border-radius: 15px;"></ion-skeleton-text>
+              <!-- <div class="product-image-off">
+                <img  alt="" [src]="'https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/m/o/b/-original-imaghx9qkugtbfrn.jpeg?q=70'"[src]="product.images" />
+                <span class="product-off" *ngIf="product.off">{{product.off}}% off</span>
+              </div>
+              <ion-card-content>
+                <ion-card-title>
+                  <h5  class="line-wrapper-2 product-name">{{product.name}}</h5>
+                </ion-card-title>
+                <ion-note  class="category-name ion-text-nowrap">
+                </ion-note>
+                <ion-row class="ion-align-items-center product-price">
+
+                  <ion-text class="price">{{product.price| currency:"INR":true}}</ion-text>
+                  <ion-note *ngIf="true" class="price-original">{{product.originalPrice |currency:"INR":true}}</ion-note>
+                </ion-row>
+              </ion-card-content> -->
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-row>
+</ion-grid>
+  </div>
+  </ion-content>

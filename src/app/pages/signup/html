@@ -1,0 +1,148 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-start"><b>Sign Up </b></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+<div id="login-container">
+  
+
+  <!-- <ion-card>
+    <ion-card-header>
+      <ion-card-title  class="ion-text-center" color="success">SignUp</ion-card-title>
+    </ion-card-header>
+  <ion-card-content> -->
+      <ion-grid  [formGroup]="signupForm" > 
+        <!-- First Name -->
+        <ion-row class="input-fields">
+          <ion-col>
+            <ion-input formControlName="fname"  color="success"  type="text" labelPlacement="floating">
+              <ion-icon name="person" slot="start"></ion-icon>
+              <div slot="label" class="field-label">First Name 
+                <!-- <ion-text color="danger">(Required)</ion-text> -->
+              </div> 
+            </ion-input>
+            <div  class="error-text-wrapper"  *ngIf="!fname.pristine">
+              <div class="error-text" *ngIf="fname.errors?.['pattern'] && fname.dirty" ><ion-note color="danger">Please enter a valid name</ion-note></div>
+              <div class="error-text" *ngIf="fname.errors?.['required'] && fname.touched" ><ion-note color="danger">First name required</ion-note></div>
+              </div>
+          </ion-col>
+        </ion-row> 
+        <!-- second Name -->
+        <ion-row class="input-fields">
+          <ion-col>
+            <ion-input  formControlName="lname" color="success"  type="text"  labelPlacement="floating">
+              <ion-icon name="person" slot="start"></ion-icon>
+              <div slot="label" class="field-label">Surname
+                <!-- <ion-text color="danger">(Required)</ion-text> -->
+              </div>
+            </ion-input>
+            <div  class="error-text-wrapper" *ngIf="!lname.pristine">
+              <div class="error-text" *ngIf="lname.errors?.['pattern'] && lname.dirty" ><ion-note color="danger">Please enter a valid name</ion-note></div>
+              <div class="error-text" *ngIf="lname.errors?.['required'] && lname.touched" ><ion-note color="danger">Last name required</ion-note></div>
+              </div>
+          </ion-col>
+        </ion-row> 
+        <!-- EMAIL -->
+        <ion-row class="input-fields">
+          <ion-col>
+            <ion-input formControlName="email"  color="success"  type="email"  labelPlacement="floating">
+              <ion-icon name="mail" slot="start"></ion-icon>
+              <div slot="label" class="field-label">Email 
+                <!-- <ion-text color="danger">(Required)</ion-text> -->
+              </div>
+            </ion-input>
+            <div  class="error-text-wrapper" *ngIf="!email.pristine"> 
+              <div class="error-text" *ngIf="email.errors?.['pattern'] && email.dirty" ><ion-note color="danger">Please enter a valid email</ion-note></div>
+              <div class="error-text" *ngIf="email.errors?.['required'] && email.touched" ><ion-note color="danger">Email required</ion-note></div>
+              </div>
+          </ion-col>
+        </ion-row> 
+        <!-- Phone -->
+        <ion-row class="input-fields">
+          <ion-col>
+            <ion-input formControlName="phone"  color="success" [maskito]="phoneMask" #phoneNumber [(ngModel)]="phoneNumber.value" 
+            [maskitoElement]="maskPredicate" inputmode="tel"   labelPlacement="floating" [minlength]="10" [max]="10">
+              <ion-icon name="call" slot="start"></ion-icon>
+              <div slot="label" class="field-label">Mobile
+                <!-- <ion-text color="primary">(Optional)</ion-text> -->
+              </div>
+            </ion-input>
+            <div  class="error-text-wrapper" *ngIf="!phone.pristine">
+              <div class="error-text" *ngIf="phone.errors?.['pattern'] && phone.dirty" ><ion-note color="danger">Please enter a valid 10 digit mobile number</ion-note></div>
+              <div class="error-text" *ngIf="phone.errors?.['required'] && phone.touched" ><ion-note color="danger">Mobile number required</ion-note></div>
+            </div>
+          </ion-col>
+        </ion-row> 
+        <!-- Password -->
+        <ion-row class="input-fields">
+          <ion-col>
+            <ion-input formControlName="password"  color="success" #passinput type="password"  labelPlacement="floating" [minlength]="8">
+              <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+              <div slot="label" class="field-label">Password
+                <!-- <ion-text color="danger">(Required)</ion-text> -->
+              </div>
+              <!-- <ion-button  fill="clear" slot="end" aria-label="Show/hide">
+                <ion-icon color="medium" slot="icon-only"  [name]="passinput.type ==='password' ? 'eye-off-outline' : 'eye-outline'" aria-hidden="true"></ion-icon>
+              </ion-button> -->
+            </ion-input>
+            <!-- <ion-item> -->
+              <ion-checkbox  labelPlacement="end" class="ion-margin-top" [checked]="false" (ionChange)="togglepasswordVisibilty($event , passinput)"> Show password </ion-checkbox>
+            <!-- </ion-item> -->
+            <div  class="error-text-wrapper" *ngIf="!password.pristine">
+              <div class="error-text" *ngIf="password.errors?.['required'] && password.touched" ><ion-note color="danger">Password required</ion-note></div>
+              <div class="error-text" *ngIf="password.errors?.['minlength'] && password.dirty" ><ion-note color="danger">Password must have atleast {{password.errors?.['minlength'].requiredLength}} characters</ion-note></div>
+            </div>
+          </ion-col>
+        </ion-row>
+      
+      <!-- confirm password -->
+        <ion-row class="input-fields">
+          <ion-col>
+            <ion-input formControlName="confirmPassword"  color="success" labelPlacement="floating" placeholder="" type="password" [clearOnEdit]="true">
+              <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+              <div slot="label" class="field-label">Confirm Password
+                <!-- <ion-text color="danger">(Required)</ion-text> -->
+              </div>  
+            </ion-input>
+            <div  class="error-text-wrapper" *ngIf="!confirmPassword.pristine">
+              <div class="error-text" *ngIf="confirmPassword.errors?.['required'] && confirmPassword.touched " ><ion-note color="danger">Confirm your password </ion-note></div>
+              <div class="error-text" *ngIf="confirmPassword.errors?.['passwordMismatch'] && confirmPassword.dirty " ><ion-note color="danger">Password does not match</ion-note></div>
+            </div>
+          </ion-col>
+        </ion-row>
+
+
+      <!-- rescue cities Checkbox -->
+        <ion-row class="input-fields">
+          <ion-col>
+            <ion-checkbox  labelPlacement="end" color="success" class="ion-margin-top" [checked]="false" >
+              <ion-note>Would you like to rescue  helpless animals?</ion-note>
+            </ion-checkbox>
+          </ion-col>
+        </ion-row>
+
+        <!-- ACTION BUTTON -->
+        <ion-row>
+          <ion-col>
+            <ion-button class="ion-margin-top ion-padding ion-text-capitalize" expand="block" color="success" strong="true" fill="outline" shape="round" (click)="checkForm()" >Sign Up</ion-button>
+            <ion-label justify-items-center align-items-center style="display: flex;align-items: center;justify-content: center;">Already have an account ?
+               <!-- <ion-button class="ion-text-capitalize"  routerDirection="root" [routerLink]="['/login']"  size="small" fill="clear" color="success">Login</ion-button> -->
+               <ion-text   class="ion-padding-start" routerDirection="root" [routerLink]="['/login']"   color="success"><b>Login</b></ion-text>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
+      
+      
+
+    <!-- </ion-card-content>
+  </ion-card> -->
+
+</div>
+
+
+ 
+</ion-content>

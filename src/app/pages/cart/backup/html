@@ -1,0 +1,215 @@
+<ion-header [translucent]="true" class="custom-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>cart</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" >
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">cart</ion-title>
+    </ion-toolbar>
+  </ion-header>
+ 
+  <!-- data Loaded -->
+    <!--  TEST 1 w/o CARD and Item--> 
+     
+    <ion-grid *ngIf="Loading == false" [fixed]="true">
+      <div class="product-wrapper"  *ngFor="let item of [1,2,3,4]">
+      <ion-row>
+        <ion-col size="4">
+          <ion-thumbnail class="product-image">
+              <!-- <ion-card> -->
+              <img alt="Silhouette of mountains" src="data:image/jpeg;base64,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" />
+            <!-- </ion-card> -->
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col size="8" class="product-details">
+            <ion-row>
+              <ion-col>
+                <ion-label >
+                <h2 class="line-wrapper-2">SleekTech Wireless Earbuds - Model XZ-200 ere</h2>
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <!-- <ion-row >
+              <ion-col class="ion-no-padding" size="auto">
+                <ion-label >
+                  <ion-note class="price-discount-percent">50% off</ion-note>
+                </ion-label>
+              </ion-col>
+            </ion-row> -->
+            <ion-row class="products-features">
+              <ion-col size="auto" class="ion-no-padding"><ion-note>Midnight Black</ion-note></ion-col>
+              <ion-col size="auto" class="ion-no-padding"><ion-note>M</ion-note></ion-col>
+              <ion-col size="auto" class="ion-no-padding"><ion-note>1Kg</ion-note></ion-col>
+              <ion-col size="auto" class="ion-no-padding"><ion-note>In-Ear Wireless</ion-note></ion-col>
+            </ion-row>
+            <ion-row >
+              <ion-col class="ion-no-padding" >
+                <ion-note style="font-size: 8px;">eligible for Free Shipping</ion-note>
+                <!-- <ion-note style="font-size: 8px;">Delivery charges <span class="Shipping-charge">50rs</span></ion-note> -->
+              </ion-col>
+            </ion-row>
+            <ion-row  class="price">
+              <ion-col class="ion-no-padding">
+                <ion-note  class="price-old">$154.98</ion-note>
+                <ion-text  class="price-final">$154.98</ion-text>
+              </ion-col>
+            </ion-row>
+           
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="4" >
+          <!-- <ion-col size="4" style="border: 1px solid;border-radius: 30px;"> -->
+            <ion-buttons  class="ion-justify-content-center">
+              <ion-button slot="start" (click)="quantity('add')">
+                <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+              </ion-button>
+              <ion-label style=" padding: 5px 8px;font-weight: 600;"><ion-text>{{counter}}</ion-text></ion-label>
+              <ion-button slot="end" (click)="quantity('remove')">
+              <ion-icon slot="icon-only" name="remove-outline"></ion-icon>  
+              </ion-button>
+            </ion-buttons>
+          </ion-col>
+          <ion-col size="8" style="display: flex;justify-content: center;">
+            <!-- <ion-button expand="block" shape="round" fill="solid" color="danger" size="small" style="width: 70%;height: 2.5rem;"> -->
+            <ion-button expand="block" shape="round" fill="solid" color="danger" size="small" style="width: 70%;">
+              Remove<ion-icon name="cart-outline" slot="end"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>     
+      
+      </div>
+
+      <!-- CHECKOUT -->
+      <ion-card class="ion-padding checkout"> 
+<!-- checkout details -->
+        <ion-row class="checkout-subtotal">
+          <ion-col >
+            <ion-label>
+              <ion-text>Subtotal</ion-text>
+          </ion-label>
+          </ion-col>
+          <ion-col class="ion-text-end">
+            <ion-label>
+              <ion-text>{{3000 | currency:'INR'}}</ion-text>
+          </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row class="checkout-shipping">
+          <ion-col >
+            <ion-text>Shipping charge</ion-text>
+          </ion-col>
+          <ion-col class="ion-text-end">
+            <ion-label>
+              <ion-text>{{30 | currency:'INR'}}</ion-text>
+          </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row class="checkout-discount">
+          <ion-col >
+            <ion-text>discount</ion-text>
+          </ion-col>
+          <ion-col class="ion-text-end">
+            <ion-label>
+              <ion-text>{{300 | currency:'INR'}}</ion-text>
+          </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row class="checkout-Tax">
+          <ion-col >
+            <ion-text>Subtotal</ion-text>
+          </ion-col>
+          <ion-col class="ion-text-end">
+            <ion-label>
+              <ion-text>{{30.50 | currency:'INR'}}</ion-text>
+          </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row class="checkout-Total">
+          <ion-col >
+            <h2>Total</h2>
+          </ion-col>
+          <ion-col class="ion-text-end">
+
+                <h2>{{3060.50 | currency:'INR'}}</h2>
+          </ion-col>
+        </ion-row>
+        <!-- Checkout Button -->
+        <ion-row class="checkout-btn">
+          <ion-col >
+            <ion-button expand="full" class="ion-text-capitalize" shape="round">Checkout</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+      </ion-grid>
+
+      <!-- DATA LOADING -->
+      <div class="product-skeleton-wrapper" *ngIf="Loading == true">
+      <ion-item  button="true"  *ngFor="let item of [1,2,3,4]" >
+      <ion-grid [fixed]="true">
+        
+          <ion-row>
+            <ion-col size="4">
+              <ion-thumbnail class="product-image">
+                 <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+                </ion-thumbnail>
+              </ion-col>
+              <ion-col size="8" class="product-details">
+                <ion-row>
+                  <ion-col>
+                    <ion-label >
+                      <ion-skeleton-text [animated]="true"  style="border-radius: 5px; height: 1rem;"></ion-skeleton-text>
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+                <ion-row >
+                  <ion-col  size="7">
+                    <ion-label >
+                        <ion-skeleton-text [animated]="true"  style="border-radius: 5px; height: 1rem;"></ion-skeleton-text>
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+                <!-- tags -->
+                <!-- <ion-row class="products-features">
+                  <ion-col size="3" *ngFor="let item of [1,2,3,4]">
+                    <ion-skeleton-text [animated]="true" style="border-radius: 8px; height: 1rem;"></ion-skeleton-text>
+                  </ion-col>
+                </ion-row> -->
+                <!-- shipping -->
+                <!-- <ion-row >
+                  <ion-col >
+                    <ion-skeleton-text [animated]="true" style="border-radius: 4px; height: 0.5rem; width: 40%;"></ion-skeleton-text>
+                  </ion-col>
+                </ion-row> -->
+                <!-- price -->
+                <ion-row >
+                  <ion-col >
+                    <ion-skeleton-text [animated]="true" style=" height: 1.2rem; width: 40%;"></ion-skeleton-text>
+                  </ion-col>
+                </ion-row>
+               
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="4">
+                <ion-buttons class="ion-justify-content-center">
+                  <ion-skeleton-text [animated]="true" style="border-radius: 15px; height: 2rem; width: 80%;"></ion-skeleton-text>
+                </ion-buttons>
+              </ion-col>
+              <ion-col size="8">
+         
+                  <ion-skeleton-text [animated]="true"  style="  border-radius: 15px; height: 2rem; width: 80%;" ></ion-skeleton-text>
+                
+              </ion-col>
+            </ion-row>     
+          
+          </ion-grid>
+        </ion-item>
+      </div>
+</ion-content>

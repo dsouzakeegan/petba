@@ -1,0 +1,85 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>FILTER</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">FILTER</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+<div class="filter-container">
+  <div class="filter-group">
+    <ion-segment color="warning" [value]="FilterTabSelected" (ionChange)="tabChanged($event.target.value)">
+      <ion-segment-button [value]="Fgroup.id" *ngFor="let Fgroup of optionsGroups;">
+        <ion-label>{{Fgroup.name}}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+
+  <!-- Animal Type -->
+  <div *ngIf="FilterTabSelected == 1" class="filter-options">
+    <ion-grid  class="ion-no-padding" >
+    <ion-list lines="none"   >
+      <ion-list-header><ion-label color="warning">Animal Type</ion-label></ion-list-header>
+      <ion-item [button]="true" *ngFor="let filterItem of animal">
+        <ion-checkbox labelPlacement="end" alignment="center" justify="start" (ionChange)="checked($event,filterItem)" [checked]="filterItem.checked"> {{filterItem.name}}</ion-checkbox>
+       
+      </ion-item>
+    </ion-list>
+    </ion-grid>
+  </div>
+  <!-- Breed -->
+  <div *ngIf="FilterTabSelected == 2" class="filter-options">
+    <ion-grid  class="ion-no-padding">
+    <ion-list lines="none"   >
+      <ion-list-header><ion-label color="warning">Breed</ion-label></ion-list-header>
+      <ion-item [button]="true" *ngFor="let filterItem of breed">
+        <ion-checkbox labelPlacement="end" alignment="center" justify="start" (ionChange)="checked($event,filterItem)" [checked]="filterItem.checked"> {{filterItem.name}}</ion-checkbox>
+       
+      </ion-item>
+    </ion-list>
+    </ion-grid>
+  </div>
+  <!-- Color -->
+  <div *ngIf="FilterTabSelected == 3" class="filter-options">
+    <ion-grid  class="ion-no-padding">
+    <ion-list lines="none"   >
+      <ion-list-header><ion-label color="warning">Color</ion-label></ion-list-header>
+      <ion-item [button]="true" *ngFor="let filterItem of color">
+        <ion-checkbox labelPlacement="end" alignment="center" justify="start" (ionChange)="checked($event,filterItem)" [checked]="filterItem.checked"> {{filterItem.name}}</ion-checkbox>
+       
+      </ion-item>
+    </ion-list>
+    </ion-grid>
+  </div>
+  <!-- Gender -->
+  <div *ngIf="FilterTabSelected == 4" class="filter-options">
+    <ion-grid  class="ion-no-padding">
+    <ion-list lines="none"   >
+      <ion-list-header><ion-label color="warning">Gender</ion-label></ion-list-header>
+      <ion-item [button]="true" *ngFor="let filterItem of gender">
+        <ion-checkbox labelPlacement="end" alignment="center" justify="start" (ionChange)="checked($event,filterItem)" [checked]="filterItem.checked"> {{filterItem.name}}</ion-checkbox>
+       
+      </ion-item>
+    </ion-list>
+    </ion-grid>
+  </div>
+</div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button class="ion-text-capitalize ion-padding clear-btn" expand="block" color="medium" fill="clear" [disabled]="hasFilter == false " (click)="clear()"> Clear</ion-button>
+      <ion-button class="ion-text-uppercase ion-padding apply-btn" expand="block" color="warning" fill="solid" [disabled]="hasFilter == false" (click)="confirm()"> Apply</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

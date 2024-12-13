@@ -1,0 +1,25 @@
+.no-internet-section{
+    text-align: center;
+    color: var(--ion-color-medium);
+    // position: absolute;
+    // width: 100%;
+    // top: 10%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    // z-index: 0;
+}
+ion-button{
+    margin:15px 5px;
+    --_padding: 15px;
+    --_padding-extra:10px;
+    --padding-bottom: var(--_padding);
+    --padding-end:calc(var(--_padding) + var(--_padding-extra));
+    --padding-start: calc(var(--_padding) + var(--_padding-extra));
+    --padding-top: var(--_padding);
+    font-size: 1rem;
+    font-weight: 600;
+    --border-width: 0;
+    text-transform: capitalize;
+    
+
+}

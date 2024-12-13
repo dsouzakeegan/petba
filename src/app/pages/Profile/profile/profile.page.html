@@ -1,0 +1,165 @@
+<ion-header [translucent]="true" class="custom-header cs-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title>profile</ion-title> -->
+    <ion-buttons slot="end">
+      <ion-button slot="end" color="primary" fill="clear" *ngIf="!profileEdit" (click)="editProfile(true)"><ion-icon name="create-outline" slot="icon-only"></ion-icon></ion-button>
+      <ion-button slot="end" class="ion-text-capitalize" color="primary" fill="clear" *ngIf="profileEdit" (click)="cancel(userForm)">cancel</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" >
+  <!-- <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">profile</ion-title>
+    </ion-toolbar>
+  </ion-header> -->
+
+  <ion-grid >
+    <form #userForm="ngForm">
+
+      <!-- PROFILE PIC -->
+
+    <ion-row class="profile-header-row">
+      <ion-col size="12" class="ion-no-padding profile-header" >
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#0099ff" fill-opacity="1" d="M0,288L120,256C240,224,480,160,720,128C960,96,1200,96,1320,96L1440,96L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path></svg> -->
+        <ion-avatar>
+          <!-- <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" /> -->
+          <!-- <div> -->
+            <img  src="{{userEditbale.profilePic}}" (error)="userEditbale.profilePic=DefaultImage" alt="" />
+            <ion-icon (click)="changeProfilePic()" [class.profile-edit-active]="profileEdit"  name="camera"></ion-icon>
+          <!-- </div> -->
+        </ion-avatar>
+      </ion-col>
+    </ion-row>
+
+    <!-- Image Preview modal -->
+    <ion-modal [isOpen]="isImageModalOpen">
+      <ng-template>
+        <ion-header [translucent]="true" class="custom-header cs-header">
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button class="ion-text-capitalize"  (click)="setOpen(false)" color="primary" >
+                <!-- <ion-icon name="arrow-back" slot="icon-only"></ion-icon>  -->
+                cancel
+              </ion-button>
+            </ion-buttons>
+            <!-- <ion-title>profile</ion-title> -->
+            <ion-buttons slot="end">
+              <ion-button slot="end"  (click)="updateProfilePic()"  class="ion-text-capitalize" color="primary" fill="clear">
+                <ion-icon name="checkmark-sharp" slot="icon-only"></ion-icon> 
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="Image-Previewer-content">
+          <div  class="Image-Previewer" >
+            <div class="backdrop-overlay" [style]="ImagePreview ? 'background-image :url('+ImagePreview+');':'outline :none;'"></div>
+            <ion-img *ngIf="ImagePreview"  class="Image-preview" [src]="ImagePreview"></ion-img> 
+          </div>
+        </ion-content>
+      </ng-template> 
+    </ion-modal>
+
+
+
+
+    <!-- Full Name PREVIEW-->
+    <ion-row  >
+      <ion-col class="fields ion-justify-content-center" style="padding-top: 0px;" size="12">
+        <ion-label [class.item-show]="userEditbale.firstname || userEditbale.lastname" [class.item-hide]="!userEditbale.firstname || !userEditbale.lastname" 
+        style="font-size: 1.4rem;font-weight: 600;" class="ion-text-center item">{{userEditbale.firstname}} {{userEditbale.lastname}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <!--First Name -->
+    <ion-row [class.ng-invalid]="userForm.control.get('firstname')?.touched &&  userForm.control.get('firstname')?.invalid ">
+      <ion-col class="fields" size="12">
+          <ion-avatar class="field-item"  > 
+            <ion-icon color="warning" name="person-outline"></ion-icon>
+          </ion-avatar>
+          <ion-textarea name="firstname" (input)="userEditbale.firstname = onInputChange(userEditbale.firstname)" #firstname required [(ngModel)]="userEditbale.firstname" [maxlength]="20" [readonly]="!profileEdit" rows="1" autoGrow="true"  color="warning" label="Firstname"  [disabled]="!profileEdit" labelPlacement="floating"></ion-textarea>
+      </ion-col>
+    </ion-row>
+    <!--Second Name -->
+    <ion-row [class.ng-invalid]="userForm.control.get('lastname')?.touched &&  userForm.control.get('lastname')?.invalid ">
+      <ion-col class="fields" size="12">
+          <ion-avatar class="field-item"  > 
+            <ion-icon color="warning" name="people-outline"></ion-icon>
+          </ion-avatar>
+          <ion-textarea name="lastname"  (input)="userEditbale.lastname = onInputChange(userEditbale.lastname)" #lastname required [(ngModel)]="userEditbale.lastname"  [maxlength]="20" [readonly]="!profileEdit" rows="1" autoGrow="true"  color="warning" label="Surname"  [disabled]="!profileEdit" value="Fernandes" labelPlacement="floating"></ion-textarea>
+      </ion-col>
+    </ion-row>
+    <!-- Phone -->
+    <ion-row [class.ng-invalid]="userForm.control.get('telephone')?.touched &&  userForm.control.get('telephone')?.invalid " >
+      <ion-col class="fields" size="12">
+          <ion-avatar class="field-item" > 
+            <ion-icon  color="tertiary" name="call-outline"></ion-icon></ion-avatar>
+          <!-- <ion-textarea [readonly]="!profileEdit" rows="1" autoGrow="true"  color="tertiary" label="Phone"  [disabled]="!profileEdit"  value="+918390934762" labelPlacement="stacked"></ion-textarea> -->
+          <!-- <ion-input [readonly]="!profileEdit" color="tertiary" label="Phone" [disabled]="!profileEdit"  value="+918390934762" labelPlacement="stacked"></ion-input> -->
+          <ion-input [readonly]="true"
+           color="tertiary" name="telephone" [minlength]="10" [maxlength]="10" #telephone required label="Phone" [disabled]="!profileEdit" 
+          inputmode="tel"
+          [maskito]="phoneMask"
+          [maskitoElement]="maskPredicate" 
+          [(ngModel)]="userEditbale.phone"
+           labelPlacement="floating">
+          </ion-input>
+      </ion-col>
+    </ion-row>
+    <!-- email -->
+    <ion-row  [class.ng-invalid]="userForm.control.get('email')?.touched &&  userForm.control.get('email')?.invalid ">
+      <ion-col class="fields" size="12">
+          <ion-avatar class="field-item" > 
+            <ion-icon  color="secondary" name="mail-outline"></ion-icon>
+          </ion-avatar>
+          <ion-textarea name="email"  [email]="true" type="email"  (input)="userEditbale.email = onInputChange(userEditbale.email)" 
+          #email required [(ngModel)]="userEditbale.email"  [readonly]="!profileEdit"
+           rows="1" autoGrow="true" type="email" color="secondary" label="Email" [disabled]="!profileEdit"   labelPlacement="floating"></ion-textarea>
+          <!-- <ion-input [readonly]="!profileEdit" color="secondary" label="Email" [disabled]="!profileEdit"  value="infoHaztech@gmail.com" labelPlacement="stacked"></ion-input> -->
+      </ion-col>
+    </ion-row>
+    <!-- Rescue --> 
+    <ion-row *ngIf="!profileEdit">
+      <ion-col class="fields" size="12">
+          <ion-avatar class="field-item" > 
+            <!-- <ion-icon name="medkit"></ion-icon> -->
+            <ion-icon  color="success" name="fitness-outline"></ion-icon>
+          </ion-avatar>
+
+          <!-- <ion-textarea (click)="addRescueCity()" [readonly]="true" rows="1" autoGrow="true"  color="success"  label="Rescue"  [disabled]="!profileEdit" [value]="RescueAddedText" labelPlacement="stacked"></ion-textarea> -->
+          <ion-button [style]="RescueCityAdded.length > 0 ? '--color: var(--ion-color-success); --border-color: #62de93; --color: #62de93;' : '--color: var(--ion-color-success);--border-color: #2dd36f; --color: #62de93;'"
+            class=""
+            [disabled]="RescueLoaded === false"
+            (click)="addRescueCity()"
+            expand="block"
+            fill="outline"
+            shape="round"
+            style="width: 250px; height: 50px;">
+  <ion-label class="ion-text-center ion-text-nowrap">
+    <ion-text [color]="' #62de93 '" *ngIf="RescueCityAdded.length === 0">
+      Add Rescue City
+    </ion-text>
+    <ion-note *ngIf="RescueCityAdded.length > 0">
+      <ion-text [color]="'success'" style="font-weight: 500;">
+        {{RescueAddedText}}
+      </ion-text>
+    </ion-note>
+  </ion-label>
+</ion-button>
+
+      </ion-col>
+    </ion-row>
+
+    <!-- SAVE UPDATE -->
+<ion-row class="ion-justify-content-center ion-margin-vertical " *ngIf="profileEdit">
+  <ion-col class="update-btn" size="8">
+    <ion-button (click)="update(userForm)" [disabled]="(!userForm.pristine && userForm.invalid )|| userForm.pristine" class="ion-text-capitalize  ion-padding" shape="round" [strong]="false" size="default" fill="outline" color="primary" expand="full">Update</ion-button>
+  </ion-col>
+</ion-row>
+
+</form>  
+</ion-grid>
+</ion-content>

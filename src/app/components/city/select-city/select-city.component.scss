@@ -1,0 +1,21 @@
+ion-toolbar{
+    --ion-toolbar-background: (var(--ion-background),#fff);
+}
+ion-list{
+    background: (var(--ion-background),#fff);
+    ion-item{
+    
+        --background: (var(--ion-background),#fff);
+    }
+}
+ion-breadcrumbs{
+    ion-breadcrumb::part(native){
+        padding: 0;
+        &:first-child{
+            padding-left: 5px;
+        }
+    }
+    ion-breadcrumb::part(separator){
+        margin: 0;
+    }
+}

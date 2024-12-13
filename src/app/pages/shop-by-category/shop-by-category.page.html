@@ -1,0 +1,39 @@
+<ion-header [translucent]="true" class="custom-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Categories</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-accordion-group expand="compact">
+    <ion-accordion [value]="categories.c_id" *ngFor="let categories of category">
+      <ion-item  slot="header">
+        <ion-thumbnail>
+          <img src="https://www.shutterstock.com/image-photo/labrador-retriever-dog-panting-ginger-600nw-2198998317.jpg" alt="dog category">
+        </ion-thumbnail>
+        <ion-label>{{categories.c_name}}</ion-label>
+      </ion-item>
+      <!-- <div class="ion-padding" slot="content">First Content</div> -->
+      <div class="" slot="content">
+        <ion-item [button]="true" lines="none" *ngFor="let options of categories.categoryOptions"  [routerLink]="['/products',pageType]" [state]="{cate_id:options.c_id}" >
+          {{options.c_name}}
+        </ion-item>
+      </div>
+    </ion-accordion>
+    <!-- <ion-accordion value="second">
+      <ion-item slot="header" color="light">
+        <ion-label>Second Accordion</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">Second Content</div>
+    </ion-accordion>
+    <ion-accordion value="third">
+      <ion-item slot="header" color="light">
+        <ion-label>Third Accordion</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">Third Content</div>
+    </ion-accordion> -->
+  </ion-accordion-group>
+</ion-content>

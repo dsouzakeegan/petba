@@ -1,0 +1,102 @@
+
+<!-- 
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content [fullscreen]="true">
+  <!-- title -->
+  <h1 class="ion-padding-horizontal" style="font-size: 2.2rem;">
+    <b>Sign In</b>
+  </h1>
+      <ion-list lines="none" class="ion-padding ion-margin"  [formGroup]="loginForm">
+
+  
+        <!-- Email -->
+        <div class="field">
+         
+        <ion-label class="field-name"><ion-text>Email</ion-text></ion-label>
+        <ion-item class="field-item">
+          <!-- <ion-icon 
+            name="mail-outline" slot="end" color="medium">
+          </ion-icon> -->
+          <ion-input formControlName="username" inputmode="email"  placeholder="Email">
+            <ion-icon 
+            [name]="username.valid ? 'person':'person-outline'"  [color]="username.valid ?'success': 'medium'" slot="start" style="font-size: 1.5rem;">
+          </ion-icon>
+          </ion-input>
+        </ion-item>
+            <div  class="error-text-wrapper" *ngIf="!username.pristine"> 
+            <div class="error-text" *ngIf="username.dirty && username.errors?.['pattern'] || username.errors?.['email'] " >
+              <ion-note color="danger">
+              Please enter a valid email address.
+            </ion-note></div>
+            <div class="error-text" *ngIf="username.errors?.['required'] && username.touched" ><ion-note color="danger">Email required</ion-note></div>
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="field">  
+          <!-- Label -->
+        <ion-label class="field-name"><ion-text>Password</ion-text></ion-label>
+        <ion-item class="field-item ion-no-padding ">
+          
+         <ion-row>
+          
+          <!-- Password Input -->
+            <ion-col size="11" class="ion-padding-start">
+              <ion-input [type]="true ? 'password' : 'text'" #pass
+              formControlName="password"   [clearOnEdit]="false"
+              placeholder="password">
+              <ion-icon 
+              name="lock-closed-outline"    [name]="password.valid ? 'lock-closed':'lock-closed-outline'"  [color]="password.valid ?'success': 'medium'"  slot="start" style="font-size: 1.5rem;" color="medium">
+            </ion-icon>
+            </ion-input>
+          </ion-col>
+
+            <!-- Password eye Icon -->
+            <ion-col size="1" class="item-icon ion-no-padding">
+              <ion-icon (click)="togglepasswordVisibilty(pass)" [name]="pass.type ==='password' ? 'eye-off' : 'eye'"
+              [color]="pass.type ==='password' ? 'medium' : 'primary'"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+            <div  class="error-text-wrapper" *ngIf="!password.pristine">
+                <div class="error-text" *ngIf="password.errors?.['required'] && password.touched" ><ion-note color="danger">Password required</ion-note></div>
+                <div class="error-text" *ngIf="password.errors?.['minlength'] && password.dirty" ><ion-note color="danger">Password must have atleast {{password.errors?.['minlength'].requiredLength}} characters</ion-note></div>
+            </div>
+        </div>
+  
+        <!-- forgot Password -->
+        <ion-row>
+          <ion-col class="ion-margin-bottom">       
+            <ion-text class="ion-float-right" style="font-weight: 500;" (click)="forgotPassword()" color="primary">Forgot Password?</ion-text>
+              <!-- <ion-button  class="ion-text-capitalize ion-float-right" fill="clear" color="primary" expand="block" size="small"  (click)="forgotPassword()"   aria-label="forgot password">Forgot Password </ion-button> -->
+          </ion-col>
+        </ion-row>
+
+
+  <ion-button class="ion-margin-top ion-text-capitalize submit-btn" expand="block" color="success" fill="solid" [strong]="true" shape="round" (click)="login(loginForm)" >
+    <ion-text>Sign In</ion-text>
+  </ion-button>
+  <!-- divider -->
+  <div class="divider"><ion-note>OR</ion-note></div>
+  <div class=" ion-text-center">
+    <ion-note class="ion-text-center"><small>Don't have a Petba account ?</small></ion-note>
+  </div>
+  <ion-button class="ion-margin-top ion-text-capitalize submit-btn" expand="block" color="dark" fill="solid" [strong]="true" shape="round" routerDirection="root"[routerLink]="['/signup']" >
+    <ion-text>Create Account</ion-text>
+  </ion-button>
+  <!-- <ion-label justify-items-center align-items-center style="display: flex;align-items: center;justify-content: center;">don't have an Account ?
+    <ion-text   class="ion-padding-start" routerDirection="root"[routerLink]="['/signup']"   color="success"><b>Signup</b></ion-text>
+  </ion-label> -->
+  </ion-list>
+
+
+ 
+</ion-content>

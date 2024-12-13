@@ -1,0 +1,134 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>products</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">products</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <!-- DATA LOADED -->
+  <ion-grid *ngIf="Loading == false"   [fixed]="true">
+    <div class="product-wrapper">
+      <ion-item [button]="true" *ngFor="let item of [1,2,3,4,5]">
+    <ion-row>
+      <ion-col size="4">
+        <!-- <ion-thumbnail class="product-image"> -->
+            <!-- <ion-card style=" box-shadow: none;" > -->
+            <img style="    height: 100%;
+            object-fit: cover;
+            border-radius: 5px;" alt="Silhouette of mountains" src="data:image/jpeg;base64,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" />
+          <!-- </ion-card> -->
+          <!-- </ion-thumbnail> -->
+        </ion-col>
+        <ion-col size="8" class="product-details">
+          <ion-row>
+            <ion-col>
+              <ion-label >
+              <h2 class="line-wrapper-2">SleekTech Wireless Earbuds - Model XZ-200 </h2>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row >
+            <ion-col class="ion-no-padding" size="auto">
+              <ion-label >
+                <ion-note class="price-discount-percent">50% off</ion-note>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row class="products-features">
+            <ion-col size="auto" class="ion-no-padding"><ion-note>Midnight Black</ion-note></ion-col>
+            <ion-col size="auto" class="ion-no-padding"><ion-note>M</ion-note></ion-col>
+            <ion-col size="auto" class="ion-no-padding"><ion-note>1Kg</ion-note></ion-col>
+            <ion-col size="auto" class="ion-no-padding"><ion-note>In-Ear Wireless</ion-note></ion-col>
+          </ion-row>
+          <ion-row >
+            <ion-col class="ion-no-padding" >
+              <ion-note style="font-size: 8px;">eligible for Free Shipping</ion-note>
+              <!-- <ion-note style="font-size: 8px;">Delivery charges <span class="Shipping-charge">50rs</span></ion-note> -->
+            </ion-col>
+          </ion-row>
+          <ion-row  class="price">
+            <ion-col class="ion-no-padding">
+              <ion-note  class="price-old">$154.98</ion-note>
+              <ion-text  class="price-final">$154.98</ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-align-items-center">
+    
+            <ion-col style="display: flex;justify-content: end;">
+              <!-- <ion-button expand="block" shape="round" fill="solid" color="danger" size="small" style="width: 70%;height: 2.5rem;"> -->
+              <ion-button expand="block" shape="round" fill="solid" color="dark" strong="true" size="small" style="width: 100%;height: 2.5rem;">
+                Add to cart<ion-icon name="cart-outline" slot="end"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>     
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    
+    </div>
+  </ion-grid>
+
+  <!-- SKELETON LOADING -->
+  <div  *ngIf="Loading == true"  class="product-skeleton-wrapper">
+    <ion-item  button="true"  *ngFor="let item of [1,2,3,4]" >
+    <ion-grid [fixed]="true">
+      
+        <ion-row>
+          <ion-col size="4">
+            <ion-thumbnail class="product-image">
+               <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col size="8" class="product-details">
+              <ion-row>
+                <ion-col>
+                  <ion-label >
+                    <ion-skeleton-text [animated]="true"  style="border-radius: 5px; height: 1rem;"></ion-skeleton-text>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row >
+                <ion-col  size="8">
+                  <ion-label >
+                      <ion-skeleton-text [animated]="true"  style="border-radius: 5px; height: 1rem;"></ion-skeleton-text>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <!-- tags -->
+              <!-- <ion-row class="products-features">
+                <ion-col size="3" *ngFor="let item of [1,2,3,4]">
+                  <ion-skeleton-text [animated]="true" style="border-radius: 8px; height: 1rem;"></ion-skeleton-text>
+                </ion-col>
+              </ion-row> -->
+              <!-- shipping -->
+              <ion-row >
+                <ion-col >
+                  <ion-skeleton-text [animated]="true" style="border-radius: 4px; height: 0.5rem; width: 60%;"></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+              <!-- price -->
+              <ion-row >
+                <ion-col >
+                  <ion-skeleton-text [animated]="true" style=" height: 1.2rem; width: 40%;"></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+             
+              <ion-row class="ion-align-items-center">
+                <ion-col >
+           
+                    <ion-skeleton-text [animated]="true"  style="  border-radius: 15px; height: 2rem; width: 80%;" ></ion-skeleton-text>
+                  
+                </ion-col>
+              </ion-row>     
+            </ion-col>
+          </ion-row>
+        
+        </ion-grid>
+      </ion-item>
+    </div>
+</ion-content>

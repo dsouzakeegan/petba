@@ -1,0 +1,5 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target" : { "namespace": "android_app", "package_name": "com.haztech.petba",
+                 "sha256_cert_fingerprints": ["9F:A8:D0:21:36:86:8F:FF:FD:C1:C7:3F:BB:99:D2:35:1E:77:24:F1:AF:9C:1B:46:59:0C:4D:EB:9C:D3:D3:4C"] }
+  }]

@@ -1,0 +1,13 @@
+
+<ion-content [fullscreen]="true">
+
+  <ng-lottie [options]="options" [styles]="styles">  </ng-lottie>
+  
+  <div class="no-internet-section">
+<ion-label>
+  There is no internet connection<br/> 
+  please check your internet connection
+</ion-label>
+<ion-button   fill="outline" color="dark"  shape="round" (click)="close()"  >Try again</ion-button>
+  </div>
+</ion-content>

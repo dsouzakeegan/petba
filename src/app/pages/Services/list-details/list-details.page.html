@@ -1,0 +1,449 @@
+<ion-header [translucent]="true" class="custom-header-transparent">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title></ion-title> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="top-no-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <!-- <ion-title size="large"></ion-title> -->
+    </ion-toolbar>
+  </ion-header>
+  <div class="wrapper" *ngIf="isLoading == false">
+    <div class="product-image-slider">
+      <app-image-slider *ngIf="img.length > 0" [Images]="img" [thumbs]="false" [routerLink]="['/image-view']"
+        [state]="{img : img}"></app-image-slider>
+      <app-image-slider *ngIf="img.length == 0 " [Images]="imgPlaceholder" [thumbs]="false"></app-image-slider>
+    </div>
+    <ion-grid>
+      <!-- serviceName -->
+      <ion-row class="Service-name" *ngIf="data.bName">
+        <ion-col size="12" class="ion-no-padding">
+          <h3 class="ion-no-margin">{{data.bName}}</h3>
+        </ion-col>
+      </ion-row>
+
+      <!-- RATING -->
+      <ion-row class="subtitle" >
+        <ion-col size="auto" *ngIf="data.rating" class="ion-no-padding service-rating">
+          <ion-icon name="star" *ngFor="let item of [].constructor(5);index as i"
+            [color]="getRColor(data.rating,i,2)"></ion-icon>
+          <ion-text [color]="'medium'">
+            {{data.rating}}
+            <!-- rating -->
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <!-- address -->
+      <ion-row class="address subtitle" *ngIf="data.address">
+        <ion-col size="12" class="ion-no-padding">
+          <ion-text color="medium">
+            <p class="ion-no-margin">{{data.address}}</p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+      <!-- TIMMING -->
+      <ion-row class="subtitle" *ngIf="data.open_time && data.close_time">
+        <ion-col size="12" class="ion-no-padding">
+          <ion-text class="open-timming" color="success">{{data.open_time}}</ion-text>
+          -
+          <ion-text class="close-timming" color="danger">{{data.close_time}}</ion-text>
+        </ion-col>
+      </ion-row>
+      <!-- Price -->
+      <ion-row class="price subtitle" *ngIf="data.fee">
+        <ion-col size="12" class="ion-no-padding">
+          <ion-text>
+            <h5 class="ion-no-margin">{{data.fee |currency :'INR'}}</h5>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+      <!-- About -->
+      <ion-row class="about subtitle" *ngIf="data.about">
+        <ion-col class="ion-no-padding title" size="12">
+          <ion-text>
+            <h5 class="">About</h5>
+          </ion-text>
+        </ion-col>
+        <ion-col class="ion-no-padding title-content" size="12">
+          <ion-text [class.readmmore]="data.bReadMore == true" class="description">
+            <ion-note> {{data.about}} </ion-note>
+          </ion-text>
+        </ion-col>
+        <ion-col *ngIf="data.about.length >= 415" style="display: flex; justify-content: center; align-items: center"
+          size="12">
+          <ion-text (click)="data.bReadMore= !data.bReadMore" style="
+              align-items: center;
+              display: flex;
+              gap: 3px;
+              font-size: 0.875rem;
+              font-weight: 500;
+            ">
+            <span *ngIf="data.bReadMore === false ">ReadMore</span>
+            <span *ngIf="data.bReadMore === true ">ReadLess</span>
+            <ion-icon [class.readless-icon]="data.bReadMore" class="readmore-icon"
+              name="chevron-down-outline"></ion-icon> </ion-text></ion-col>
+      </ion-row>
+      <!-- Speciality  -->
+      <ion-row class="speciality subtitle" *ngFor="let item of speciality">
+        <ion-col class="ion-no-padding title" size="12">
+          <ion-text>
+            <h5>{{item.name}}</h5>
+          </ion-text>
+        </ion-col>
+        <ion-col class="ion-no-padding title-content" size="12">
+          <ion-chip color="secondary" *ngFor="let filter of item.filters">{{filter.name}}</ion-chip>
+        </ion-col>
+      </ion-row>
+      <!-- Equipments  -->
+      <!-- <ion-row class="equipments">
+    <ion-col class="ion-no-padding title" size="12">
+      <ion-text><h5>
+        Equipments
+      </h5></ion-text>
+    </ion-col>
+    <ion-col class="ion-no-padding" size="12">
+      <ion-chip color="secondary">CT Scan</ion-chip>
+      <ion-chip color="secondary">MRI</ion-chip>
+    </ion-col>
+  </ion-row> -->
+      <!-- Person -->
+      <ion-row *ngIf="data.pName" class="person subtitle">
+        <ion-col class="ion-no-padding title" size="12">
+          <ion-text>
+            <h5>{{details_title}}</h5>
+          </ion-text>
+        </ion-col>
+        <!-- Pdetails -->
+
+        <ion-col class="ion-no-padding p-details title-content" size="12">
+          <!-- <ion-item> -->
+          <ion-row>
+            <ion-col class="ion-no-padding" size="4">
+              <ion-thumbnail>
+                <img [src]="data.pImg" (error)="data.pImg = userPlaceholderImg" />
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col class="ion-no-padding p-info" size="8">
+              <ion-text *ngIf="data.pName">
+                <h4>{{data.pName}}</h4>
+              </ion-text>
+              <ion-text *ngIf="data.profession">
+                <p class="ion-no-margin">{{data.profession}}</p>
+              </ion-text>
+              <ion-text *ngIf="data.pExp"><ion-note>{{data.pExp}} Years of Experience</ion-note></ion-text>
+            </ion-col>
+            <!-- </ion-item> -->
+          </ion-row>
+          <ion-row *ngIf="data.pabout">
+            <!-- <ion-col class="ion-no-padding " size="12" *ngIf="data.pabout"> -->
+              <ion-note class=" pet-description" [class.text-limited]="data.pabout && data.pabout.length >= 415 && !pReadMore" > {{data.pabout}} </ion-note>
+            <!-- </ion-col> -->
+            <ion-col *ngIf="data.pabout.length >= 415" style="display: flex;justify-content: center;align-items: center;" size="12">
+              <ion-text (click)="pReadMore= !pReadMore"  style="align-items: center;display: flex;gap: 3px; font-size: 0.875rem;font-weight:500;">
+              
+              <span *ngIf="pReadMore === false ">ReadMore</span>
+              <span *ngIf="pReadMore === true ">ReadLess</span>
+              <ion-icon [class.readless-icon]="pReadMore" class="readmore-icon" name="chevron-down-outline"></ion-icon></ion-text></ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <!-- REVIEWS -->
+      <ion-row class="reviews subtitle">
+        <ion-col class="ion-no-padding title" size="12">
+          <ion-text>
+            <h5 class="">Reviews</h5>
+          </ion-text>
+        </ion-col>
+
+        <ion-col size="12" *ngIf="data.reviews.length === 0" class="ion-text-center">
+          <ion-label> No reviews Yet </ion-label>
+        </ion-col>
+
+        <ion-card *ngFor="let item of data.reviews" class="ion-padding-horizontal" style="width: 100%; margin: 10px 0">
+          <ion-col class="review-header" size="12">
+            <ion-row>
+              <ion-col class="ion-no-padding" size="8">
+                <ion-row style="
+                    display: flex;
+                    flex-wrap: nowrap;
+                    gap: 5px;
+                    align-items: center;
+                  ">
+                  <ion-col class="ion-no-padding ion-text-nowrap" style="
+                      max-width: 80%;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                    " size="auto">
+                    <ion-text color="dark" style="font-weight: 500">{{item.name}}</ion-text>
+                  </ion-col>
+                  <!-- <ion-col class="ion-no-padding  ion-text-center" size="3" >
+                <ion-chip [color]="getRColor(item.rating,0,2)">
+                  {{item.rating}}<ion-icon name="star"></ion-icon>
+              </ion-chip>
+              </ion-col> -->
+                </ion-row>
+              </ion-col>
+              <ion-col class="ion-no-padding ion-text-center" size="4">
+                <ion-text style="font-size: x-small">{{item.time | age :'date'}}ago</ion-text>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="">
+                <ion-icon name="star" *ngFor="let e of [].constructor(5);index as i"
+                  [color]="getRColor(item.rating,i,2)"></ion-icon>
+              </ion-col>
+            </ion-row>
+            <!-- review -->
+            <ion-row class="review">
+              <ion-col [class.readless]="item.readmore==false" style="padding-bottom: 0" size="12">
+                <ion-text><ion-note> {{item.review}} </ion-note> </ion-text>
+              </ion-col>
+
+              <ion-col *ngIf="item.review.length > 179" size="12" class="ion-justify-content-end" style="display: flex">
+                <ion-col *ngIf="item.readmore==false" size="auto" class="ion-text-right">
+                  <ion-text (click)="item.readmore=true" color="primary" style="font-weight: 500">
+                    Readmore
+                  </ion-text>
+                </ion-col>
+                <ion-col *ngIf="item.readmore==true" size="auto" class="ion-text-right">
+                  <ion-text (click)="item.readmore=false" color="primary" style="font-weight: 500">
+                    Readless
+                  </ion-text>
+                </ion-col>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-card>
+
+        <!-- SEE ALL REVIEWS -->
+        <ion-col size="12" *ngIf="data.reviews.length > 0">
+          <ion-card style="border-radius: 15px; margin: 0">
+            <ion-row>
+              <ion-col size="12" class="ion-no-padding">
+                <ion-item [button]="true" (click)="loadAllReviews()" id="open-modal" lines="none"
+                  style="font-weight: 500" class="ion-text-lowercase">
+                  see all rEviews
+                  <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ion-col>
+        <!-- START SEE ALL REVIEW MODAL  -->
+        <ion-modal #modal trigger="open-modal" [initialBreakpoint]="0.25" [breakpoints]="[0,0.25, 0.5,0.75,1]">
+          <ng-template>
+            <ion-header class="custom-header">
+              <ion-title style="
+                  background: var(
+                    --ion-card-background,
+                    var(
+                      --ion-item-background,
+                      var(--ion-background-color, #fff)
+                    )
+                  );
+                  font-size: 1rem;
+                " class="ion-text-center ion-padding-top">
+                <ion-text class="ion-text-center" color="dark"><b> Reviews </b></ion-text>
+              </ion-title>
+            </ion-header>
+            <ion-content>
+              <ion-grid style="padding: 0">
+                <div class="all-review-wrapper" *ngIf="reviews.length > 0">
+                  <ion-card class="ion-no-margin ion-no-padding" style="box-shadow: none; padding-top: 20px"
+                    [button]="false">
+                    <div class="comment-wrapper">
+                      <div style="height: 90vh; overflow: scroll" *ngIf="reviews.length > 0">
+                        <ion-card *ngFor="let item of reviews" class="ion-padding-horizontal" style="
+                            width: 100%;
+                            margin: 10px 0;
+                            box-shadow: none;
+                            border-bottom: 1px solid
+                              rgba(
+                                var(
+                                  --background-rgb,
+                                  var(--ion-text-color-rgb, 0, 0, 0)
+                                ),
+                                0.065
+                              );
+                          ">
+                          <ion-col class="review-header" size="12">
+                            <ion-row>
+                              <ion-col class="ion-no-padding" size="8">
+                                <ion-row style="
+                                    display: flex;
+                                    flex-wrap: nowrap;
+                                    gap: 5px;
+                                    align-items: center;
+                                  ">
+                                  <ion-col class="ion-no-padding ion-text-nowrap" style="
+                                      max-width: 80%;
+                                      overflow: hidden;
+                                      text-overflow: ellipsis;
+                                    " size="auto">
+                                    <ion-text color="dark" style="font-weight: 500">{{item.name}}</ion-text>
+                                  </ion-col>
+                                </ion-row>
+                              </ion-col>
+                              <ion-col class="ion-no-padding ion-text-center" size="4">
+                                <ion-text style="font-size: x-small">{{item.time | age :'date'}}ago</ion-text>
+                              </ion-col>
+                            </ion-row>
+                            <!-- REVIEW RATING -->
+                            <ion-row>
+                              <ion-col class="">
+                                <ion-icon name="star" *ngFor="let e of [].constructor(5);index as i"
+                                  [color]="getRColor(item.rating,i,2)"></ion-icon>
+                              </ion-col>
+                            </ion-row>
+                            <!-- review -->
+                            <ion-row class="review">
+                              <ion-col [class.readless]="item.readmore==false" style="padding-bottom: 0" size="12">
+                                <ion-text><ion-note> {{item.review}} </ion-note>
+                                </ion-text>
+                              </ion-col>
+                              <ion-col *ngIf="item.review.length > 179" size="12" class="ion-justify-content-end"
+                                style="display: flex">
+                                <ion-col *ngIf="item.readmore==false" size="12" class="ion-text-right">
+                                  <ion-text (click)="item.readmore=true" color="primary" style="font-weight: 500">
+                                    Readmore
+                                  </ion-text>
+                                </ion-col>
+                                <ion-col *ngIf="item.readmore==true" size="12" class="ion-text-right">
+                                  <ion-text (click)="item.readmore=false" color="primary" style="font-weight: 500">
+                                    Readless
+                                  </ion-text>
+                                </ion-col>
+                              </ion-col>
+                            </ion-row>
+                          </ion-col>
+                        </ion-card>
+                        <!-- LOAD MORE REVIEWS BTN -->
+                        <ion-row class="ion-justify-content-center" *ngIf="reviewsLoading==false">
+                          <ion-button class="ion-text-lowercase" fill="clear" (click)="loadMoreReviews()"
+                            *ngIf="noMoreReviews == false">Load More Comments</ion-button>
+                        </ion-row>
+                      </div>
+                      <div *ngIf="reviews.length === 0">
+                        <ion-row class="ion-text-center">
+                          <ion-col>
+                            <ion-label> No reviews Yet </ion-label>
+                          </ion-col>
+                        </ion-row>
+                      </div>
+                    </div>
+                  </ion-card>
+                </div>
+                <div class="all-review-skeleton" *ngIf="reviewsLoading == true">
+                  <!-- skeleton review -->
+                  <ion-card class="ion-no-margin" style="
+                      box-shadow: none;
+                      padding: 10px;
+                      border-bottom: 1px solid
+                        rgba(
+                          var(
+                            --background-rgb,
+                            var(--ion-text-color-rgb, 0, 0, 0)
+                          ),
+                          0.065
+                        );
+                    " [button]="false" *ngFor="let item of [].constructor(3)">
+                    <ion-row>
+                      <ion-col class="ion-no-padding" size="4">
+                        <ion-skeleton-text [animated]="true"
+                          style="height: 1.2rem; border-radius: 15px"></ion-skeleton-text>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col class="ion-no-padding" size="12">
+                        <ion-skeleton-text [animated]="true" style="
+                            height: 0.4rem;
+                            border-radius: 5px;
+                            width: 100%;
+                          "></ion-skeleton-text>
+                        <ion-skeleton-text [animated]="true"
+                          style="height: 0.4rem; border-radius: 5px; width: 80%"></ion-skeleton-text>
+                        <ion-skeleton-text [animated]="true"
+                          style="height: 0.4rem; border-radius: 5px; width: 90%"></ion-skeleton-text>
+                      </ion-col>
+                    </ion-row>
+                  </ion-card>
+                </div>
+              </ion-grid>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+        <!-- END SEE ALL REVIEW MODAL -->
+        <!-- WRITE A REVIEW -->
+        <ion-col size="12" *ngIf="dataParams.id">
+          <ion-card style="border-radius: 15px; margin: 0">
+            <ion-row>
+              <ion-col size="12" class="ion-no-padding">
+                <ion-item [button]="true" (click)="writeAReview()" lines="none" style="font-weight: 500"
+                  class="ion-text-lowercase">
+                  write a Review
+                  <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div class="skeleton-wrapper" *ngIf="isLoading == true">
+    <div class="product-image-slider">
+      <ion-skeleton-text style="aspect-ratio: 3/2; margin: 0"></ion-skeleton-text>
+    </div>
+    <ion-grid>
+      <!-- SNAME -->
+      <ion-row>
+        <ion-col size="10"><ion-skeleton-text [animated]="true"
+            style="height: 1rem; border-radius: 20px"></ion-skeleton-text></ion-col>
+      </ion-row>
+      <!-- RATING -->
+      <ion-row>
+        <ion-col size="5"><ion-skeleton-text [animated]="true"
+            style="height: 1rem; border-radius: 10px"></ion-skeleton-text></ion-col>
+      </ion-row>
+      <!-- ADDRESS & details -->
+      <ion-row>
+        <ion-col size="12"><ion-skeleton-text [animated]="true"
+            style="aspect-ratio: 9/2; border-radius: 5px"></ion-skeleton-text></ion-col>
+      </ion-row>
+      <!-- ABOUT -->
+      <ion-row>
+        <!-- title -->
+        <ion-col size="4" style="padding: 20px 0px 0px 5px"><ion-skeleton-text [animated]="true"
+            style="height: 1.8rem; border-radius: 5px"></ion-skeleton-text></ion-col>
+        <!-- content -->
+        <ion-col size="12"><ion-skeleton-text [animated]="true"
+            style="border-radius: 5px; aspect-ratio: 3 / 2"></ion-skeleton-text></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+
+<ion-footer *ngIf="data.phone && isLoading ==false">
+  <ion-toolbar>
+    <div class="action-btn">
+      <div class="btn-chat btn">
+        <ion-button href="https://api.whatsapp.com/send?phone={{data.phone}}">
+          <ion-icon class="" slot="start" name="logo-whatsapp"></ion-icon>
+          chat
+        </ion-button>
+      </div>
+
+      <div class="btn-call btn">
+        <ion-button [href]="'tel:'+data.phone">
+          <ion-icon slot="icon-only" name="call"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-footer>

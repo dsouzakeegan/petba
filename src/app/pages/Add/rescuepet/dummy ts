@@ -1,0 +1,32 @@
+import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+
+@Component({
+  selector: 'app-rescuepet',
+  templateUrl: './rescuepet.page.html',
+  styleUrls: ['./rescuepet.page.scss'],
+})
+export class RescuepetPage implements OnInit {
+  images:number[]=[]
+  item=1;
+  constructor(
+    public navCtrl: NavController
+  ) { }
+
+  goBack(){
+    this.navCtrl.back();
+  }
+  ngOnInit() {
+  }
+  addImg()
+  {
+    if(this.images.length < 3){
+      this.images.push(this.item)
+      this.item++;
+    }
+  }
+  removeImg(index:number){
+    this.images.splice(index,1)
+  }
+
+}

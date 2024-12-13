@@ -1,0 +1,217 @@
+.message-text {
+    position: relative;
+    max-width: 70%;
+    padding: 0 5px;
+    font-size: 0.85rem;
+    margin: 0.5px 0;
+    border-radius: 10px 10px 5px 10px;
+    z-index: 1;
+  }
+  
+  .message-text .message {
+    padding: 8px 12px;
+    margin: 0 2px;
+    font-size: 0.85rem;
+    border-radius: 20px;
+    white-space: pre-wrap;
+    width: fit-content;
+  }
+  
+  .message-text ion-note.md.msg-time {
+    font-size: 0.55rem;
+    float: inline-end;
+    font-style: italic;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-inline: 12px;
+  }
+  
+  .message-text ion-note.md.msg-time ion-icon {
+    padding: 2px 5px;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ion-color-success);
+  }
+  
+  .message-img ion-img::part(image) {
+    border-radius: 10px;
+    max-width: 60%;
+    max-height: 300px;
+  }
+  
+  ion-row.md {
+    margin: 2px 0px;
+  }
+  
+  ion-row.md.message-right {
+    justify-content: end;
+    padding-inline-end: 0;
+  }
+  
+  ion-row.md.message-right .message-text p.message {
+    background: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+    float: inline-end;
+  }
+  
+  ion-row.md.message-right ion-note.msg-time {
+    float: inline-end;
+  }
+  
+  ion-row.md.message-right .message-img ion-img::part(image) {
+    float: inline-end;
+  }
+  
+  ion-row.md.message-left {
+    justify-content: start;
+    padding-inline-start: 0;
+  }
+  
+  ion-row.md.message-left .message-text p.message {
+    background: var(--ion-color-custom-light);
+    color: var(--ion-color-custom-light-contrast);
+  }
+  
+  ion-row.md.message-left ion-note.msg-time {
+    float: inline-start;
+  }
+  
+  ion-row.md.message-left .message-img ion-img::part(image) {
+    float: inline-start;
+  }
+  
+  .message-right .message-img,
+  .message-left .message-img {
+    ion-img::part(image) {
+      aspect-ratio: 2 / 3;
+      object-fit: cover;
+    }
+  }
+  
+  ion-header.md ion-item::part(native) {
+    padding-left: 0;
+  }
+  
+  ion-footer.md {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    background: transparent;
+    box-shadow: none;
+  }
+  
+  ion-footer.md ion-toolbar {
+    margin-bottom: 10px;
+  }
+  
+  ion-footer.md ion-toolbar.input {
+    width: 80%;
+  }
+  
+  ion-footer.md ion-toolbar.input ion-item {
+    border-radius: 20px;
+    margin-left: 5px;
+  }
+  
+  ion-footer.md ion-toolbar.send {
+    width: 20%;
+    display: grid;
+    place-content: center;
+  }
+  
+  ion-footer.md ion-toolbar.send ion-buttons {
+    margin-right: 0 !important;
+  }
+  
+  ion-footer.md ion-toolbar.send ion-button {
+    width: 4rem;
+  }
+  
+  ion-footer.md ion-buttons {
+    margin-right: 6px;
+  }
+  
+  ion-footer.md ion-button {
+    width: 3rem;
+    aspect-ratio: 1;
+    --border-radius: 50%;
+  }
+  
+  .message-input {
+    overflow: scroll;
+    max-height: 150px;
+    margin: 10px 0;
+  }
+  
+  .message-img {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .message-left .message-img {
+    align-items: flex-start;
+  }
+  
+  .message-right .message-img {
+    align-items: flex-end;
+  }
+  
+  .message-img:has(.deleted-msg) {
+    margin: 5px;
+    text-align: center;
+  }
+  
+  .deleted-msg {
+    font-style: italic;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 30px;
+    background: var(--ion-card-background);
+  }
+  
+  .deleted-msg ion-icon {
+    font-size: 1rem;
+    --ionicon-stroke-width: 2rem;
+  }
+  
+  .typing-indicator {
+    display: flex;
+    align-items: center;
+  }
+  
+  .dot {
+    font-weight: bold;
+    animation: blink 1s infinite step-start;
+  }
+  
+  .dot-1 {
+    animation-delay: 0.2s;
+  }
+  
+  .dot-2 {
+    animation-delay: 0.4s;
+  }
+  
+  .dot-3 {
+    animation-delay: 0.6s;
+  }
+  
+  @keyframes blink {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  

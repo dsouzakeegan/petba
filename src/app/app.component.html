@@ -1,0 +1,64 @@
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" menuId="petba-main-menu" type="overlay">
+      <ion-content>
+        <ion-list id="inbox-list"  lines="none">
+          <ion-list-header>Petba</ion-list-header>
+          <!-- <ion-note>Hi&#64;Devloper.com</ion-note> -->
+          <!-- HOME BUTTON START-->
+          <ion-menu-toggle auto-hide="false" >
+            <ion-item routerDirection="root" [routerLink]="['/home']" lines="none" detail="`" routerLinkActive="selected">
+              <ion-icon aria-hidden="true" slot="start" [ios]="'home-outline'" [md]="'home'"></ion-icon>
+              <ion-label>Home</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <!-- HOME BUTTON END-->
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item routerDirection="forward" [routerLink]="[p.url]" lines="none" detail="`" routerLinkActive="selected">
+              <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          
+          <ion-buttons class="ion-justify-content-evenly">
+            <ion-menu-toggle auto-hide="false">
+              <ion-button fill="clear" routerDirection="forward" [routerLink]="['/chat-list']">
+                <ion-icon slot="icon-only" routerDirection="forward" name="chatbox-outline"></ion-icon>
+              </ion-button>
+            </ion-menu-toggle>
+          
+            <ion-menu-toggle auto-hide="false">
+              <ion-button fill="clear" routerDirection="forward" [routerLink]="['/notifications']">
+                <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+              </ion-button>
+            </ion-menu-toggle>
+          
+            <ion-menu-toggle auto-hide="false">
+              <ion-button fill="clear" routerDirection="forward" [routerLink]="['/cart']" >
+                <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+              </ion-button>
+            </ion-menu-toggle>
+          
+            <ion-menu-toggle auto-hide="false">
+              <ion-button fill="clear" routerDirection="forward" [routerLink]="['/settings']">
+                <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+              </ion-button>
+            </ion-menu-toggle>
+          </ion-buttons>
+          
+       
+        </ion-list>
+
+        <!-- <ion-list id="labels-list">
+          <ion-list-header>Labels</ion-list-header>
+
+          <ion-item *ngFor="let label of labels" lines="none">
+            <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+            <ion-label>{{ label }}</ion-label>
+          </ion-item>
+        </ion-list> -->
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

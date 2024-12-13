@@ -1,0 +1,67 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>sendOtp</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding ion-text-center"  >
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">sendOtp</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <!-- <ion-list>
+    <ion-item>
+      <ion-input
+      [(ngModel)]="phoneNumber"
+        label="phone number"
+        placeholder="+91xxxxxxxxxx"
+        [maskito]="phoneMask"
+        [maskitoElement]="maskPredicate"
+      ></ion-input>
+    </ion-item>
+  </ion-list> -->
+
+
+
+  <ion-text><h3>Verification</h3></ion-text>
+  <ion-text><p>We will send you an <ion-text color="success"> One Time Password </ion-text>on this mobile number</p></ion-text>
+  <!-- Otp Input Fields -->
+  <ion-grid class="inputs">
+    <ion-row>
+      <ion-text><p>Enter Mobile Number</p></ion-text>
+      <ion-col size="8">
+    <ion-item lines="none">
+      <ion-input
+       inputmode="tel"
+      [(ngModel)]="phoneNumber"
+        placeholder=""
+        [maskito]="phoneMask"
+        [maskitoElement]="maskPredicate"
+        minlength="10"
+      ></ion-input>
+    </ion-item>
+  </ion-col>
+</ion-row>
+  </ion-grid>
+  <ion-grid class="buttons">
+    <ion-row>
+      <ion-col size="auto">
+          <ion-button   class="ion-text-capitalize ion-padding-vertical" [strong]="true" shape="   " (click)="generateOtp()" color="success" style="--box-shadow:none;">
+            Generate OTP
+          </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+<!-- Action
+<ion-note>
+  Didn't receive OTP?
+  <ion-text color="primary">Resend OTP</ion-text>
+</ion-note> -->
+</ion-content>

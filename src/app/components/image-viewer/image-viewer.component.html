@@ -1,0 +1,17 @@
+
+<swiper-container
+[loop]="true"
+[pagination]=""
+[zoom]="true"
+[autoplay]="false"
+[slidesPerView]="1"
+[effect]="'coverflow'">
+  <swiper-slide virtual="true" *ngFor="let img of Image">
+    <div class="swiper-zoom-container">
+      <img [src]="img" />
+    </div>
+  </swiper-slide>
+</swiper-container>
+<!-- autoplay 1000
+pagination true
+-->

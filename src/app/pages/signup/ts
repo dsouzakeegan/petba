@@ -1,0 +1,75 @@
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CheckboxCustomEvent, IonInput } from '@ionic/angular';
+import { MaskitoOptions, MaskitoElementPredicateAsync } from '@maskito/core';
+import { MatchFields } from 'src/app/validators/matchingField';
+
+
+const emailRegex=/^[^\s@]{3,}@[^\s@]+\.[^\s@]+$/;
+const phoneRegex=/\d{10}/;
+const nameRegex=/^[a-zA-z]+$/;
+@Component({
+  selector: 'app-signup',
+  templateUrl: './signup.page.html',
+  styleUrls: ['./signup.page.scss'],
+})
+export class SignupPage implements OnInit {
+
+  constructor() { }
+signupForm = new FormGroup({
+  fname:new FormControl('',[Validators.required,Validators.pattern(nameRegex)]),
+  lname:new FormControl('',[Validators.required,Validators.pattern(nameRegex)]),
+  email:new FormControl('',[Validators.required,Validators.email,Validators.pattern(emailRegex)]),
+  phone:new FormControl('',[Validators.required,Validators.pattern(phoneRegex)]),
+  password:new FormControl('',[Validators.required,Validators.minLength(8)]),
+  confirmPassword:new FormControl('',[Validators.required])
+},MatchFields('confirmPassword','password'))
+
+readonly phoneMask: MaskitoOptions = {
+  mask: [/\d/,/\d/,/\d/,/\d/,/\d/,/\d/,/\d/,/\d/,/\d/,/\d/],
+};
+readonly maskPredicate: MaskitoElementPredicateAsync = async (el) => (el as HTMLIonInputElement).getInputElement();
+get fname():FormControl
+{
+  return this.signupForm.controls['fname']
+}
+get lname():FormControl
+{
+  return this.signupForm.controls['lname']
+}
+get email():FormControl
+{
+  return this.signupForm.controls['email']
+}
+get phone():FormControl
+{
+  return this.signupForm.controls['phone']
+}
+get password():FormControl
+{
+  return this.signupForm.controls['password']
+}
+get confirmPassword():FormControl
+{
+  return this.signupForm.controls['confirmPassword']
+}
+
+  ngOnInit() {
+  }
+  togglepasswordVisibilty(e:Event, field:IonInput)
+  {
+    let checked = (e as CheckboxCustomEvent).target.checked;
+    console.log(checked)
+    if(checked === true )
+    {
+      field.type='text';
+    }else{
+      field.type='password';
+    }
+
+  }
+checkForm()
+{
+  console.log(this.signupForm)
+}
+}

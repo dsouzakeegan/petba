@@ -1,0 +1,115 @@
+
+ion-content{
+    --background:var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
+    // --background: var(--ion-background-color, #fff);
+}
+.product-image-slider{
+    .tools{
+        position: absolute;
+        top: 0;
+        right: 0;
+
+ion-button{
+    color: #ffffff;
+    background-color: #0000006e;
+    margin: 5px 5px 0px 0px;
+    border-radius: 50%;
+}    
+    }
+}
+ion-grid.md{
+    .tool-tray{
+        display: flex;
+        overflow: scroll hidden;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        padding: 10px 5px;
+        gap: 5px;
+        ion-button::part(native){
+            
+            padding: 10px 26px;
+            color: var(--ion-color-dark);
+        }
+    }
+ .rescue-address-card{
+    .rescue-address-btn ion-button {
+        // --ripple-color: transparent ;
+        // --ripple-color: var(--ion-color-primary);
+        &::part(native){
+            color: #ffffff;
+        }
+    }
+ }
+ .rescue-description-content{
+    .description{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 10;
+        overflow: hidden;
+        &.readmmore{
+            display: block;
+        }
+    }
+    .readmore-icon{
+    transition: transform 300ms ease;
+         
+    &.readless-icon{
+        transform: rotatez(-180deg);
+    }
+    }
+ }
+    ion-row.comment{
+        &:not(:last-child)
+    .comment-details{
+
+        border-bottom: 1px solid #2d2d2d;
+        border-bottom: 1px solid #cacaca;
+        border-bottom: 1px solid rgba(var(--background-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 0.065);
+    }
+    &.skeleton:not(:last-child) .comment-details{
+        border-bottom: 1px solid rgba(var(--background-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 0.065);
+    }
+}
+.comment{
+    ion-avatar{
+        
+
+    margin: 4px;
+    // --size: 40px;
+    
+    background: var(--ion-color-custom-light-shade);
+    --size: 2.5rem;
+    width: var(--size);
+    height: var(--size);
+
+    }
+    .comment-details{
+
+        .Cname{
+            font-weight: 500;
+        }
+        .Ctime{
+
+        ion-note{
+
+            font-size: 0.7rem;
+        }
+    }
+    .Cmsg{
+        font-size: 0.8rem;
+    }
+}
+}
+.comment-input{
+    display: flex;
+    align-items: flex-end;
+}
+}
+
+
+// .YourCommentHighlight{
+//     // background: rgba(var(--ion-color-primary-rgb), 0.14);
+//     // background: var(--ion-color-custom-light);
+//     // border-radius: 5px;
+// }

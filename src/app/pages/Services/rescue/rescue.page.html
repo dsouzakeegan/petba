@@ -1,0 +1,449 @@
+<!-- TRANSPARENT HEADER -->
+<ion-header [translucent]="true" class="custom-header-transparent">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content appParallaxHeader  [scrollEvents]="true"   [fullscreen]="true" class="top-no-padding">
+  <!-- <div class="wrapper-data" *ngIf="Loading === false"> -->
+  <div class="wrapper-data"  [hidden]="Loading">
+    <!-- IMAGE SLIDES -->
+    <div class="product-image-slider parallax-image" >
+      <app-image-slider [Images]="img" [thumbs]="false" [routerLink]="['/image-view']"
+        [state]="{img : img}"></app-image-slider>
+      <!-- <ion-buttons   class="tools" slot="end">
+      <ion-button><ion-icon slot="icon-only" name="pencil"></ion-icon></ion-button>
+      <ion-button><ion-icon slot="icon-only" name="share-social"></ion-icon></ion-button>
+      <ion-button (click)="mark()">
+        <ion-icon *ngIf="bookMarked" slot="icon-only" name="bookmark"></ion-icon>
+        <ion-icon *ngIf="!bookMarked" slot="icon-only" name="bookmark-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>  -->
+    </div>
+
+    <ion-grid class="parallax-container" style="padding: 0" [fixed]="true">
+      <ion-card class="ion-no-margin ion-no-padding" style="box-shadow: none; padding-top: 20px ;border-radius: 30px 30px 0px 0px;" [button]="false">
+        <!-- ACTION BUTTONS -->
+        <ion-row class="tool-tray">
+          <ion-col class="ion-no-padding" size="auto">
+            <ion-button (click)="share()" class="ion-no-margin ion-text-lowercase" shape="round" fill="outline"
+              color="custom-light"><ion-icon slot="end" name="share-social"></ion-icon>Share</ion-button>
+          </ion-col>
+          <ion-col class="ion-no-padding" size="auto">
+            <ion-button (click)="mark()" class="ion-no-margin ion-text-lowercase" shape="round" fill="outline"
+              color="custom-light">
+              <ion-icon *ngIf="bookMarked" slot="end" name="bookmark"></ion-icon>
+              <ion-icon *ngIf="!bookMarked" slot="end" name="bookmark-outline"></ion-icon>
+              Save Later</ion-button>
+          </ion-col>
+          <ion-col class="ion-no-padding" size="auto" *ngIf="rescuePet.c_id == customer_id ">
+            <ion-button (click)="openModal(2)" class="ion-no-margin ion-text-lowercase" shape="round" fill="outline"
+              color="custom-light"><ion-icon slot="end" name="pencil"></ion-icon>edit</ion-button>
+          </ion-col>
+        </ion-row>
+        <div class="content-card-wrap" style="padding: 16px">
+          <!-- ADDRESS -->
+          <ion-card style="box-shadow: 0px 0px 5px 0 var(--ion-color-primary)"
+            class="rescue-address-card ion-no-margin ion-margin-bottom" [button]="false" color="primary">
+            <ion-row class="ion-margin-horizontal ion-margin-top rescue-address">
+              <ion-col size="12">
+                <ion-icon name="location-sharp"></ion-icon>
+                <ion-text> {{rescuePet.address}} </ion-text>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-float-right rescue-address-btn">
+              <ion-col size="auto">
+                <ion-button fill="outline" color="success" shape="" href="https://maps.google.com/?q={{rescuePet.latitude}},{{rescuePet.longitude}}
+          ">navigate
+                  <ion-icon name="navigate-outline" slot="icon-only"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+          <!-- <ion-card style="box-shadow: 0px 0px 5px 0 var(--ion-color-primary);" class="rescue-address-card ion-no-margin ion-margin-bottom" [button]="false" color="primary">
+      <ion-row class="ion-margin-horizontal ion-margin-top rescue-address">
+        <ion-col size="12">
+          <ion-icon name="location-sharp"></ion-icon>
+          <ion-text>
+            123 Main Street
+          Citytown, Stateville 56789
+          Countryland
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row  class="ion-float-right rescue-address-btn">
+      <ion-col size="auto">
+        <ion-button  fill="outline" color="success" shape="">navigate
+          <ion-icon name="navigate-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card> -->
+
+          <!-- pet Rescued -->
+          <ion-card class="ion-no-margin" *ngIf="rescuePet.status == '1'"
+            style="box-shadow: 0px 0px 5px 0 rgb(0, 255, 132)" [button]="false" color="success">
+            <ion-row class="rescue-address">
+              <ion-col size="12">
+                <ion-text style="color: #fff">
+                  <h4 class="ion-text-center ion-no-margin ion-padding">
+                    <b style="
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 9px;
+                      ">
+                      <ion-icon name="fitness-sharp"></ion-icon>
+                      Pet has been Rescued
+                    </b>
+                  </h4>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+
+          <!-- DESCRIPTION -->
+          <ion-row class="rescue-description-card ion-margin-top">
+            <ion-col size="12">
+              <ion-text color="dark">
+                <h6 class="ion-no-margin"><b>Description</b></h6>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row class="rescue-description-content">
+            <ion-col size="12">
+              <ion-text [class.readmmore]="readMore == true" class="description">
+                {{rescuePet.description}}
+              </ion-text>
+            </ion-col>
+            <ion-col *ngIf="rescuePet.description.length >= 415" style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              " size="12">
+              <ion-text (click)="readMore = !readMore" style="align-items: center; display: flex; gap: 3px">
+                <span *ngIf="readMore === false ">ReadMore</span>
+                <span *ngIf="readMore === true ">ReadLess</span>
+                <ion-icon [class.readless-icon]="readMore" class="readmore-icon" name="chevron-down-outline"></ion-icon>
+              </ion-text></ion-col>
+          </ion-row>
+          <!-- MAP -->
+          <!-- <ion-row>
+      <ion-col size="12">
+        <img src="https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg" alt="">
+      </ion-col>
+    </ion-row> -->
+
+          <!-- COMMENTS -->
+          <ion-row style="border-bottom: 1px solid #cacaca">
+            <ion-col><ion-text color="dark"><b> Comments </b></ion-text></ion-col>
+          </ion-row>
+          <div class="comment-wrapper" *ngIf="loadingComments == false ">
+            <div *ngIf="comments.length > 0">
+              <!-- Comment on screen -->
+              <ion-row [class.YourCommentHighlight]="item.from_id == customer_id" class="comment"
+                *ngFor="let item of comments">
+                <ion-col size="auto">
+                  <ion-avatar>
+                    <img *ngIf="!item.pfp" src="../../../../assets/icon/User.png" alt="" />
+                    <img *ngIf="item.pfp" [src]="item.pfp" alt="" />
+                  </ion-avatar>
+                </ion-col>
+                <ion-col class="comment-details">
+                  <ion-row class="Cname"><ion-col class="ion-no-padding"><ion-text
+                        color="dark">{{item.name}}</ion-text></ion-col>
+                  </ion-row>
+                  <ion-row class="Ctime"><ion-col
+                      class="ion-no-padding"><ion-note>{{item.c_time|age:"date":'1'}}ago</ion-note></ion-col></ion-row>
+                  <ion-row class="Cmsg"><ion-col class="ion-no-padding"><ion-text> {{item.comment}}
+                      </ion-text></ion-col></ion-row>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button (click)="loadAllComments()" id="open-modal" style="
+                      --color: var(
+                        --ion-card-color,
+                        var(
+                          --ion-item-color,
+                          var(--ion-color-step-550, #737373)
+                        )
+                      );
+                    " class="ion-text-capitalize" expand="full" shape="" size="small" fill="clear">view all
+                    comments</ion-button>
+                </ion-col>
+
+                <!-- START ALL COMMENT MODALS -->
+                <ion-modal #modal trigger="open-modal" [initialBreakpoint]="0.25" [breakpoints]="[0,0.25, 0.5,0.75,1]">
+                  <ng-template>
+                    <ion-header class="custom-header">
+                      <!-- <ion-title class="ion-text-center">Comments</ion-title> -->
+                      <ion-title style="
+                          background: var(
+                            --ion-card-background,
+                            var(
+                              --ion-item-background,
+                              var(--ion-background-color, #fff)
+                            )
+                          );
+                          font-size: 1rem;
+                        " class="ion-text-center ion-padding-top">
+                        <ion-text class="ion-text-center" color="dark"><b> Comments </b></ion-text>
+                      </ion-title>
+                    </ion-header>
+                    <ion-content>
+                      <ion-grid style="padding: 0">
+                        <ion-card class="ion-no-margin ion-no-padding" style="box-shadow: none; padding-top: 20px"
+                          [button]="false">
+                          <!-- <ion-row style="border-bottom: 1px solid #cacaca; padding: 10px 0;">
+              <ion-col class="ion-text-center"><ion-text  color="dark"><b>
+             Comments
+            </b></ion-text></ion-col>
+            </ion-row> -->
+                          <div class="comment-wrapper" *ngIf="loadingAllComments == false ">
+                            <div style="height: 90vh; overflow: scroll" *ngIf="allComments.length > 0">
+                              <ion-row [class.YourCommentHighlight]="item.from_id == customer_id" class="comment"
+                                *ngFor="let item of allComments">
+                                <ion-col size="auto">
+                                  <ion-avatar>
+                                    <img *ngIf="!item.pfp" src="../../../../assets/icon/User.png" alt="" />
+                                    <img *ngIf="item.pfp" [src]="item.pfp" alt="" />
+                                  </ion-avatar>
+                                </ion-col>
+                                <ion-col class="comment-details">
+                                  <ion-row class="Cname"><ion-col class="ion-no-padding"><ion-text
+                                        color="dark">{{item.name}}</ion-text></ion-col>
+                                  </ion-row>
+                                  <ion-row class="Ctime"><ion-col
+                                      class="ion-no-padding"><ion-note>{{item.c_time|age:"date":'1'}}ago</ion-note></ion-col></ion-row>
+                                  <ion-row class="Cmsg"><ion-col class="ion-no-padding"><ion-text>
+                                        {{item.comment}}
+                                      </ion-text></ion-col></ion-row>
+                                </ion-col>
+                              </ion-row>
+                              <ion-row class="ion-justify-content-center">
+                                <ion-button class="ion-text-lowercase" fill="clear" (click)="loadMoreComments()"
+                                  *ngIf="noMoreComments == false">Load More Comments</ion-button>
+                              </ion-row>
+                            </div>
+                            <!-- no all comments -->
+                            <div *ngIf="allComments.length === 0">
+                              <ion-row class="ion-text-center">
+                                <ion-col>
+                                  <ion-label> No comments Yet </ion-label>
+                                </ion-col>
+                              </ion-row>
+                            </div>
+                          </div>
+                          <!-- Loading all comments -->
+                          <div class="comment-wrapper" *ngIf="loadingAllComments == true">
+                            <ion-row class="comment skeleton" *ngFor="let item of [1,2,3]">
+                              <ion-col size="auto">
+                                <ion-avatar>
+                                  <ion-skeleton-text [animated]="false"></ion-skeleton-text>
+                                </ion-avatar>
+                              </ion-col>
+                              <ion-col class="comment-details">
+                                <ion-row class="Cname"><ion-col class="ion-no-padding">
+                                    <ion-text>
+                                      <ion-skeleton-text [animated]="true" style="
+                                          width: 40%;
+                                          height: 0.5rem;
+                                          border-radius: 10px;
+                                        "></ion-skeleton-text>
+                                    </ion-text>
+                                  </ion-col>
+                                </ion-row>
+                                <ion-row class="Ctime"><ion-col class="ion-no-padding">
+                                    <ion-note>
+                                      <ion-skeleton-text [animated]="false"
+                                        style="width: 20%; height: 0.5rem"></ion-skeleton-text>
+                                    </ion-note> </ion-col></ion-row>
+                                <ion-row class="Cmsg"><ion-col class="ion-no-padding">
+                                    <ion-text>
+                                      <ion-skeleton-text [animated]="true" style="
+                                          width: 80%;
+                                          height: 0.4rem;
+                                          border-radius: 3px;
+                                        "></ion-skeleton-text>
+                                      <ion-skeleton-text [animated]="true" style="
+                                          width: 90%;
+                                          height: 0.4rem;
+                                          border-radius: 3px;
+                                        "></ion-skeleton-text>
+                                    </ion-text> </ion-col></ion-row>
+                              </ion-col>
+                            </ion-row>
+                          </div>
+                        </ion-card>
+                      </ion-grid>
+                    </ion-content>
+                    <ion-footer style="
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                      ">
+                      <ion-toolbar class="input" style="width: 80%" slot="start">
+                        <ion-item color="light" style="border-radius: 8px; --inner-border-width: 0">
+                          <!-- <ion-textarea  [autoGrow]="true" class="message-input" [rows]="1" placeholder="Send message"></ion-textarea> -->
+                          <ion-input style="font-size: 0.76rem; font-weight: 400" [(ngModel)]="commentMessage"
+                            placeholder="send a comment"></ion-input>
+                        </ion-item>
+                      </ion-toolbar>
+                      <ion-toolbar style="width: 20%; text-align: center" class="send">
+                        <ion-button *ngIf="isPostingComment === false" class="ion-text-lowercase ion-float-right"
+                          style="--ripple-color: transparent" (click)="addComment()" shape="" expand="full"
+                          color="primary" fill="clear">Send</ion-button>
+                        <ion-spinner *ngIf="isPostingComment === true" name="dots" color="primary"></ion-spinner>
+                      </ion-toolbar>
+                    </ion-footer>
+                  </ng-template>
+                </ion-modal>
+              </ion-row>
+              <!-- END ALL COMMENT MODALS -->
+            </div>
+            <div *ngIf="comments.length === 0">
+              <ion-row class="ion-text-center">
+                <ion-col>
+                  <ion-label> No comments Yet </ion-label>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+          <div class="comment-wrapper" *ngIf="loadingComments == true">
+            <ion-row class="comment skeleton" *ngFor="let item of [1,2,3]">
+              <ion-col size="auto">
+                <ion-avatar>
+                  <ion-skeleton-text [animated]="false"></ion-skeleton-text>
+                </ion-avatar>
+              </ion-col>
+              <ion-col class="comment-details">
+                <ion-row class="Cname"><ion-col class="ion-no-padding">
+                    <ion-text>
+                      <ion-skeleton-text [animated]="true"
+                        style="width: 40%; height: 0.5rem; border-radius: 10px"></ion-skeleton-text>
+                    </ion-text>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="Ctime"><ion-col class="ion-no-padding">
+                    <ion-note>
+                      <ion-skeleton-text [animated]="false" style="width: 20%; height: 0.5rem"></ion-skeleton-text>
+                    </ion-note> </ion-col></ion-row>
+                <ion-row class="Cmsg"><ion-col class="ion-no-padding">
+                    <ion-text>
+                      <ion-skeleton-text [animated]="true"
+                        style="width: 80%; height: 0.4rem; border-radius: 3px"></ion-skeleton-text>
+                      <ion-skeleton-text [animated]="true"
+                        style="width: 90%; height: 0.4rem; border-radius: 3px"></ion-skeleton-text>
+                    </ion-text> </ion-col></ion-row>
+              </ion-col>
+            </ion-row>
+          </div>
+          <!-- <ion-row class="comment" *ngFor="let item of [1,2,3]">
+      <ion-col size="auto">
+    
+          <ion-avatar>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt-JmDfLz7ErRiTZ9vIme55A9JGQqdx8qJ_xQ_lB2UIqGAFELpsKQQ8xuTSrlqrly-tSQ&usqp=CAU" alt="">
+          </ion-avatar>
+    
+      </ion-col>
+      <ion-col class="comment-details">
+        <ion-row class="Cname"><ion-col class="ion-no-padding" ><ion-text  color="dark">Gregory Holden</ion-text></ion-col>
+        </ion-row>
+        <ion-row class="Ctime"><ion-col class="ion-no-padding"><ion-note >2 days ago</ion-note></ion-col></ion-row>
+        <ion-row class="Cmsg"><ion-col class="ion-no-padding"><ion-text >
+          Lorem, ipsum dolor.
+          Facilis, at autem!
+          Ipsum, dicta. Aliquam.
+          Dolores, reiciendis recusandae?
+        </ion-text></ion-col></ion-row>
+      </ion-col>
+    </ion-row> -->
+        </div>
+      </ion-card>
+    </ion-grid>
+  </div>
+  <div class="skeleton-wrapper" *ngIf="Loading === true">
+    <ion-skeleton-text [animated]="false" style="aspect-ratio: 3/2; margin: 0"></ion-skeleton-text>
+
+    <ion-grid style="padding: 0">
+      <ion-card class="ion-no-margin ion-no-padding" [button]="false">
+        <!-- ACTION -->
+        <ion-row class="tool-tray">
+          <ion-col class="ion-no-padding" size="3.5" *ngFor="let item of [1,2,4,4]">
+            <ion-skeleton-text style="height: 2rem; border-radius: 30px" [animated]="true"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+        <div class="content-card-wrap" style="padding: 16px">
+          <!-- ADDRESS -->
+          <ion-skeleton-text [animated]="true" style="aspect-ratio: 9/2; border-radius: 10px"></ion-skeleton-text>
+          <!-- DESCRIPTION -->
+          <ion-row class="rescue-description-card ion-margin-top">
+            <ion-col size="12">
+              <ion-text>
+                <ion-skeleton-text [animated]="false" style="width: 40%; border-radius: 10px"></ion-skeleton-text>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row class="rescue-description-content">
+            <ion-col size="12">
+              <ion-text *ngFor="let item of [85,100,100,95,100,100,90,100,92]">
+                <ion-skeleton-text [animated]="true" [style]="'height: 0.5rem;margin: 8px 0;border-radius: 2px;'"
+                  style.width="{{item}}%">
+                </ion-skeleton-text>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <!-- COMMENTS -->
+          <ion-row class="comment skeleton" *ngFor="let item of [1,2,3]">
+            <ion-col size="auto">
+              <ion-avatar>
+                <ion-skeleton-text [animated]="false"></ion-skeleton-text>
+              </ion-avatar>
+            </ion-col>
+            <ion-col class="comment-details">
+              <ion-row class="Cname"><ion-col class="ion-no-padding">
+                  <ion-text>
+                    <ion-skeleton-text [animated]="true"
+                      style="width: 40%; height: 0.5rem; border-radius: 10px"></ion-skeleton-text>
+                  </ion-text>
+                </ion-col>
+              </ion-row>
+              <ion-row class="Ctime"><ion-col class="ion-no-padding">
+                  <ion-note>
+                    <ion-skeleton-text [animated]="false" style="width: 20%; height: 0.5rem"></ion-skeleton-text>
+                  </ion-note> </ion-col></ion-row>
+              <ion-row class="Cmsg"><ion-col class="ion-no-padding">
+                  <ion-text>
+                    <ion-skeleton-text [animated]="true"
+                      style="width: 80%; height: 0.4rem; border-radius: 3px"></ion-skeleton-text>
+                    <ion-skeleton-text [animated]="true"
+                      style="width: 90%; height: 0.4rem; border-radius: 3px"></ion-skeleton-text>
+                  </ion-text> </ion-col></ion-row>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-card>
+    </ion-grid>
+  </div>
+</ion-content>
+
+<ion-footer style="display: flex; flex-direction: row; flex-wrap: nowrap" *ngIf="loadingComments == false ">
+  <ion-toolbar class="input" style="width: 80%" slot="start">
+    <ion-item color="light" style="border-radius: 8px; --inner-border-width: 0">
+      <!-- <ion-textarea  [autoGrow]="true" class="message-input" [rows]="1" placeholder="Send message"></ion-textarea> -->
+      <ion-input style="font-size: 0.76rem; font-weight: 400" [(ngModel)]="commentMessage"
+        placeholder="send a comment"></ion-input>
+    </ion-item>
+  </ion-toolbar>
+  <ion-toolbar style="width: 20%; text-align: center" class="send">
+    <ion-button *ngIf="isPostingComment === false" class="ion-text-lowercase ion-float-right"
+      style="--ripple-color: transparent" (click)="addComment()" shape="" expand="full" color="primary"
+      fill="clear">Send</ion-button>
+    <ion-spinner *ngIf="isPostingComment === true" name="dots" color="primary"></ion-spinner>
+  </ion-toolbar>
+</ion-footer>

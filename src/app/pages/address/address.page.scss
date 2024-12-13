@@ -1,0 +1,93 @@
+
+.selected {
+    // border: 2px solid blue; 
+    --color: var(--ion-color-dark);
+  
+  }
+  
+  
+  .non-selected{
+  
+      --background: var(--ion-background-color);
+  }
+  
+  
+  ion-card-header {
+    padding: 5px;
+    ion-row {
+      display: 20px;
+      justify-content: space-between; 
+      align-items: center; 
+    }
+  }
+  .bottom-toolbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 999;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  
+  .scrollable-card-content {
+    overflow-y: auto;
+    max-height: calc(100vh - 200px); 
+  }
+  
+
+
+  .loading-bar {
+    height: 4px; /* Adjust the height of the loading bar as needed */
+    background-color: #007bff; /* Set the background color of the loading bar */
+    width: 100%; /* Make the loading bar span the full width of its container */
+    animation: loadingAnimation 2s linear infinite; /* Apply the animation */
+  }
+  
+  @keyframes loadingAnimation {
+    0% {
+      transform: scaleX(0); /* Start with no width */
+    }
+    100% {
+      transform: scaleX(1); /* End with full width */
+    }
+  }
+  
+  
+  .gradient-footer {
+    position: relative;
+  }
+  
+  .gradient-footer:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px; /* Adjust the height of the gradient overlay as needed */
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  }
+  
+  
+  .skeleton-edit{
+    height: 10px;
+  }
+  
+  
+  
+  .container {
+    display: flex;
+    justify-content: center; /* Aligns content to the right */
+    align-items: center; /* Centers content vertically */
+  }
+  
+  .radio-container {
+    width: 100%; /* Ensure full width of container */
+    text-align: center; /* Align the radio button to the right */
+  }
+  

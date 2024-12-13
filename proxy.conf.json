@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://petba.in/Api/api/index.php/",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

@@ -1,0 +1,17 @@
+
+.container{
+    display: grid;
+    place-items: center;
+    height: 100%;
+    width: 100%;
+    .text-404{
+        font-size: 9rem;
+        font-weight: 800;
+        margin: 0;
+        line-height: 1.2;
+    }
+}
+.wrapper{
+    text-align: center;
+    width: inherit;
+}

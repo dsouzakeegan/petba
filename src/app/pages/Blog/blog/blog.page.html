@@ -1,0 +1,325 @@
+<ion-header [translucent]="true" class="custom-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>blog</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">blog</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="blog-wrapper"*ngIf="loadingBlog == false">
+  <!-- UI -->
+  <ion-grid>
+    <ion-row class="blog-date" *ngIf="blog.published"><ion-col><ion-note color="dark">{{blog.published |age :'date'}}ago</ion-note></ion-col></ion-row>
+    <ion-row class="blog-title" *ngIf="blog.title"><ion-col><ion-text><b>
+      {{blog.title}}
+  </b></ion-text></ion-col></ion-row>
+  <ion-row class="blog-img"><ion-col>
+    <ion-img [src]="blog.img" (ionError)="blog.img ='https://docs-demo.ionic.io/assets/madison.jpg'"></ion-img>
+  </ion-col></ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <div class="container ">
+    <div class="auth-container box-flex">
+      <ion-avatar>
+        <img [src]="blog.auth_img" (error)="blog.auth_img = 'https://docs-demo.ionic.io/assets/madison.jpg'" />
+      </ion-avatar>
+      <ion-text>{{blog.author}}</ion-text>
+    </div>
+    <!-- LIKED COUNT -->
+    <div class="likes-container box-flex">
+      <div style="width:var(--size);aspect-ratio: 1;display: grid;place-content: center;">
+      <ion-button fill="clear" (click)="likeToggle()" color="danger">
+        <ion-icon  *ngIf="liked==false" slot="icon-only" name="heart-outline" ></ion-icon>
+        <ion-icon   [ngClass]="liked == true? 'like' : 'unlike'" slot="icon-only" name="heart" ></ion-icon>
+      </ion-button>
+    </div>
+      <ion-text>{{blog.like_count}}</ion-text>
+    </div>
+  </div>
+    </ion-col>
+  </ion-row>
+  <!-- subtitle -->
+  <ion-row *ngIf="blog.subtitle"><ion-col><ion-text><b>
+    {{blog.subtitle}}
+</b></ion-text></ion-col></ion-row>
+  <!-- subtitle -->
+  <ion-row>
+    <ion-col size="auto">
+    <ion-text><p [innerHTML]="blog.description">
+      <!-- {{blog.description}} -->
+    </p></ion-text>
+    </ion-col>
+  </ion-row>
+
+  <!-- Comments -->
+<ion-row style="border-bottom: 1px solid #cacaca;" *ngIf="loadingBlog == false">
+  <ion-col><ion-text><b>
+ Comments
+</b></ion-text></ion-col>
+</ion-row>
+
+ 
+<div class="comment-wrapper" *ngIf="blogComment.length > 0">
+
+    <ion-row class="comment" *ngFor="let item of blogComment">
+      <ion-col size="2"> 
+    
+          <ion-avatar>
+            <img *ngIf="!item.img" src="../../../../assets/icon/User.png" alt="">
+            <img *ngIf="item.img" [src]="item.img" (error)="item.img = '../../../../assets/icon/User.png'" alt="">
+          </ion-avatar>
+    
+      </ion-col>
+      <ion-col  size="10" class="comment-details">
+        <ion-row class="Cname"><ion-col class="ion-no-padding" >
+      <ion-text  color="dark">{{item.firstname}} {{item.lastname}}
+        <span *ngIf="this.blog.author_id == item.from_id">•
+          <ion-text color="primary">author</ion-text>
+        </span>
+      </ion-text></ion-col>
+        </ion-row>
+        <ion-row class="Ctime"><ion-col class="ion-no-padding" style="display:contents;"><ion-note >{{item.b_time|age:"date":'1'}}ago</ion-note></ion-col></ion-row>
+        <ion-row class="Cmsg"><ion-col class="ion-no-padding" ><ion-text >
+          {{item.comment}}
+        </ion-text></ion-col></ion-row>
+      </ion-col>
+      
+    </ion-row>
+    <!-- START VIEW ALL COMMENT MODAL  -->
+    <ion-row class="ion-justify-content-center ">
+      <ion-button (click)="loadAllComments()" id="open-modal" style="--color: var(--ion-card-color, var(--ion-item-color, var(--ion-color-step-550, #737373)));" class="ion-text-capitalize" expand="full" shape="" size="small" fill="clear">view all comments</ion-button>
+    </ion-row>
+    <!-- <> -->
+    <ion-modal #modal trigger="open-modal" [initialBreakpoint]="1" [breakpoints]="[0,0.25, 0.5,0.75,1]">
+      <ng-template>
+        <ion-header class="custom-header">
+          <ion-title style="background: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff))); font-size: 1rem;padding: 20px 0;" 
+          class="ion-text-center ion-padding-top">
+          <ion-text class="ion-text-center" color="dark"><b>
+            Comments
+           </b></ion-text>
+          </ion-title>
+        </ion-header>
+        <ion-content>
+          <ion-grid style="padding:0">
+            
+<div class="comment-wrapper" *ngIf="blogAllComment.length > 0">
+            <ion-row class="comment" *ngFor="let item of blogAllComment">
+              <ion-col size="2"> 
+            
+                  <ion-avatar>
+                    <img *ngIf="!item.img" src="../../../../assets/icon/User.png" alt="">
+                    <img *ngIf="item.img" [src]="item.img" (error)="item.img = '../../../../assets/icon/User.png'" alt="">
+                  </ion-avatar>
+            
+              </ion-col>
+              <ion-col size="10" class="comment-details">
+                <ion-row class="Cname"><ion-col class="ion-no-padding" >
+                  <ion-text  color="dark">{{item.firstname}} {{item.lastname}}
+                    <span *ngIf="this.blog.author_id == item.from_id">•
+                      <ion-text color="primary">author</ion-text>
+                    </span>
+                  </ion-text></ion-col>
+                    </ion-row>
+                <ion-row class="Ctime"><ion-col class="ion-no-padding"style="display:contents;"><ion-note >{{item.b_time|age:"date":"1"}}ago</ion-note></ion-col></ion-row>
+                <ion-row class="Cmsg"><ion-col class="ion-no-padding"><ion-text >
+                  {{item.comment}}
+                </ion-text></ion-col></ion-row>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-justify-content-center " *ngIf="loadingAllComment == false">
+              <ion-button class="ion-text-lowercase" fill="clear"  (click)="loadMoreComments()"  *ngIf="NoMoreComments == false">Load More Comments</ion-button>
+            </ion-row>
+</div>
+
+<!-- SKELETON LOADING -->
+<div class="comment-wrapper" *ngIf="blogAllComment.length == 0 || loadingAllComment == true">
+  <ion-row class="comment skeleton" *ngFor="let item of [1,2,3,4]">
+    <ion-col size="auto">
+  
+        <ion-avatar>
+          <ion-skeleton-text [animated]="false" ></ion-skeleton-text>
+        </ion-avatar>
+  
+    </ion-col>
+    <ion-col class="comment-details">
+      <ion-row class="Cname"><ion-col class="ion-no-padding" >
+        <ion-text>
+        <ion-skeleton-text [animated]="true" style="width: 40%;height: 0.5rem;border-radius: 10px;"></ion-skeleton-text>
+        </ion-text>
+      </ion-col>
+      </ion-row>
+      <ion-row class="Ctime"><ion-col class="ion-no-padding">
+        <ion-note >
+            <ion-skeleton-text [animated]="false" style="width: 20%;height: 0.5rem;"></ion-skeleton-text>
+      </ion-note>
+    </ion-col></ion-row>
+      <ion-row class="Cmsg"><ion-col class="ion-no-padding">
+        <ion-text>
+          <ion-skeleton-text [animated]="true" style="width: 80%;height: 0.4rem;border-radius: 3px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 90%;height: 0.4rem;border-radius: 3px;"></ion-skeleton-text>
+          </ion-text>
+      </ion-col></ion-row>
+    </ion-col>
+  </ion-row>
+  </div>
+  <!-- \no commemts yet -->
+  <div class="no-comment" *ngIf="blogAllComment.length == 0 && loadingAllComment == false">
+    <ion-row class="ion-text-capitalize  ion-text-center" >
+      <ion-col>
+        <ion-note><p>no comments yet</p></ion-note>
+      </ion-col>
+    </ion-row>
+  </div>
+          </ion-grid>
+      
+        </ion-content>
+        <ion-footer style=" display: flex;flex-direction: row;flex-wrap: nowrap;" *ngIf="loadingCommentModal == false">
+          <ion-toolbar class="input" style="width: 80%;" slot="start">
+            <ion-item color="light" style="border-radius: 8px;--inner-border-width: 0;">
+              <!-- <ion-textarea  [autoGrow]="true" class="message-input" [rows]="1" placeholder="Send message"></ion-textarea> -->
+              <ion-input style="font-size: 0.76rem;font-weight: 400;" [(ngModel)]="commentMessage" placeholder="send a comment" ></ion-input>
+            </ion-item>
+          </ion-toolbar>
+          <ion-toolbar   style="width: 20%;text-align: center;" class="send">  
+            <ion-button *ngIf="isPostingComment === false" class="ion-text-lowercase ion-float-right" style="--ripple-color : transparent;" (click)="addComment()" shape="" expand="full" color="primary" fill="clear">Send</ion-button>
+              <ion-spinner *ngIf="isPostingComment === true" name="dots" color="primary"></ion-spinner>
+          </ion-toolbar>
+        </ion-footer>
+      </ng-template>
+    </ion-modal>
+
+
+    <!-- END VIEW ALL COMMENT MODAL -->
+</div>
+    <div class="comment-wrapper" *ngIf="blogComment.length ==   0 ">
+      <div class="" *ngIf="blogCommentLoading == true">
+      <ion-row class="comment skeleton" *ngFor="let item of [1,2,3]">
+        <ion-col size="auto">
+      
+            <ion-avatar>
+              <ion-skeleton-text [animated]="false" ></ion-skeleton-text>
+            </ion-avatar>
+      
+        </ion-col>
+        <ion-col class="comment-details">
+          <ion-row class="Cname"><ion-col class="ion-no-padding" >
+            <ion-text>
+            <ion-skeleton-text [animated]="true" style="width: 40%;height: 0.5rem;border-radius: 10px;"></ion-skeleton-text>
+            </ion-text>
+          </ion-col>
+          </ion-row>
+          <ion-row class="Ctime"><ion-col class="ion-no-padding">
+            <ion-note >
+                <ion-skeleton-text [animated]="false" style="width: 20%;height: 0.5rem;"></ion-skeleton-text>
+          </ion-note>
+        </ion-col></ion-row>
+          <ion-row class="Cmsg"><ion-col class="ion-no-padding">
+            <ion-text>
+              <ion-skeleton-text [animated]="true" style="width: 80%;height: 0.4rem;border-radius: 3px;"></ion-skeleton-text>
+              <ion-skeleton-text [animated]="true" style="width: 90%;height: 0.4rem;border-radius: 3px;"></ion-skeleton-text>
+              </ion-text>
+          </ion-col></ion-row>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div class="no-comment" *ngIf="blogComment.length == 0 && blogCommentLoading == false">
+      <ion-row class="ion-text-capitalize  ion-text-center" >
+        <ion-col>
+          <ion-note><p>no comments yet</p></ion-note>
+        </ion-col>
+      </ion-row>
+    </div>
+      </div>
+      
+<!-- comment input -->
+
+  </ion-grid>
+  </div>
+  <div class="skeleton-wrapper" *ngIf="loadingBlog == true">
+    <ion-grid>
+      <ion-row class="blog-date" ><ion-col size="3">
+        <ion-skeleton-text></ion-skeleton-text>
+      </ion-col></ion-row>
+      <ion-row class="blog-title" ><ion-col size="12">
+        <ion-skeleton-text style="height: 1rem;width: 90% ;"></ion-skeleton-text>
+        <ion-skeleton-text style="height: 1rem;width: 60% ;"></ion-skeleton-text>
+      </ion-col></ion-row>
+    <ion-row class="blog-img"><ion-col size="12">
+     <ion-skeleton-text style="aspect-ratio: 3/1.8;"></ion-skeleton-text>
+    </ion-col></ion-row>
+    <ion-row>
+  
+    </ion-row>
+    <!-- subtitle -->
+    <ion-row ><ion-col size="5">
+      <ion-skeleton-text></ion-skeleton-text>
+    </ion-col></ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+  <ion-skeleton-text style="aspect-ratio: 1;"></ion-skeleton-text>
+      </ion-col>
+    </ion-row>
+  
+    <!-- Comments -->
+  <!-- <ion-row style="border-bottom: 1px solid #cacaca;">
+    <ion-col><ion-text><b>
+   Comments
+  </b></ion-text></ion-col>
+  </ion-row> -->
+  
+  <div class="skel-wrapper" *ngIf="blogComment.length == 0">
+    <ion-row class="comment skeleton" *ngFor="let item of [1,2,3]">
+      <ion-col size="auto">
+    
+          <ion-avatar>
+            <ion-skeleton-text [animated]="false" ></ion-skeleton-text>
+          </ion-avatar>
+    
+      </ion-col>
+      <ion-col class="comment-details">
+        <ion-row class="Cname"><ion-col class="ion-no-padding" >
+          <ion-text>
+          <ion-skeleton-text [animated]="true" style="width: 40%;height: 0.5rem;border-radius: 10px;"></ion-skeleton-text>
+          </ion-text>
+        </ion-col>
+        </ion-row>
+        <ion-row class="Ctime"><ion-col class="ion-no-padding">
+          <ion-note >
+              <ion-skeleton-text [animated]="false" style="width: 20%;height: 0.5rem;"></ion-skeleton-text>
+        </ion-note>
+      </ion-col></ion-row>
+        <ion-row class="Cmsg"><ion-col class="ion-no-padding">
+          <ion-text>
+            <ion-skeleton-text [animated]="true" style="width: 80%;height: 0.4rem;border-radius: 3px;"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width: 90%;height: 0.4rem;border-radius: 3px;"></ion-skeleton-text>
+            </ion-text>
+        </ion-col></ion-row>
+      </ion-col>
+    </ion-row>
+    </div>
+  
+    </ion-grid>
+  </div>
+</ion-content>
+<ion-footer style=" display: flex;flex-direction: row;flex-wrap: nowrap;" *ngIf="loadingBlog == false && blogCommentLoading==false">
+  <ion-toolbar class="input" style="width: 80%;" slot="start">
+    <ion-item color="light" style="border-radius: 8px;--inner-border-width: 0;">
+      <!-- <ion-textarea  [autoGrow]="true" class="message-input" [rows]="1" placeholder="Send message"></ion-textarea> -->
+      <ion-input style="font-size: 0.76rem;font-weight: 400;" [(ngModel)]="commentMessage" placeholder="send a comment" ></ion-input>
+    </ion-item>
+  </ion-toolbar>
+  <ion-toolbar   style="width: 20%;text-align: center;" class="send">  
+    <ion-button *ngIf="isPostingComment === false" class="ion-text-lowercase ion-float-right" style="--ripple-color : transparent;" (click)="addComment()" shape="" expand="full" color="primary" fill="clear">Send</ion-button>
+      <ion-spinner *ngIf="isPostingComment === true" name="dots" color="primary"></ion-spinner>
+  </ion-toolbar>
+</ion-footer>

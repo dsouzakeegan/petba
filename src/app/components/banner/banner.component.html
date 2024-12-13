@@ -1,0 +1,12 @@
+<swiper-container
+[loop]="true"
+[zoom]="false"
+[autoplay]="1000"
+[slidesPerView]="1"
+[effect]="'coverflow'">
+  <swiper-slide virtual="true" thumbs-swiper *ngFor="let item of Items">
+    <div class="swiper-zoom-container">
+      <img [src]="item.img" alt=""/>
+    </div>
+  </swiper-slide>
+</swiper-container>

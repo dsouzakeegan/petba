@@ -1,0 +1,322 @@
+<!-- Home.page.html -->
+
+<ion-header [translucent]="true" #toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="ion-text-capitalize">
+      <b>Petba</b>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerDirection="forward" [routerLink]="['/search-productpage']" fill="clear">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+      <div style="position: relative;" [routerLink]="['/chat-list']" routerDirection="forward">
+        <ion-button fill="clear">
+          <ion-icon slot="icon-only" name="chatbox-outline"></ion-icon>
+        </ion-button>
+        <ion-badge *ngIf="totalUnreadMessages > 0" class="circular-badge" color="danger">{{ totalUnreadMessages }}</ion-badge>
+      </div>      
+      <ion-button routerDirection="forward" [routerLink]="['/notifications']" fill="clear">
+        <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+      </ion-button>
+      <div style="position: relative;" [routerLink]="['/cart']" routerDirection="forward">
+        <ion-button fill="clear"><ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+        </ion-button>
+        <span *ngIf="cartTotal &&  cartTotal!=0 && Loading== false" id="cart-badge">{{cartTotal}}</span>
+      </div>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar style="--min-height: 2rem;">
+    <ion-button id="click-trigger" class="ion-text-lowercase" fill="clear" shape="round">
+      <ion-icon [name]="location.city_id ? 'location-sharp' : 'earth'" slot="start"></ion-icon>
+      <ion-text>{{location.city_id ? location.city : 'Select your location'}}</ion-text>
+    </ion-button>
+    <ion-popover trigger="click-trigger" triggerAction="click" [dismissOnSelect]="true">
+      <ng-template>
+        <ion-content>
+          <ion-item (click)="selectLocation('city')">
+            <ion-label>
+              <ion-note>Select City</ion-note>
+            </ion-label>
+          </ion-item>
+          <ion-item (click)="selectLocation('all')">
+            <ion-label>
+              <ion-note>All Cities from Goa</ion-note>
+            </ion-label>
+          </ion-item>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" [scrollEvents]="true" [appHideHeader]="toolbar">
+  <ion-refresher slot="fixed" (ionRefresh)="Refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-fab slot="fixed" horizontal="end" vertical="bottom" *ngIf="!Loading">
+    <ion-fab-button size="large" class="fab-main">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="openPetForm(3)">
+        <ion-icon name="document"></ion-icon>
+      </ion-fab-button>
+      <ion-note color="dark">Add Rescue</ion-note>
+      <ion-fab-button (click)="openPetForm(2)">
+        <ion-icon name="color-palette"></ion-icon>
+      </ion-fab-button>
+      <ion-note color="dark">Add Pet</ion-note>
+      <ion-fab-button (click)="openPetForm(1)">
+        <ion-icon name="globe"></ion-icon>
+      </ion-fab-button>
+      <ion-note color="dark">Add Adoption</ion-note>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-grid class="ion-no-padding" *ngIf="!Loading">
+    <!-- BANNER TOP -->
+    <ion-row class="banner">
+      <ion-col class="ion-no-padding">
+        <app-banner [Items]="banner"></app-banner>
+      </ion-col>
+    </ion-row>
+
+    <!-- SERVICES -->
+    <div>
+      <ion-row class="title">
+        <ion-col>
+          <ion-text>Services</ion-text>
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="navigateToCamera()">Take a Snap</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="item-tray button-tray">
+        <ion-col size="auto" class="service-item-card" *ngFor="let item of _services">
+          <ion-card [routerLink]="['/' + item.path]" routerDirection="forward">
+            <img src="assets/icon/service/{{item?.img}}.png" alt="{{item?.name}}" />
+          </ion-card>
+          <ion-label color="dark" class="service-name">{{item?.name}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- DISCOUNTED PRODUCTS -->
+    <div *ngIf="special.length > 0">
+      <ion-row class="title">
+        <ion-col>
+          <ion-text>Discounts For You</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="item-tray">
+        <ion-col class="products" size="auto" *ngFor="let item of special">
+          <ion-card button="true" class="no-box" routerDirection="forward" [routerLink]="['/product-detail', item.p_id]">
+            <div class="product-image-off">
+              <img alt="{{item.name}}" [src]="imgUrl2 + item.images" />
+              <span class="product-off" *ngIf="item.off">{{item.off}}% off</span>
+            </div>
+            <ion-card-content>
+              <ion-card-title>
+                <h5 class="line-wrapper-2 product-name">{{item.name}}</h5>
+              </ion-card-title>
+              <ion-note class="category-name ion-text-nowrap">{{item.categories}}</ion-note>
+              <ion-row class="ion-align-items-center product-price">
+                <ion-text class="price">{{item.price | currency:'INR':'symbol'}}</ion-text>
+                <ion-note *ngIf="item.originalPrice" class="price-original">{{item.originalPrice | currency:'INR':'symbol'}}</ion-note>                
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col class="view-all" size="auto">
+          <ion-card button="true" [routerLink]="['/products', pageProductType.special]">
+            <ion-card-header>
+              <ion-card-title>View All</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- TOP CATEGORY -->
+    <div *ngIf="topcat?.length > 0">
+      <ion-row class="title">
+        <ion-col>
+          <ion-text>Top Category</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="item-tray">
+        <ion-col class="products" size="auto" *ngFor="let item of topcat">
+          <ion-card button="true" class="no-box" routerDirection="forward" [routerLink]="['/product-by-category', item.pc_id]">
+            <img alt="{{item?.pc_name}}" [src]="imgUrl2 + item?.pc_image" />
+            <ion-card-content>
+              <h5 class="line-wrapper-2 product-name">{{item?.pc_name}}</h5>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col class="view-all" size="auto">
+          <ion-card button="true" [routerLink]="['/product-category']">
+            <ion-card-header>
+              <ion-card-title>View All</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- ADOPT PETS -->
+    <div *ngIf="adoption?.length > 0">
+      <ion-row class="title">
+        <ion-col>
+          <ion-text style="font-size: 25px;">Pets For Adoption</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="item-tray">
+        <ion-col class="adopt-pets rounded" size="auto" *ngFor="let item of adoption">
+          <ion-card [routerLink]="['/pet-details', item.c_id, item.adopt_id]" routerDirection="forward" button="true">
+            <img alt="{{item.name}}" [src]="imgUrl + item.img1" />
+            <ion-card-content>
+              <h1 class="pet-name" style="font-size: 16px;">{{item.name}}</h1>
+              <ion-label style="display: flex; align-items: center; flex-wrap: wrap; flex-direction: row-reverse; justify-content: flex-end;">
+                <ion-label color="dark" style="display: flex; align-items: center; flex-wrap: nowrap; width: fit-content; gap: 4px;">
+                  <ion-icon style="--ionicon-stroke-width: 4rem;" [name]="item.gender=='1' ? 'male-outline' : 'female-outline'" [color]="item.gender=='1' ? 'primary' : 'danger'" slot="start"></ion-icon>
+                </ion-label>
+                <span style="padding-inline: 5px;" *ngIf="item.gender && item.dob">•</span>
+                <ion-label style="font-size: 12px;">{{item.dob | age}}</ion-label>
+              </ion-label>
+              <!-- <ion-label style="display: flex; align-items: center; flex-wrap: wrap; flex-direction: row-reverse; justify-content: flex-end;">
+                <ion-label color="dark" style="display: flex; align-items: center; flex-wrap: nowrap; width: fit-content; gap: 4px;">
+                  <ion-icon name="location-outline" slot="start"></ion-icon>
+                  <ion-label style="font-size: 12px;">{{location.city_id ? location.city : 'Your current location'}}</ion-label>
+                </ion-label>
+              </ion-label> -->
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col class="view-all" size="auto">
+          <ion-card button="true" [routerLink]="['/adoption']">
+            <ion-card-header>
+              <ion-card-title>View All</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- BANNER2 -->
+    <div *ngIf="banner2">
+      <ion-row class="banner2">
+        <ion-col class="ion-no-padding">
+          <app-banner [Items]="banner2"></app-banner>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- LATEST PRODUCTS -->
+    <div *ngIf="latest.length > 0">
+      <ion-row class="title">
+        <ion-col>
+          <ion-text>Latest Products</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="item-tray">
+        <ion-col class="products" size="auto" *ngFor="let item of latest">
+          <ion-card button="true" class="no-box" routerDirection="forward" [routerLink]="['/product-detail', item.p_id]">
+            <div class="product-image-off">
+              <img alt="{{item.name}}" [src]="imgUrl2 + item.images" />
+              <span class="product-off" *ngIf="item.off">{{item.off}}% off</span>
+            </div>
+            <ion-card-content>
+              <h5 class="line-wrapper-2 product-name">{{item.name}}</h5>
+              <ion-note class="category-name ion-text-nowrap">{{item.categories}}</ion-note>
+              <ion-row class="ion-align-items-center product-price">
+                <ion-text class="price">{{item.price | currency:'INR':'symbol'}}</ion-text>
+                <ion-note class="price-original">{{item.originalPrice | currency:'INR':'symbol'}}</ion-note>                
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- RESCUE PETS -->
+    <div>
+      <ion-row class="title">
+        <ion-col>
+          <ion-text>Rescue Pets</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="item-tray">
+        <div class="rescue-card-tray" *ngFor="let item of rescue">
+          <div class="rescue-card" routerDirection="forward" [routerLink]="['/rescue', item.id]">
+            <img *ngIf="item.img1" [src]="imgUrl + item.img1" alt="{{item.conditionType}}" />
+            <div class="rescue-card-content">
+              <ion-label>
+                <h6>{{item.conditionType}}
+                  •<ion-chip>
+                    <ion-text [color]="item.conditionStatus == '1' ? 'primary' : item.conditionStatus == '2' ? 'warning' : 'danger'">
+                      {{item.conditionStatus == '1' ? 'Needs Home' : item.conditionStatus == '2' ? 'Medical Assistance' : 'Emergency'}}
+                    </ion-text>
+                  </ion-chip>
+                </h6>
+                <ion-text [color]="item.gender=='2' ? 'danger' : 'primary'">
+                  <ion-icon [name]="item.gender=='2' ? 'female' : 'male'"></ion-icon> {{item.gender=='2' ? 'Female' : 'Male'}}
+                </ion-text>
+              </ion-label>
+            </div>
+          </div>
+        </div>
+        <div class="rescue-card-tray" style="flex: 1;">
+          <ion-col class="view-all" size="auto" style="height: 100%;">
+            <ion-card button="true" [routerLink]="['/rescues']">
+              <ion-card-header>
+                <ion-card-title>View All</ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </div>
+      </ion-row>
+    </div>
+
+    <!-- FEATURED PRODUCTS -->
+    <div *ngIf="featured.length > 0">
+      <ion-row class="title">
+        <ion-col>
+          <ion-text>Featured Products</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="item-tray">
+        <ion-col class="products" size="auto" *ngFor="let item of featured">
+          <ion-card button="true" class="no-box" routerDirection="forward" [routerLink]="['/product-detail', item.p_id]">
+            <div class="product-image-off">
+              <img alt="{{item.name}}" [src]="imgUrl2 + item.images" />
+              <span class="product-off" *ngIf="item.off">{{item.off}}% off</span>
+            </div>
+            <ion-card-content>
+              <ion-card-title>
+                <h5 class="line-wrapper-2 product-name">{{item.name}}</h5>
+              </ion-card-title>
+              <ion-card-subtitle>
+                <ion-note *ngIf="item.categories" class="category-name ion-text-nowrap">{{item.categories}}</ion-note>
+                <ion-row class="ion-align-items-center product-price">
+                  <ion-text class="price">{{item.price | currency:'INR':'symbol'}}</ion-text>
+                  <ion-note class="price-original">{{item.originalPrice | currency:'INR':'symbol'}}</ion-note>                  
+                </ion-row>
+              </ion-card-subtitle>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col class="view-all" size="auto">
+          <ion-card button="true" [routerLink]="['/products', pageProductType.featured]" [state]="{featured_id: featuredid}">
+            <ion-card-header>
+              <ion-card-title>View All</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+</ion-content>

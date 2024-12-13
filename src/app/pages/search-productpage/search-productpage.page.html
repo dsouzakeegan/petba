@@ -1,0 +1,29 @@
+<ion-header [translucent]="true" class="custom-header-2">
+  <ion-toolbar>
+     <ion-buttons slot="start" >
+       <ion-back-button icon="arrow-back"></ion-back-button>
+     </ion-buttons>
+    <ion-searchbar 
+    class="custom-searchBar ion-no-padding"
+    color="dark-light"
+    search-icon="search"
+    show-clear-button="always" clear-icon="close" 
+    (ionInput)="SearchProduct($event)"  [debounce]="1000"
+    >
+    </ion-searchbar> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <app-search-productresults *ngIf="results.length > 0 && isSearching==false" [results]="results"></app-search-productresults>
+  
+    <!-- if no Results -->
+    <div id="no-data-msg-container"  *ngIf="isSearching==false && results.length==0 && UserText != null">
+      <ion-label class="content">
+        <ion-text [innerHTML]="UserText">
+         
+        </ion-text>
+        <!-- <ion-icon name="cube-outline" size="large"></ion-icon> -->
+      </ion-label> 
+    </div>
+</ion-content>

@@ -1,0 +1,25 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>pageNotFound</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content [fullscreen]="true">
+<div class="container">
+  <div class="wrapper">
+    <p class="text-404">
+      <span>4</span>
+      <span><ion-icon name="paw-sharp" color="warning" style="font-size: 7rem;"></ion-icon></span>
+      <span>4</span>
+    </p>
+  
+      <h4 class="ion-no-margin" style="font-size: 1.5rem;line-height: 1;"><ion-text>Whoops!</ion-text></h4>
+      <ion-note>Page not found</ion-note>
+    <br/>
+    <ion-button fill="outline" routerDirection="root" [routerLink]="['/home']"   shape="round" class="ion-margin-top  ion-padding ion-text-capitalize">
+      Return to Home Page
+      <ion-icon name="arrow-back" slot="start"></ion-icon>
+    </ion-button>
+  </div>
+</div>
+</ion-content>

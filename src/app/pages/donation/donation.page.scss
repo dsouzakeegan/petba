@@ -1,0 +1,120 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .donation-text {
+    margin-bottom: 20px;
+    color: black;
+  }
+  
+  .donate-button {
+    margin-bottom: 10px;
+  }
+  
+  ion-card {
+    margin-bottom: 20px;
+  }
+  
+  .recent-donations-card {
+    --padding-start: 20px; // Adjust as needed
+    --padding-end: 20px; // Adjust as needed
+    --padding-top: 20px; // Adjust as needed
+    --padding-bottom: 20px; // Adjust as needed
+  }
+  
+  ion-toggle {
+    padding: 12px;
+  
+    --handle-width: 25px;
+    --handle-height: 27px;
+    --handle-max-height: auto;
+    --handle-spacing: 6px;
+  
+    contain: none;
+  }
+  
+  ion-toggle::part(track),
+  ion-toggle.toggle-checked::part(track) {
+    height: 10px;
+    width: 65px;
+  
+    background: #ddd;
+  
+    /* Required for iOS handle to overflow the height of the track */
+    overflow: visible;
+  }
+  
+  ion-toggle::part(handle) {
+    background: #eb7769;
+  
+    border-radius: 4px;
+    box-shadow: none;
+  }
+  
+  ion-toggle.toggle-checked::part(handle) {
+    background: #95c34e;
+  }
+ 
+  .kindness-background {
+    position: relative;
+  }
+  
+  .container {
+    position: relative;
+  }
+  
+
+  .class-name::part(background) {
+    --background: url('../../../assets/images/donation-bg.jpg') 0 0/100% 100% no-repeat;
+    opacity: 0.55;
+    filter: blur(2px);
+  
+   }
+
+  // .background-image {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   width: 100%;
+  //   height: 100%;
+  //   background-image: url('/assets/istockphoto-1343867675-612x612.jpg');
+  //   background-size: cover;
+  //   background-position: center;
+  //   opacity: 0.3; /* Adjust the opacity as needed */
+  //   z-index: -1; /* Ensure the background image is behind the cards */
+  // }
+  
+  .translucent-card {
+    background-color: rgba(255, 255, 255, 0.7); /* Adjust the last value for the desired transparency */
+  }
+  
+  .translucent-card {
+    background-color: rgba(255, 255, 255, 0.7); /* Adjust the last value for the desired transparency */
+  }
+  
+
+  .text_style{
+    color:#080606;
+  }
+
+  .text_style_para{
+    color: black;
+  }
+
+  .full-translucent-card {
+    --background: rgba(255, 255, 255, 0.7); /* Adjust the alpha value for the desired transparency */
+  }
+  .donate-button{
+    ion-icon{
+      padding: 5px;
+    }
+  }
+
+  .manual_amount_input  {
+    --color: black;
+    font-weight: 600;
+    font-size: large;
+  }
+  

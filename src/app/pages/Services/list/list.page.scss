@@ -1,0 +1,89 @@
+ion-item.md.list{
+    ion-thumbnail.list-img{
+        max-width: 30%;
+     --size:6rem;
+     --border-radius: 15px;
+    }
+    ion-grid.md.list-content{
+        padding-inline: 10px 5px;
+        max-width: 70%;
+      ion-row.md{
+        &.service-name{
+            // font-size: 1.26rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            // ion-col{
+            //     display: -webkit-box;
+            //     -webkit-box-orient: vertical;
+            //     -webkit-line-clamp: 2;
+            //     overflow: hidden;
+            //     text-overflow: clip;
+            // }
+        }
+        &.service-pname{
+            // font-size: 1.26rem;
+            // font-weight: 300;
+            font-size: 0.7rem;
+            // color: var(--ion-color-medium);
+        }
+        &.service-details{
+            font-size: 0.7rem;
+            .rating{
+                // ion-text{
+                //     color: var(--ion-color-warning);
+                //     color: var(--ion-color-primary);
+                // }
+                ion-icon{
+                    font-size: 0.65rem;
+                    padding: 0 0 0 2px;
+                }
+            }
+            .timming{
+                .open_time{
+                    padding: 0 2px 0 0;
+                }
+                .close_time{
+                    padding: 0 0 0 2px;
+                }
+            }
+            ion-col:not(:last-child)::after{
+                content: '●';
+                color: var(--ion-color-medium);
+                margin-inline: 5px;
+                // padding-right: 5px;
+                // border-right: 1px solid currentColor; 
+            }
+            
+            
+        }
+        &.service-fees-location{
+            font-size: 0.7rem;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            align-content: center;
+            .fee{
+                ion-text{
+
+                    color: var(--ion-color-dark);
+                    // padding: 0px 5px;
+                    font-size: 0.85rem;
+                    font-weight: 500;
+                }
+            }
+            .location{
+                
+                ion-note{
+                    font-size: 0.7rem;
+                    color: var(--ion-color-primary);
+
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row;
+                }
+            }
+        }
+      }
+    }
+}
