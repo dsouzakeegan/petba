@@ -24,13 +24,14 @@ export class AddressPage implements OnInit {
     landmark: '',
     locality: '',
     phone: '',
+    Altphone: '',
     pincode: '',
     email: '',
     city: '',
     state: '',
     token: '',
     customer_id: '',
-    adrs_id: ''
+    // adrs_id: ''
   };
   param: any;
   productSummary: string = '';
@@ -107,19 +108,25 @@ this.productSummaryTransfer = this.productSummary;
       this.newAddress.token = this.param.userData.token;
       this.newAddress.customer_id = this.param.userData.customer_id;
       this.newAddress.email = this.param.userData.email;
-
+  
       this.authService.postData(this.newAddress, 'addAddress').then((res: any) => {
-        console.log("----------->>>", res)
-        this.AddressList.push({ ...this.newAddress, email: this.param.email, token: this.param.token, customer_id: this.param.customer_id });
-        this.clearNewAddress();
-        this.getAddressList(); 
+        console.log("Response from addAddress API: ", res);
+        if (res && res.success) {
+          this.AddressList.push({ ...this.newAddress });
+          this.clearNewAddress();
+          this.getAddressList();
+        } else {
+          console.error('Add address failed:', res?.message || 'Unknown error');
+        }
       }).catch(error => {
-        console.error("Error adding address:", error);
+        console.error("Error adding address:", error.message || error);
+        alert("Failed to add address. Please try again.");
       });
     } else {
       console.log('New address is invalid');
     }
   }
+  
 
   deleteCard(index: number) {
     this.AddressList.splice(index, 1);
@@ -151,6 +158,7 @@ this.productSummaryTransfer = this.productSummary;
       this.newAddress.landmark.trim() !== '' &&
       this.newAddress.locality.trim() !== '' &&
       isValidPhone &&
+      this.newAddress.Altphone.trim() !== '' &&
       this.newAddress.pincode.trim() !== '' &&
       this.newAddress.city.trim() !== '' &&
       this.newAddress.state.trim() !== ''
@@ -166,6 +174,7 @@ this.productSummaryTransfer = this.productSummary;
       last_name: '',
       locality: '',
       phone: '',
+      Altphone: '',
       pincode: '',
       state: '',
       email: this.param.email,

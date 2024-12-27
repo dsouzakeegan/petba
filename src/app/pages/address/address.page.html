@@ -86,7 +86,7 @@
         </ion-col>
         <ion-col size="auto">
           <ion-button fill="clear" (click)="toggleCard()">
-            <ion-icon name="{{ isCardOpen ? 'remove' : 'add' }}"></ion-icon> 
+            <ion-icon [name]="isCardOpen ? 'remove' : 'add'"></ion-icon> 
           </ion-button>
         </ion-col>
       </ion-row>
@@ -130,6 +130,10 @@
         <ion-input type="text" placeholder="Enter phone number" [(ngModel)]="newAddress.phone" required></ion-input>
       </ion-item>
       
+      <ion-item>
+        <ion-label position="stacked">Alternate Phone No</ion-label>
+        <ion-input type="text" placeholder="Enter alternate phone no" [(ngModel)]="newAddress.Altphone" required></ion-input>
+      </ion-item>
       
       <ion-item>
         <ion-label position="stacked">Pincode</ion-label>

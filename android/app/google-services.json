@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "998980262322",
+    "project_id": "petba-6e07a",
+    "storage_bucket": "petba-6e07a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998980262322:android:b367ee241563048f302cab",
+        "android_client_info": {
+          "package_name": "com.haztech.petba"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV_gjxK4WxWvd_uHnqtXrLFKr4qLOSXvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
