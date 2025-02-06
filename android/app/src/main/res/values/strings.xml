@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">petba</string>
-    <string name="title_activity_main">petba</string>
-    <string name="package_name">com.haztech.petba</string>
-    <string name="custom_url_scheme">com.haztech.petba</string>
+  <string name="app_name">Petba</string>
+  <string name="title_activity_main">Petba</string>
+  <string name="package_name">com.haztech.petba</string>
+  <string name="custom_url_scheme">com.haztech.petba</string>
 </resources>

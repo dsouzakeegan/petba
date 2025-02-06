@@ -90,92 +90,96 @@ export class AdoptionPage implements OnInit {
     this.isLoading = true;
     this.noMoreData = false;
     this.adoptionListParams.lastPet = 0;
+
+    console.log('Request Parameters:', this.adoptionListParams); // Debug log
   
-    // Ignore city_id to fetch all adoption listings
+    // Clear city_id and city if default "Goa" or "All" is selected
     if (this.adoptionListParams.city_id === 'GA30' || this.adoptionListParams.city_id === '') {
-      this.adoptionListParams.city_id = '';  // Clear city_id to fetch all cities
-      this.adoptionListParams.city = '';  // Optionally clear city for display purposes
+      this.adoptionListParams.city_id = ''; 
+      this.adoptionListParams.city = '';
     }
   
     this.authService.postData(this.adoptionListParams, "listadoption").then(
       (result: any) => {
-        if (result.listadopt.length > 0) {
-          this.adoptionListParams.lastPet = result.listadopt.length;
-          var pp = [];
-          for (let ado of result.listadopt) {
-            let adopt_id = ado.adopt_id;
-            let c_id = ado.c_id;
-            let img1 = ado.img1;
-            let name = ado.name;
-            let breed = ado.breed;
-            let city = ado.city;
-            let dob = ado.dob;
-            let animalName = ado.animalName;
-            let proado = {
-              dob: dob,
-              c_id: c_id,
-              adopt_id: adopt_id,
-              img: this.imageUrl + img1,
-              name: name,
-              breed: breed,
-              city: city,
-              animalName: animalName,
-            };
-            pp.push(proado);
+        try {
+          console.log('API Raw Response:', result); // Log the raw response
+    
+          // Add a safe check for result and listadopt
+          if (result && result.listadopt && Array.isArray(result.listadopt)) {
+            if (result.listadopt.length > 0) {
+              this.adoptionListParams.lastPet = result.listadopt.length;
+              const processedAdoptions = result.listadopt.map((ado: any) => ({
+                dob: ado.dob,
+                c_id: ado.c_id,
+                adopt_id: ado.adopt_id,
+                img: this.imageUrl + ado.img1,
+                name: ado.name,
+                breed: ado.breed,
+                city: ado.city,
+                animalName: ado.animalName,
+              }));
+              this.adopt = processedAdoptions;
+            } else {
+              this.noMoreData = true; // No data found
+            }
+          } else {
+            throw new Error('Unexpected response format or missing listadopt.');
           }
-          this.adopt = pp;
-        } else {
+        } catch (err) {
+          console.error('Error processing server response:', err);
           this.adopt = [];
           this.noMoreData = true;
         }
       }
     ).catch((err) => {
-      console.error(err);
+      console.error('Error fetching data:', err.message || err);
+      alert('Failed to load adoption list. Please try again later.');
     }).finally(() => {
       this.isLoading = false;
     });
+    
   }
   
-
   onIonInfinite(ev: Event) {
     this.authService.postData(this.adoptionListParams, "listadoption").then(
       (result: any) => {
-        if (result.listadopt.length > 0) {
-          this.noMoreData = false;
-          var pp = [];
-          this.adoptionListParams.lastPet += result.listadopt.length;
-          for (let ado of result.listadopt) {
-            let adopt_id = ado.adopt_id;
-            let c_id = ado.c_id;
-            let img1 = ado.img1;
-            let name = ado.name;
-            let breed = ado.breed;
-            let city = ado.city;
-            let dob = ado.dob;
-            let animalName = ado.animalName;
-            let proado = {
-              dob: dob,
-              c_id: c_id,
-              adopt_id: adopt_id,
-              img: this.imageUrl + img1,
-              name: name,
-              breed: breed,
-              city: city,
-              animalName: animalName,
-            };
-            pp.push(proado);
+        try {
+          console.log('API Raw Response (onInfinite):', result);
+          if (result?.listadopt && Array.isArray(result.listadopt)) {
+            if (result.listadopt.length > 0) {
+              this.noMoreData = false;
+              const newAdoptions = result.listadopt.map((ado: any) => ({
+                dob: ado.dob,
+                c_id: ado.c_id,
+                adopt_id: ado.adopt_id,
+                img: this.imageUrl + ado.img1,
+                name: ado.name,
+                breed: ado.breed,
+                city: ado.city,
+                animalName: ado.animalName,
+              }));
+              this.adoptionListParams.lastPet += result.listadopt.length;
+              this.adopt.push(...newAdoptions);
+            } else {
+              this.noMoreData = true; // No more data to load
+            }
+          } else {
+            throw new Error('Unexpected response format or missing listadopt.');
           }
-          this.adopt.push(...pp);
-        } else {
+        } catch (err) {
+          console.error('Error processing server response (onInfinite):', err);
           this.noMoreData = true;
         }
       }
     ).catch((err) => {
-      console.error(err);
+      console.error('Error fetching data (onInfinite):', err.message || err);
+      alert('Failed to load additional adoption listings. Please try again later.');
     }).finally(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();
     });
   }
+  
+  
 
   async LocationSort() {
     // Get Location Latitude And Longitude

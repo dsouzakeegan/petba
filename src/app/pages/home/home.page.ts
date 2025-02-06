@@ -142,12 +142,14 @@ Loading:boolean=true;
     
  async getData()
   {
+    const customerId = this.User?.userData?.customer_id || '';
+    // const locationParams = { ...this.location };
       // get location from local storage
     this.location = this.getLocation();
    let locationParams = this.getLocation();
     this.Loading=true;
     if(this.location.city_id == 'GA30')locationParams.city_id='';
-    this.authService.postData({customer_id: this.User?.userData.customer_id,...this.location},"dashboard").then((res :any ) => {
+    this.authService.postData({customer_id: customerId,...this.location},"dashboard").then((res :any ) => {
 
       console.log("DASHBOARD", res);
 

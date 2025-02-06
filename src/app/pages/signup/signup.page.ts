@@ -108,13 +108,12 @@ checkForm(rescueCheck:IonCheckbox)
    }
 }
 
-
 async signUpNow(rescueCheck: IonCheckbox) {
   const loader = await this.loadingScreen.CreateLoader(
-    "Signing Up...",
-    "circular",
+    'Signing Up...',
+    'circular',
     undefined,
-    "loading-transparent-bg"
+    'loading-transparent-bg'
   );
   await loader.present();
 
@@ -127,53 +126,73 @@ async signUpNow(rescueCheck: IonCheckbox) {
   };
 
   try {
-    const response: any = await this.authService.postData(Params, "signup");
+    const response = await this.authService.postData(Params, 'signup');
 
-    // Decode backend response
-    const resp = typeof response === "string" ? JSON.parse(response) : response;
+    console.log('Raw Backend Response:', response);
 
-    if (resp.status === "success") {
-      localStorage.setItem("userData", JSON.stringify(resp.userData));
-
-      if (rescueCheck.checked && this.RescueCityAdded.length > 0) {
-        try {
-          await this.authService.postData(
-            { c_id: resp.userData.customer_id, city: this.RescueCityAdded },
-            "AddCitiesRescued"
-          );
-        } catch (err) {
-          console.error("Couldn't add rescue Cities: ", err);
-          await this.toastCntrl.presentToast(
-            "Couldn't add rescue city. Please add it later from profile.",
-            "dark",1500,"bottom"
-          );
-        } finally {
-          this.navCtrl.navigateRoot('/home');
-        }
-      } else {
-        this.navCtrl.navigateRoot('/home');
-      }
-    } else (resp.status === "error")
-    {
-      // Decode and show backend error message
-      const errorMessage = resp.message || "Email is already taken. Try another" ; // || "An error occurred. Please try again."
-      await this.toastCntrl.presentToast(errorMessage,"dark",1500,"bottom");
-    }
-  } catch (err: any) { 
-    console.error(err);
-
-    // Decode backend error message if it's in JSON format
-    let errorMessage = "Oops! Failed to create your account. Please try again later.";
+    // Parse response safely
+    let resp: any;
     try {
-      const errorResp = JSON.parse(err.error || err.message);
-      errorMessage = errorResp.message || errorMessage;
-    } catch (jsonErr) {
-      console.warn("Error decoding backend message:", jsonErr);
+      resp = typeof response === 'string' ? JSON.parse(response) : response;
+    } catch (err) {
+      console.error('Error parsing response:', err);
+      throw new Error('Invalid response format from server.');
     }
 
-    await this.toastCntrl.presentToast(errorMessage,"dark",1500,"bottom");
+    console.log('Parsed Backend Response:', resp);
+
+    // Check if userData exists to infer success
+    if (resp.userData && resp.userData.customer_id) {
+      console.log('Signup Successful:', resp);
+
+      // Save user data locally
+      localStorage.setItem('userData', JSON.stringify(resp.userData));
+
+      // Handle Rescue City addition if applicable
+      if (rescueCheck.checked && this.RescueCityAdded.length > 0) {
+        const cityResponse = await this.authService.postData(
+          { c_id: resp.userData.customer_id, city: this.RescueCityAdded },
+          'AddCitiesRescued'
+        );
+        console.log('Rescue City Response:', cityResponse);
+      }
+
+      // Navigate to home page
+      this.navCtrl.navigateRoot('/home');
+      return;
+    }
+
+    // Handle cases where the response doesn't indicate success
+    const errorMessage = this.getErrorMessage(
+      resp.errorField,
+      resp.message || 'Email or Phone already exists, Try Again...'
+    );
+    this.toastCntrl.presentToast(errorMessage, 'dark', 1500, 'bottom');
+  } catch (err) {
+    console.error('Error in signUpNow:', err);
+
+    this.toastCntrl.presentToast(
+      'Oops! Failed to create your account. Please try again later.',
+      'dark',
+      1500,
+      'bottom'
+    );
   } finally {
     loader.dismiss();
+  }
+}
+
+/**
+ * Generate an appropriate error message based on the field and backend message.
+ */
+private getErrorMessage(errorField: string, backendMessage: string): string {
+  switch (errorField) {
+    case 'email':
+      return backendMessage || 'Email is already taken. Try another.';
+    case 'phone':
+      return backendMessage || 'Phone number is already in use. Try another.';
+    default:
+      return backendMessage || 'An error occurred. Please try again.';
   }
 }
 

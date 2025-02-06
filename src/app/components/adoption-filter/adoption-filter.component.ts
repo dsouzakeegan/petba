@@ -49,31 +49,28 @@ optionsGroups:{ id: string; name: string }[]=[];
     this.gender.push({id:'1',name:"Male",checked:false},{id:'2',name:"Female",checked:false});
    
   }
+
   getAnimalType() {
-    this.animal=[];
-    this.authService.postData({id:""}, "animalbreed").then((result:any) =>{
+  this.animal = [];
+  this.authService.postData({ id: "" }, "animalbreed").then((result: any) => {
+    console.log("Response for animalbreed:", result); // Debug log
+    if (result.animalbreed && Array.isArray(result.animalbreed) && result.animalbreed.length > 0) {
+      this.optionsGroups.push({ id: '1', name: "Animal Type" });
+      this.animal = result.animalbreed.map((pro: any) => ({
+        id: pro.animal_id,
+        name: pro.name,
+        checked: false
+      }));
+    } else {
+      console.warn("No animalbreed data found or invalid format.");
+    }
+  }).catch((err) => {
+    console.error("Error in animalbreed API call:", err);
+  }).finally(() => {
+    console.log("Finished fetching animalbreed data.");
+  });
+}
 
-      if(result.animalbreed.length > 0){ 
-        this.optionsGroups.push({id:'1',name:"Animal Type"});
-        var prop= [];
-        for (let pro of result.animalbreed){
-  
-            let animal_id=pro.animal_id;
-            let name=pro.name;
-            let proc =  {
-                          id:animal_id,
-                          name:name,
-                          checked:false
-                        }
-            prop.push(proc);        
-          }
-         this.animal=prop;
-      }
-    }).catch((err) =>{
-      console.error("err: "+err);
-    }).finally(()=>{});
-
-  }
   getBreed() {
     this.breed=[];
     this.loadingScreen.presentLoading("",'dots',undefined,"loading-transparent-bg");

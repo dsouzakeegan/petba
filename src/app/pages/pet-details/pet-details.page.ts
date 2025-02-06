@@ -41,7 +41,7 @@ export interface Pet {
 })
 export class PetDetailsPage implements OnInit {
   img: string[] = [];
-  readMore: boolean = false; // Property should be camelCase
+  readMore: boolean = false;
   pet: Pet = {
     adopt_id: "",
     animalTypeName: "",
@@ -83,12 +83,30 @@ export class PetDetailsPage implements OnInit {
   ) {
     this.petDetailParams.owner_id = this.route.snapshot.paramMap.get('owner-id')!;
     this.petDetailParams.adopt_id = this.route.snapshot.paramMap.get('pet-id')!;
-    this.petDetailParams.c_id = JSON.parse(localStorage.getItem("userData")!).userData.customer_id;
+    this.petDetailParams.c_id = this.getCustomerId();
     this.imgUrl = this.authService.img();
   }
 
   ngOnInit() {
     this.getPetInfo();
+  }
+
+  /**
+   * Safely retrieves the customer ID from localStorage.
+   */
+  private getCustomerId(): string {
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData") || '{}');
+      if (userData?.userData?.customer_id) {
+        return userData.userData.customer_id;
+      } else {
+        console.warn('Warning: Customer ID not found in userData.');
+        return ''; // Return an empty string as a fallback
+      }
+    } catch (err) {
+      console.error('Error retrieving customer ID:', err);
+      return ''; // Return an empty string as a fallback
+    }
   }
 
   getPetInfo() {
@@ -123,9 +141,9 @@ export class PetDetailsPage implements OnInit {
         this.petDetailParams.c_id,
         this.petDetailParams.owner_id,
         item.adopt_id,
-        item.name, // Pet name
-        this.pet.owner_name, // Owner name
-        item.img1 || item.img2 || item.img3 || item.img4 || item.img5 || item.img6 || 'default-image-url' // Pet image
+        item.name,
+        this.pet.owner_name,
+        item.img1 || item.img2 || item.img3 || item.img4 || item.img5 || item.img6 || 'default-image-url'
       );
       console.log('Chat room created:', room);
       await this.loadingCtrl.dismissLoading();
@@ -139,11 +157,7 @@ export class PetDetailsPage implements OnInit {
           role: 'cancel'
         }
       ], 'Failed to start chat. Please try again.');
-    
-  }
-  
-  
-  
+    }
   }
   
 

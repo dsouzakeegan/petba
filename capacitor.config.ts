@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.haztech.petba',
-  appName: 'petba',
+  appName: 'Petba',
   webDir: 'www',
   server: {
     androidScheme: 'https',
@@ -12,12 +12,12 @@ const config: CapacitorConfig = {
       enabled: true,
     },
     PushNotifications: {
-      presentationOptions: ["badge", "sound", "alert"],
+      presentationOptions: ['badge', 'sound', 'alert'],
     },
     LocalNotifications: {
-      iconColor: "#488AFF",
+      iconColor: '#488AFF',
     },
-  }
+  },
 };
 
 export default config;
