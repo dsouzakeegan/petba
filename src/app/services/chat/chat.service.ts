@@ -8,7 +8,7 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 })
 export class ChatService {
   private socket: Socket;
-  private SERVER_URL = 'http://82.112.236.118:3000'; // Replace with your server URL
+  private SERVER_URL = 'https://82.112.236.118:3000'; // Replace with your server URL
   //private SERVER_URL = io('ws://82.112.236.118:3000');
   currentUserId: string | null = null;
   chatRoomsSubject = new BehaviorSubject<any[]>([]);

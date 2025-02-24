@@ -2,15 +2,13 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = 
-{
+export const environment = {
   production: false,
   baseUrl: 'api/',
   imgUrl: 'https://petba.in/',
   apiUrl: 'https://petba.in/Api/api/index.php/',
   MAPKEY: 'AIzaSyCbkfxLAeub3xTaYSuUUGH_Thhd-klQQCk',
-  firebaseConfig:
-  {
+  firebaseConfig: {
     "projectId":"meencart-63510",
     "appId":"1:991495485514:web:1116393276b81b3b144eb3",
     "storageBucket":"meencart-63510.appspot.com",

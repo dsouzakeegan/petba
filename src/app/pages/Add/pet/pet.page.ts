@@ -200,29 +200,23 @@ export class PetPage implements OnInit {
   }
 
   getBreedOptions(e: Event) {
-    this.breed = []; // empty first
-
-    let animal_id = (e as SelectCustomEvent).detail.value;
-    if (animal_id == '0') {
-      this.breed.push({ id: '0', name: 'other', animal_id: '0' });
-    } else {
+    
       let param = {
-        id: animal_id,
+        id: '',
       };
       this.authService
         .postData(param, 'breed')
         .then((res: any) => {
-          
+
           console.log('animal list', res.breed);
           this.breed = res.breed;
           console.log('animal list', this.breed);
-          this.breed.push({ id: '0', name: 'other', animal_id: '0' });
+          //this.breed.push({ id: '0', name: 'other', animal_id: '0' });
         })
         .catch((error) => {
           console.error(error);
         })
         .finally(() => {});
-    }
   }
 
 
