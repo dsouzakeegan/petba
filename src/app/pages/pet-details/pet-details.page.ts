@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ModalController } from '@ionic/angular';
 import { AlertServiceService } from 'src/app/services/alert-service.service';
@@ -75,7 +75,7 @@ export class PetDetailsPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private authService: AuthServiceService,
-    private chatService: ChatService,
+    @Inject(ChatService) private chatService: ChatService,
     private navCtrl: NavController,
     private alertCtrl: AlertServiceService,
     private loadingCtrl: LoadingScreenService,
@@ -96,6 +96,7 @@ export class PetDetailsPage implements OnInit {
    */
   private getCustomerId(): string {
     try {
+      console.log('Presenting loading screen');
       const userData = JSON.parse(localStorage.getItem("userData") || '{}');
       if (userData?.userData?.customer_id) {
         return userData.userData.customer_id;
@@ -124,8 +125,10 @@ export class PetDetailsPage implements OnInit {
           if (result.adoptdetails.img5) this.img.push(this.imgUrl + result.adoptdetails.img5);
           if (result.adoptdetails.img6) this.img.push(this.imgUrl + result.adoptdetails.img6);
         }
-        if (result.cus) {
+        if (result.cus && result.cus.firstname && result.cus.lastname) {
           this.pet.owner_name = `${result.cus.firstname} ${result.cus.lastname}`;
+        } else {
+          this.pet.owner_name = 'Unknown Owner';
         }
       }).catch((err) => {
         console.error('Error fetching pet details:', err);
@@ -137,6 +140,15 @@ export class PetDetailsPage implements OnInit {
   async startChat(item: Pet) {
     try {
       await this.loadingCtrl.presentLoading("", 'circular', undefined, "loading-transparent-bg");
+
+      console.log('Creating chat room with params:', {
+        c_id: this.petDetailParams.c_id,
+        owner_id: this.petDetailParams.owner_id,
+        adopt_id: item.adopt_id,
+        name: item.name,
+        owner_name: this.pet.owner_name,
+        img: item.img1 || item.img2 || item.img3 || item.img4 || item.img5 || item.img6 || 'default-image-url'
+      });
       const room = await this.chatService.createChatRoom(
         this.petDetailParams.c_id,
         this.petDetailParams.owner_id,
