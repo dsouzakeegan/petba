@@ -7,9 +7,8 @@ import { LocalNotifications } from '@capacitor/local-notifications';
   providedIn: 'root',
 })
 export class ChatService {
-  private socket: Socket;
-  private SERVER_URL = 'https://82.112.236.118:3000'; // Replace with your server URL
-  //private SERVER_URL = io('ws://82.112.236.118:3000');
+  private socket!: Socket;
+  serverUrl: string = window.location.protocol === 'https:' ? 'wss://localhost:3000' : 'ws://localhost:3000';
   currentUserId: string | null = null;
   chatRoomsSubject = new BehaviorSubject<any[]>([]);
   selectedChatRoomMessagesSubject = new BehaviorSubject<any[]>([]);
@@ -28,42 +27,64 @@ export class ChatService {
         console.error('Error parsing userData from localStorage:', error);
         this.currentUserId = null;
       }
-    } else 
-    {
+    } else {
       console.warn('userData not found in localStorage');
       this.currentUserId = null; // Handle missing user data appropriately
     }
 
-    this.socket = io(this.SERVER_URL); 
-    //this.socket = this.SERVER_URL;
+    this.initializeSocket();
+  }
 
-    this.socket.on('updateChatRooms', (chatRooms: any[]) => {
-      this.chatRoomsSubject.next(chatRooms);
-    });
+  private initializeSocket() {
+    try {
+      this.socket = io(this.serverUrl, {
+        transports: ['polling'], // Specify transports
+        reconnectionAttempts: 5, // Number of reconnection attempts
+        reconnectionDelay: 1000, // Delay between reconnection attempts
+      });
 
-    this.socket.on('updateMessages', (messages: any[]) => {
-      this.selectedChatRoomMessagesSubject.next(messages);
-    });
+      this.socket.on('connect', () => {
+        console.log('Connected to the server');
+      });
 
-    this.socket.on('newMessage', (message: any) => {
-      if (message.senderId !== this.currentUserId) {
-        this.handleIncomingMessage(message);
-        this.markAllMessagesAsRead(message.chatRoomId);
-      }
-      this.notificationSubject.next(message);
+      this.socket.on('disconnect', () => {
+        console.warn('Disconnected from the server');
+      });
 
-      // Add the received message to inbox notifications
-      this.addNotificationToInbox(message);
-    });
+      this.socket.on('connect_error', (error: any) => {
+        console.error('Connection error:', error);
+      });
 
-    this.socket.on('messageRead', ({ messageId }) => {
-      const messages = this.selectedChatRoomMessagesSubject.getValue();
-      const messageIndex = messages.findIndex((msg) => msg.id === messageId);
-      if (messageIndex !== -1) {
-        messages[messageIndex].seen = true;
-        this.selectedChatRoomMessagesSubject.next([...messages]);
-      }
-    });
+      this.socket.on('updateChatRooms', (chatRooms: any[]) => {
+        this.chatRoomsSubject.next(chatRooms);
+      });
+
+      this.socket.on('updateMessages', (messages: any[]) => {
+        this.selectedChatRoomMessagesSubject.next(messages);
+      });
+
+      this.socket.on('newMessage', (message: any) => {
+        if (message.senderId !== this.currentUserId) {
+          this.handleIncomingMessage(message);
+          this.markAllMessagesAsRead(message.chatRoomId);
+        }
+        this.notificationSubject.next(message);
+
+        // Add the received message to inbox notifications
+        this.addNotificationToInbox(message);
+      });
+
+      this.socket.on('messageRead', ({ messageId }) => {
+        const messages = this.selectedChatRoomMessagesSubject.getValue();
+        const messageIndex = messages.findIndex((msg) => msg.id === messageId);
+        if (messageIndex !== -1) {
+          messages[messageIndex].seen = true;
+          this.selectedChatRoomMessagesSubject.next([...messages]);
+        }
+      });
+    } catch (error) {
+      console.error('Error initializing socket:', error);
+    }
   }
 
   // Store incoming messages as notifications
@@ -88,6 +109,7 @@ export class ChatService {
 
   joinRoom(chatRoomId: string) {
     if (this.currentUserId) {
+      console.log('Current UserId: ', this.currentUserId);
       this.socket.emit('joinRoom', { userId: this.currentUserId, chatRoomId });
     } else {
       console.error('Cannot join room: currentUserId is null');
@@ -220,19 +242,23 @@ export class ChatService {
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.currentUserId) {
+        console.log('Creating chat room with data:', { owner_id, adopter_id, pet_id, petName, ownerName, img });
         this.socket.emit(
           'createChatRoom',
           { owner_id, adopter_id, pet_id, petName, ownerName, img },
           (response: any) => {
             if (response.error) {
+              console.error('Error creating chat room:', response.error);
               reject(response.error);
             } else {
+              console.log('Chat room created successfully:', response.room);
               resolve(response.room);
               this.getChatRooms();
             }
           }
         );
       } else {
+        console.error('Cannot create chat room: currentUserId is null');
         reject('Cannot create chat room: currentUserId is null');
       }
     });

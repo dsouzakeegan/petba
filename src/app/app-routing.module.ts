@@ -61,8 +61,13 @@ const routes: Routes = [
   },
   {
     path: 'chat/:roomId/:petId',
-    loadChildren: () => import('./pages/chat/chat/chat.module').then( m => m.ChatPageModule)
-  },
+    loadChildren: () => import('./pages/chat/chat/chat/chat.module').then( m => m.ChatPageModule)
+  }
+  // {
+  //   path: 'chat',
+  //   loadComponent: () => import('./pages/chat/chat/chat.page').then(m => m.ChatPage) // Lazy load ChatPage
+  // }
+  ,
   {
     path: 'list/:type',
     loadChildren: () => import('./pages/Services/list/list.module').then( m => m.ListPageModule)

@@ -137,12 +137,25 @@ export class ChatPage implements OnInit, OnDestroy {
 
   getRoomInfo() {
     const params = { petId: this.adoptId };
-    this.authService.postData(params, 'petChatInfo').then((result: any) => {
-      if (result.result) {
-        this.pet = result.result;
-        this.petName = result.result.name;
-        this.ownerName = result.result.owner_name;
-        this.pfp = this.imgUrl + (result.result.img1 || result.result.img2 || result.result.img3 || result.result.img4 || result.result.img5 || result.result.img6);
+    console.log(params);
+    
+    this.authService.postData(params, 'petChatInfo').then((response: any) => {
+      try {
+        const result = JSON.parse(response);
+        if (result.result) {
+          this.pet = result.result;
+          this.petName = result.result.name;
+          this.ownerName = result.result.owner_name;
+          this.pfp = this.imgUrl + (result.result.img1 || result.result.img2 || result.result.img3 || result.result.img4 || result.result.img5 || result.result.img6);
+          
+          // Display the pet chat info details
+          console.log('Pet Name:', this.petName);
+          console.log('Owner Name:', this.ownerName);
+          console.log('Profile Picture URL:', this.pfp);
+        }
+      } catch (error) {
+        console.error('Error parsing JSON response:', error);
+        console.error('Received response:', response);
       }
     }).catch((error) => {
       console.error('Error fetching room info:', error);
