@@ -137,17 +137,11 @@ export class PetDetailsPage implements OnInit {
   async startChat(item: Pet) {
     try {
       await this.loadingCtrl.presentLoading("", 'circular', undefined, "loading-transparent-bg");
-      const room = await this.chatService.createChatRoom(
-        this.petDetailParams.c_id,
-        this.petDetailParams.owner_id,
-        item.adopt_id,
-        item.name,
-        this.pet.owner_name,
-        item.img1 || item.img2 || item.img3 || item.img4 || item.img5 || item.img6 || 'default-image-url'
-      );
-      console.log('Chat room created:', room);
+  
+      // Navigate to the chat page with the necessary parameters
+      this.navCtrl.navigateForward(['/chat', this.petDetailParams.c_id, this.petDetailParams.owner_id, item.adopt_id]);
+  
       await this.loadingCtrl.dismissLoading();
-      this.navCtrl.navigateForward(['/chat', room.id, item.adopt_id, { petName: item.name, ownerName: this.pet.owner_name, img: item.img1 || item.img2 || item.img3 || item.img4 || item.img5 || item.img6 || 'default-image-url' }]);
     } catch (e) {
       await this.loadingCtrl.dismissLoading();
       console.error('Error starting chat:', e);
@@ -159,7 +153,6 @@ export class PetDetailsPage implements OnInit {
       ], 'Failed to start chat. Please try again.');
     }
   }
-  
 
   async addPetFor() {
     let msg: string = this.pet.petFlag == '1' ? "Adding pet..." : "Removing pet...";

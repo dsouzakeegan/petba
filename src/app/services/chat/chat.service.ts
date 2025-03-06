@@ -8,7 +8,8 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 })
 export class ChatService {
   private socket: Socket;
-  private SERVER_URL = 'http://82.112.236.118:3000'; // Replace with your server URL
+  serverUrl: string = window.location.protocol === 'https:' ? 'wss://localhost:5000' : 'ws://localhost:5000';
+  // private SERVER_URL = 'http://82.112.236.118:4000'; // Replace with your server URL
   //private SERVER_URL = io('ws://82.112.236.118:3000');
   currentUserId: string | null = null;
   chatRoomsSubject = new BehaviorSubject<any[]>([]);
@@ -34,7 +35,7 @@ export class ChatService {
       this.currentUserId = null; // Handle missing user data appropriately
     }
 
-    this.socket = io(this.SERVER_URL); 
+    this.socket = io(this.serverUrl); 
     //this.socket = this.SERVER_URL;
 
     this.socket.on('updateChatRooms', (chatRooms: any[]) => {

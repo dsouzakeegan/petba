@@ -61,65 +61,7 @@ export class LoginPage implements OnInit {
         field.type='password';
       }
   }
-
-//  async login(e : FormGroup)
-//   {const buttonOptions = [
-
-//     {
-//       text: 'Ok',
-//       cssClass: 'button-color-primary button-text-capitalize',
-//       role: 'confirm',
-//       handler: () => {
-//         console.log("OK pressed");
-//       },
-//     }
-//   ];
-
-//     console.log("authenticating...");
-//     if(e.valid)
-//       {
-//            let params :{username:string,d_id:string,password:string} = e.value;
-//     // params.d_id=localStorage.getItem("token") ? localStorage.getItem("token")! : "";
-//     // console.log(params);
-//   const loader = await this.loadingCtrl.CreateLoader("Signing in...","circular",undefined,"loading-transparent-bg");
-//  await loader.present();
-//     this.authService.postData(params,"login").then(
-//       (res:any)=>{
-        
-//         console.log("response : ", res);
-//         if(res.userData)
-//         {
-//           localStorage.setItem(
-//             "userData",
-//             JSON.stringify(res)
-//             );
-            
-//             this.navCtrl.navigateRoot('/home')
-//           }else{
-//             console.error(res.error.text);
-//             // this.alertCtrl.present("Login Failed",[{text:"OK",cssClass:"alert-button-info"}],"invalid username or password, please try again.");
-//             this.alertCtrl.present("Oops! login failed", buttonOptions, "<small>The username or password you entered is incorrect. Please try again.</small>", "", "custom-alert-1");
-
-//           }
-//         }
-//         ).catch(
-//       (err)=>{
-//         console.error(err);
-//         // this.alertCtrl.present("Login Failed",[{text:"OK",cssClass:"alert-button-info"}],"Something went wrong, please try again later.");
-//             this.alertCtrl.present("Oops..", buttonOptions, "<small>Something went wrong. Please try again later.</small>", "", "custom-alert-1");
-//             // this.alertCtrl.present("Error", buttonOptions, "<small>Something went wrong, please try again later.</small>", "", "custom-alert-1");
-
-//       }
-//       ).finally(async()=>{
-//       this.loadingCtrl.dismissLoading();
-//       await loader.dismiss();
-//     })
-//       }else{
-//         this.toastCntrl.presentToast("Required fields are empty or incorrect. Please fill them in.","dark",1500,"bottom");
-
-//       }
  
-//   }
 
 async login(e: FormGroup) {
   const buttonOptions = [

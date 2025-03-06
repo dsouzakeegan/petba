@@ -1,10 +1,10 @@
-// src/app/pages/chat-list/chat-list.module.ts
+// src/app/pages/chat-new/chat-new.module.ts
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
+import { ChatNewPage } from './chat-new.page';
 import { RouterModule } from '@angular/router';
-import { ChatListPage } from './chat-list.page';
 
 @NgModule({
   imports: [
@@ -13,9 +13,10 @@ import { ChatListPage } from './chat-list.page';
     RouterModule.forChild([
       {
         path: '',
-        component: ChatListPage
+        component: ChatNewPage
       }
     ])
   ],
+  declarations: [ChatNewPage]
 })
-export class ChatListPageModule {}
+export class ChatNewPageModule { }
