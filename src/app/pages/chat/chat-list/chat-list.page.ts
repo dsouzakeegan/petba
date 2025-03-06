@@ -1,89 +1,139 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { ChatService } from 'src/app/services/chat/chat.service';
+//code to fetch customer_id from local storage
+
+import { Component, OnInit } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-chat-list',
   templateUrl: './chat-list.page.html',
   styleUrls: ['./chat-list.page.scss'],
+  standalone: true,
+  imports: [IonicModule, HttpClientModule, CommonModule]
 })
-export class ChatListPage implements OnInit, OnDestroy {
-  Loading: boolean = true;
-  chatRooms$!: Observable<any[]>;
-  private unsubscribe$ = new Subject<void>();
-  currentUserId: string | null = null;
+export class ChatListPage implements OnInit {
+  chatRooms: any[] = [];
+  Loading: boolean = true; 
+  customer_id!: string;
+  firstname: string = '';
+  lastname: string = '';
+  email: string = '';
+  token: string = '';
+  apiUrl = 'https://petba.in/Api/api/index.php/chatlist';
 
-  // Object to store the typing status for each chat room
-  typingStatus: { [roomId: string]: boolean } = {};
-
-  constructor(private chatService: ChatService, private navCtrl: NavController) {}
+  constructor(private http: HttpClient, private navCtrl: NavController) {}
 
   ngOnInit() {
-    this.getChatLists();
-    this.currentUserId = this.chatService.currentUserId;
-    this.subscribeToTypingStatus();
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    this.customer_id = userData.userData.customer_id;
+    this.firstname = userData.userData.firstname;
+    this.lastname = userData.userData.lastname;
+    this.email = userData.userData.email;
+    this.token = userData.userData.token;
+    // this.getChatLists(137);
+    this.getChatLists(this.customer_id); // Replace '48' with the actual customer ID
+
+    console.log('User Data in local storage from chat page', userData);
   }
 
-  getChatLists() {
-    this.chatService.getChatRooms(); // Fetch chat rooms from the server
-    this.chatRooms$ = this.chatService.chatRooms;
-    this.chatRooms$.pipe(takeUntil(this.unsubscribe$)).subscribe(
-      chatRooms => {
-        this.Loading = false;
-        if (chatRooms.length === 0) {
-          console.log("No chat rooms found.");
+  getChatLists(customerId: string) {
+    const data = { c_id: customerId };
+    this.http.post<any>(this.apiUrl, data).subscribe(
+      response => {
+        if (response) {
+          if (response.fri === 'No Friends found') {
+            console.log('No chats found');
+            this.chatRooms = [];
+            this.Loading = false;
+          } else if (response.chatlist) {
+            this.chatRooms = response.chatlist;
+            this.Loading = false;
+          } else {
+            console.error('Invalid response format:', response);
+            this.Loading = false;
+          }
         } else {
-          console.log("Chat rooms loaded successfully.");
+          console.error('No response received');
+          this.Loading = false;
         }
       },
       error => {
         console.error('Error fetching chat rooms:', error);
-        this.Loading = false; // Set loading to false even if there's an error
+        this.Loading = false;
       }
     );
   }
 
-  getUnreadMessagesCount(chatRoom: any): number {
-    if (!chatRoom || !chatRoom.messages) {
-      return 0;
-    }
-    return chatRoom.messages.filter(
-      (msg: any) => !msg.seen && msg.senderId !== this.currentUserId
-    ).length;
-  }
-
-  openChat(roomId: string, petId: string) {
-    this.chatRooms$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(chatRooms => {
-        const selectedRoom = chatRooms.find(room => room.id === roomId);
-        if (selectedRoom) {
-          this.navCtrl.navigateForward([`/chat/${roomId}/${petId}`], {
-            queryParams: {
-              petName: selectedRoom.petName || 'Unknown Pet',
-              ownerName: selectedRoom.ownerName || 'Unknown Owner',
-              img: selectedRoom.img || 'https://ionicframework.com/docs/img/demos/avatar.svg'
-            }
-          });
-        }
-      });
-  }
-
-  onImageError(item: any) {
-    item.img = 'https://ionicframework.com/docs/img/demos/avatar.svg';
-  }
-
-  // Subscribe to typing status events
-  subscribeToTypingStatus() {
-    this.chatService.onTyping().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.typingStatus[data.chatRoomId] = data.isTyping && data.userId !== this.currentUserId;
-    });
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  openChat(chat: any) {
+    console.log('Opening chat with ID:', chat.chat_id);
+    this.navCtrl.navigateForward(['/chat', chat.sender_id, chat.receiver_id, chat.adoption_id]);
   }
 }
+
+
+
+
+
+//Code to Use the specific customer_id
+
+
+// import { Component, OnInit } from '@angular/core';
+// import { IonicModule } from '@ionic/angular';
+// import { CommonModule } from '@angular/common';
+// import { HttpClient, HttpClientModule } from '@angular/common/http';
+// import { NavController } from '@ionic/angular';
+
+// @Component({
+//   selector: 'app-chat-list',
+//   templateUrl: './chat-list.page.html',
+//   styleUrls: ['./chat-list.page.scss'],
+//   standalone: true,
+//   imports: [IonicModule, HttpClientModule, CommonModule]
+// })
+// export class ChatListPage implements OnInit {
+//   chatRooms: any[] = [];
+//   Loading: boolean = true;
+//   apiUrl = 'https://petba.in/Api/api/index.php/chatlist';
+
+//   constructor(private http: HttpClient, private navCtrl: NavController) {}
+
+//   ngOnInit() {
+//     const customerId = '137'; // Use the specific customer_id
+//     this.getChatLists(customerId);
+//   }
+
+//   getChatLists(customerId: string) {
+//     const data = { c_id: customerId };
+//     this.http.post<any>(this.apiUrl, data).subscribe(
+//       response => {
+//         if (response) {
+//           if (response.fri === 'No Friends found') {
+//             console.log('No chats found');
+//             this.chatRooms = [];
+//             this.Loading = false;
+//           } else if (response.chatlist) {
+//             this.chatRooms = response.chatlist;
+//             this.Loading = false;
+//           } else {
+//             console.error('Invalid response format:', response);
+//             this.Loading = false;
+//           }
+//         } else {
+//           console.error('No response received');
+//           this.Loading = false;
+//         }
+//       },
+//       error => {
+//         console.error('Error fetching chat rooms:', error);
+//         this.Loading = false;
+//       }
+//     );
+//   }
+
+//   openChat(chat: any) {
+//     console.log('Opening chat with ID:', chat.chat_id);
+//     this.navCtrl.navigateForward(['/chat', chat.sender_id, chat.receiver_id, chat.adoption_id]);
+//   }
+// }

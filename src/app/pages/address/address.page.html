@@ -146,12 +146,13 @@
         <ion-input type="text" placeholder="Enter city" [(ngModel)]="newAddress.city" required></ion-input>
       </ion-item>
       
-            <ion-item>
+          <ion-item>
         <ion-label position="stacked">State/Province</ion-label>
         <ion-select [(ngModel)]="newAddress.state" placeholder="Select state/province" required>
           <ion-select-option *ngFor="let state of stateList" [value]="state.value">{{ state.name }}</ion-select-option>
         </ion-select>
       </ion-item>       
+      
          
       <ion-button fill="clear" (click)="addCard()" [disabled]="!isFormValid()">Add</ion-button>
       <br>

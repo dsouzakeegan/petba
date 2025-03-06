@@ -44,3 +44,40 @@ ion-grid.md{
         }
     }
 }
+
+.pet-img{
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 10px;
+    margin: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+.pet-card{
+    margin: 5px;
+    border-radius: 10px;
+    white-space: nowrap;
+    ion-card-title, ion-card-subtitle,ion-card-content{
+        overflow: hidden;
+    }
+    ion-card-content{
+        text-overflow: ellipsis;
+    }
+    ion-card-header{
+        margin: 0px 12px;
+        padding: 2px 10px;
+        ion-card-title{
+            font-weight: 600;
+        }
+        ion-card-subtitle{
+            font-size: x-small;
+        }
+    }
+    ion-card-content{
+        padding: 8px 2px;
+        margin: 0px 12px;
+        color: var(--ion-color-primary);
+    }
+}

@@ -1,0 +1,22 @@
+<!-- src/app/pages/chat-new/chat-new.page.html -->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let user of users" (click)="startChat(user.user_id)">
+      <ion-avatar slot="start">
+        <img [src]="user.avatar" alt="User Image" />
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ user.name }}</h2>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

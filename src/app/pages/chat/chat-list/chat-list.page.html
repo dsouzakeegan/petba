@@ -1,80 +1,27 @@
-<ion-toolbar>
-  <!-- style="--background: #007bff;" -->
-  <ion-buttons slot="start">
-    <ion-back-button defaultHref="/"></ion-back-button>
-  </ion-buttons>
-  <ion-header [translucent]="true" class="custom-header-2">
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
     <ion-title>Chats</ion-title>
-  </ion-header>
-</ion-toolbar>
+  </ion-toolbar>
+</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Chats</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-list class="ion-padding-vertical">
-    <div class="Loaded-wrapper" *ngIf="!Loading">
-      <div *ngFor="let item of (chatRooms$ | async)">
-        <ion-item-sliding *ngIf="item?.last_message || item?.last_message_img">
-          <ion-item button="true" (click)="openChat(item.id, item.petId)">
-            <ion-avatar slot="start">
-              <img alt="Pet Image" [src]="item.img || 'https://ionicframework.com/docs/img/demos/avatar.svg'" (error)="onImageError(item)" />
-            </ion-avatar>
-            <ion-label>
-              <ion-text>
-                <h2 class="ion-text-nowrap">
-                  {{ item?.petName || 'Unknown Pet' }}
-                  <ion-note *ngIf="item?.ownerName" style="font-size: 0.7rem;">
-                    ◦ {{ item?.ownerName || 'Unknown Owner' }}
-                  </ion-note>
-                </h2>
-              </ion-text>
-              <!-- Display the typing indicator if the user is typing -->
-              <ion-note *ngIf="typingStatus[item.id]" class="ion-text-nowrap">
-                <em>Typing...</em>
-              </ion-note>
-              <!-- Display the last text message if not typing -->
-              <ion-note *ngIf="!typingStatus[item.id] && item?.last_message" class="ion-text-nowrap">
-                {{ item?.last_message }}
-              </ion-note>
-              <!-- Display an image icon if the last message is an image -->
-              <ion-note style="display: flex;" *ngIf="!typingStatus[item.id] && !item?.last_message && item?.last_message_img" class="ion-text-nowrap">
-                <ion-icon name="image-outline" style="font-size: 1.2rem; --ionicon-stroke-width: 1.4rem;"></ion-icon>
-              </ion-note>
-            </ion-label>
-            <ion-badge slot="end" *ngIf="getUnreadMessagesCount(item) > 0">
-              {{ getUnreadMessagesCount(item) }} <!-- Display the number of unread messages -->
-            </ion-badge>
-            <div class="update-container">
-              <ion-note slot="end" class="update-time">
-                {{ item?.last_message_time | date: 'shortTime' }}
-              </ion-note>
-              <div class="update-dot" *ngIf="getUnreadMessagesCount(item) > 0"></div>
-            </div>
-          </ion-item>
-        </ion-item-sliding>
-      </div>
-    </div>
-
-    <div class="skeleton-wrapper" *ngIf="Loading">
-      <ion-item *ngFor="let i of [1, 2, 3, 4, 5, 6]">
-        <ion-avatar aria-hidden="true" slot="start">
-          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-        </ion-avatar>
-        <ion-label>
-          <ion-text>
-            <h2>
-              <ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text>
-            </h2>
-          </ion-text>
-          <ion-note class="ion-text-nowrap">
-            <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
-          </ion-note>
-        </ion-label>
-      </ion-item>
-    </div>
+<ion-content>
+  <div *ngIf="chatRooms.length === 0" class="no-chats-message">
+    <h2>No Chats Available</h2>
+  </div>
+  <ion-list>
+    <ion-item *ngFor="let chat of chatRooms" (click)="openChat(chat)">
+      <ion-avatar slot="start">
+        <img [src]="'https://petba.in/Api/' + chat.adoption_image" alt="Chat Image" />
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ chat.receiver_name }}</h2>
+        <h3>{{ chat.petname }}</h3>
+        <p class="time" style="float: right;">{{ chat.latest_message_time | date: 'shortTime' }}</p>
+        <p>{{ chat.latest_message }}</p>
+      </ion-label>
+    </ion-item>
   </ion-list>
 </ion-content>

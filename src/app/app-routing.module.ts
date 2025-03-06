@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { ChatListPage } from './pages/chat/chat-list/chat-list.page';
+import { ChatPage } from './pages/chat/chat/chat.page';
+
 
 const routes: Routes = [
   {
@@ -7,6 +10,23 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+
+  //new route for chat-list
+  {
+    path: '',
+    redirectTo: '/chat-list',
+    pathMatch: 'full',
+  },
+  {
+    path: 'chat-list',
+    component: ChatListPage,
+  },
+  {
+    path: 'chat/:sender_id/:receiver_id/:adoption_id',
+    component: ChatPage,
+  },
+  //new route for chat-list
+
   {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
@@ -194,7 +214,8 @@ const routes: Routes = [
   {
     path: '**', // PAGE NOT FOUND PATH (Needs to be the last of all routes)
     loadChildren: () => import('./pages/page-not-found/page-not-found.module').then( m => m.PageNotFoundPageModule)
-  }
+  },
+
 ];
 
 @NgModule({
