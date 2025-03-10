@@ -17,7 +17,9 @@
         <img [src]="'https://petba.in/Api/' + chat.adoption_image" alt="Chat Image" />
       </ion-avatar>
       <ion-label>
-        <h2>{{ chat.receiver_name }}</h2>
+        <h2>{{ chat.receiver_name === firstname ? chat.sender_name : chat.receiver_name }}</h2>
+
+        <!-- <h2>{{ chat.sender_name }}</h2> -->
         <h3>{{ chat.petname }}</h3>
         <p class="time" style="float: right;">{{ chat.latest_message_time | date: 'shortTime' }}</p>
         <p>{{ chat.latest_message }}</p>
@@ -25,3 +27,24 @@
     </ion-item>
   </ion-list>
 </ion-content>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- <h2>{{ chat.receiver_name === chat.sender_name ? chat.sender_name : chat.receiver_name }}</h2> -->
