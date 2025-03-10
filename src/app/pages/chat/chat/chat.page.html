@@ -3,7 +3,16 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/chat-list"></ion-back-button>
     </ion-buttons>
-    <ion-title>Chat</ion-title>
+    
+          <ion-avatar slot="start">
+      <img [src]="'https://petba.in/Api/' + adoptionImage" alt="Chat Image" />
+    </ion-avatar>
+    <ion-title class="chat-title">
+      <h3>{{ chatName }}</h3>
+      <p>{{ petName }}</p>
+    </ion-title>
+
+  
   </ion-toolbar>
 </ion-header>
 
@@ -20,11 +29,11 @@
     </ion-item>
 
     <!-- Display socket messages -->
-    <!-- <ion-item *ngFor="let msg of messages">
+    <ion-item *ngFor="let msg of messages">
       <ion-label>
         <p class="sent">{{ msg }}</p>
       </ion-label>
-    </ion-item> -->
+    </ion-item>
   </ion-list>
 </ion-content>
 

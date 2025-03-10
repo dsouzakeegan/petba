@@ -1,3 +1,46 @@
+// chat.page.scss
+
+ion-header {
+  ion-toolbar {
+    display: flex;
+    align-items: center;
+
+    ion-buttons {
+      margin-right: 10px; // Space between back button and avatar
+    }
+
+    ion-avatar {
+      // padding: 0%;
+      // Removed margin-right to eliminate space between avatar and title
+      img {
+        border-radius: 50%; // Make the image circular
+        width: 45px; // Set the width of the avatar image
+        height: 45px; // Set the height of the avatar image
+      }
+    }
+
+    ion-title {
+      margin-left: 0; // Space between avatar and title
+      margin-left: -25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h3 {
+        padding-left: 0%;
+        margin: 0; // Remove default margin
+        margin-bottom: 1px; // Space between h3 and p
+      }
+
+      p {
+        padding-left: 0%;
+        margin: 0; // Remove default margin
+        color: #959595;
+      }
+    }
+  }
+}
+
 .chat-content {
     --padding-bottom: 60px; // Ensures content doesn't go behind the footer
     height: 100%;
