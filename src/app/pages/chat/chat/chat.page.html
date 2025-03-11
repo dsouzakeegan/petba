@@ -3,22 +3,46 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/chat-list"></ion-back-button>
     </ion-buttons>
-    <ion-title>Chat</ion-title>
+    
+          <ion-avatar slot="start">
+      <img [src]="'https://petba.in/Api/' + adoptionImage" alt="Chat Image" />
+    </ion-avatar>
+    <ion-title class="chat-title">
+      <h3>{{ chatName }}</h3>
+      <p>{{ petName }}</p>
+    </ion-title>
+
+  
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="chat-content">
   <ion-list>
+    <!-- Display API chat history -->
+    <ion-item *ngFor="let chat of chatHistory">
+      <ion-label [class.sender]="chat.from_id === customer_id" [class.receiver]="chat.from_id !== customer_id">
+        <!-- <ion-label [class.sender]="chat.from_id === customer1" [class.receiver]="chat.from_id !== customer1"> -->
+
+        <p class="message-text">{{ chat.message }}</p>
+        <p class="message-time">{{ chat.date_time | date:'short' }}</p>
+      </ion-label>
+    </ion-item>
+
+    <!-- Display socket messages -->
     <ion-item *ngFor="let msg of messages">
       <ion-label>
-        <p>{{ msg }}</p>
+        <p class="sent">{{ msg }}</p>
       </ion-label>
     </ion-item>
   </ion-list>
-  <ion-footer>
-    <ion-toolbar>
-      <ion-input [(ngModel)]="message" placeholder="Type a message"></ion-input>
-      <ion-button (click)="sendMessage()">Send</ion-button>
-    </ion-toolbar>
-  </ion-footer>
 </ion-content>
+
+
+<ion-footer class="footer">
+  <ion-toolbar>
+    <div class="input-container">
+      <ion-input [(ngModel)]="message" placeholder="Type a message"></ion-input>
+      <ion-button expand="none" (click)="sendMessage()">Send</ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

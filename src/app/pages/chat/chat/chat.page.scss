@@ -1,0 +1,126 @@
+// chat.page.scss
+
+ion-header {
+  ion-toolbar {
+    display: flex;
+    align-items: center;
+
+    ion-buttons {
+      margin-right: 10px; // Space between back button and avatar
+    }
+
+    ion-avatar {
+      // padding: 0%;
+      // Removed margin-right to eliminate space between avatar and title
+      img {
+        border-radius: 50%; // Make the image circular
+        width: 45px; // Set the width of the avatar image
+        height: 45px; // Set the height of the avatar image
+      }
+    }
+
+    ion-title {
+      margin-left: 0; // Space between avatar and title
+      margin-left: -25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h3 {
+        padding-left: 0%;
+        margin: 0; // Remove default margin
+        margin-bottom: 1px; // Space between h3 and p
+      }
+
+      p {
+        padding-left: 0%;
+        margin: 0; // Remove default margin
+        color: #959595;
+      }
+    }
+  }
+}
+
+.chat-content {
+    --padding-bottom: 60px; // Ensures content doesn't go behind the footer
+    height: 100%;
+    overflow-y: auto; // Enables scrolling
+  }
+  
+  ion-list {
+    padding-bottom: 10px;
+  }
+  
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #000; // Adjust based on your theme
+    z-index: 100;
+  }
+  
+  .input-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    padding: 5px;
+  }
+  
+  ion-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: white; // Change based on your theme
+  }
+  
+  ion-button {
+    white-space: nowrap;
+  }
+  
+  /* Chat Bubble Styles */
+  .sender {
+    text-align: right;
+    background-color: #9cc4fc;
+    border-radius: 10px;
+    padding: 8px;
+    margin: 5px 0;
+    max-width: 80%;
+    margin-left: auto;
+  }
+  
+  .sent {
+    text-align: right;
+    background-color: #dcf8c6;
+    border-radius: 10px;
+    padding: 8px;
+    margin: 5px 0;
+    max-width: 80%;
+    margin-left: auto;
+    color: #000;
+  }
+  
+  .receiver {
+    text-align: left;
+    background-color: #f1f0f0;
+    border-radius: 10px;
+    padding: 8px;
+    margin: 5px 0;
+    max-width: 80%;
+    margin-right: auto;
+  }
+  
+  .message-text {
+    margin: 0;
+    font-size: 16px;
+    color: #000;
+  }
+  
+  .message-time {
+    font-size: 12px;
+    color: #4e4c4c;
+    margin: 4px 0 0 0;
+  }
+  
+
+

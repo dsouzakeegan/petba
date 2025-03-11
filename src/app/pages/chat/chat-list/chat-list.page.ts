@@ -45,11 +45,14 @@ export class ChatListPage implements OnInit {
         if (response) {
           if (response.fri === 'No Friends found') {
             console.log('No chats found');
+
             this.chatRooms = [];
             this.Loading = false;
           } else if (response.chatlist) {
             this.chatRooms = response.chatlist;
             this.Loading = false;
+            console.log('chats details',this.chatRooms);
+
           } else {
             console.error('Invalid response format:', response);
             this.Loading = false;
