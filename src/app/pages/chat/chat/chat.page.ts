@@ -1,178 +1,202 @@
-import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { io, Socket } from 'socket.io-client';
+import { IonicModule, IonContent } from '@ionic/angular';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { io } from 'socket.io-client';
-import { HttpClient } from '@angular/common/http';
-
-interface ChatMessage {
-  message: string;
-  sender_id: string;
-  receiver_id: string;
-  from_id: string;
-  status: string;
-  date_time: string;
-}
-
-interface ChatResponse {
-  chatData: ChatMessage[];
-}
-
-interface ChatDetails {
-  adoption_id: string;
-  sender_id: string;
-  receiver_id: string;
-  adoption_image: string;
-  petname: string;
-  receiver_name: string;
-  sender_name: string;
-}
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule]
+  imports: [IonicModule, FormsModule, HttpClientModule, CommonModule]
 })
-export class ChatPage implements OnInit {
-  socket: any;
-  serverUrl: string = 'http://localhost:5000';
+export class ChatPage implements OnInit, OnDestroy {
+  @ViewChild(IonContent, { static: false }) content!: IonContent;
+  
   customer1: string = '';
   customer2: string = '';
   adoptionId: string = '';
-  room: string = '';
-  message: string = '';
-  messages: string[] = [];
-  chatHistory: ChatMessage[] = [];
-  apiUrl: string = 'https://petba.in/Api/api/index.php/loadChat';
-  customer_id: string = '';
+  socket!: Socket;
+  messages: any[] = [];
+  newMessage: string = '';
+  isLoading: boolean = false;
+
+  // New properties for additional details
   adoptionImage: string = '';
   petName: string = '';
-  chatName: string = '';
+  receiverName: string = '';
+  senderName: string = '';
+  userName: string = '';
+
+  private loadChatUrl = 'https://petba.in/Api/api/index.php/loadChat';
+  private saveMessageUrl = 'https://petba.in/Api/api/index.php/saveMessage';
 
   constructor(
-    private route: ActivatedRoute,
+    private route: ActivatedRoute, 
+    private router: Router,
     private http: HttpClient
   ) {}
 
   ngOnInit() {
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-    this.customer_id = userData.userData?.customer_id || '';
+    this.customer1 = userData.userData?.customer_id || 'NA';
 
-    this.socket = io(this.serverUrl);
-    this.socket.on('chat message', (msg: string) => {
-      this.messages.push(msg);
-      console.log('Socket message received');
-      
-      // Refresh chat history when receiving a socket message
-      this.loadChatHistory();
+    // Get navigation state
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      const state = navigation.extras.state;
+      this.adoptionImage = state['adoption_image'] || '';
+      this.petName = state['petname'] || '';
+      this.receiverName = state['receiver_name'] || '';
+      this.senderName = state['sender_name'] || '';
+      this.userName = state['firstname'] || '';
+    }
+
+    // Initialize socket connection with unique identifier
+    this.socket = io('http://localhost:5000', {
+      query: { clientId: this.customer1 }
     });
 
     this.route.paramMap.subscribe(params => {
-      this.customer1 = params.get('sender_id')|| '';
-      this.customer2 = params.get('receiver_id') || '';
+      const receiverId = params.get('receiver_id') || '';
+      const senderId = params.get('sender_id') || '';
       this.adoptionId = params.get('adoption_id') || '';
+
+      console.log('senderId:', senderId);
+      console.log('receiverId:', receiverId);
+      console.log('chatlist Pet:', this.petName);
+      console.log('chatlist Reciever:', this.receiverName);
+      console.log('chatlist Sender:', this.senderName);
+      console.log('chatlist userName:', this.userName);
+
+
+      this.customer2 = this.customer1 === receiverId ? senderId : receiverId;
+
       this.joinRoom();
-      this.loadChatHistory();
-      this.loadChatDetails();
+      this.loadChatHistoryAsync();
     });
-    console.log('Current customer_id from localStorage:', this.customer_id);
+
+    // Listen for incoming messages
+    this.socket.on('chat message', (data: { 
+      customer1: string, 
+      customer2: string, 
+      adoptionId: string, 
+      message: string, 
+      messageId: string 
+    }) => {
+      // Verify the message is for this specific conversation
+      const isForThisConversation = 
+        (data.customer1 === this.customer2 && data.customer2 === this.customer1 && data.adoptionId === this.adoptionId);
+
+      // Check for duplicates
+      const isDuplicate = this.messages.some(msg => 
+        msg.messageId === data.messageId
+      );
+
+      if (isForThisConversation && !isDuplicate) {
+        const newMessage = {
+          ...data,
+          time: new Date().toISOString(),
+          isCurrentUserSender: false,
+          messageId: data.messageId
+        };
+
+        this.messages.push(newMessage);
+        
+        setTimeout(() => this.scrollToBottom(), 100);
+      }
+    });
   }
 
-  loadChatHistory() {
-    if (this.customer1 && this.customer2 && this.adoptionId) {
-      const payload = {
-        sender_id: parseInt(this.customer1),
-        receiver_id: parseInt(this.customer2),
-        adoption_id: parseInt(this.adoptionId)
-      };
-
-      this.http.post<ChatResponse>(this.apiUrl, payload).subscribe(
-        response => {
-          this.chatHistory = response.chatData;
-          
-          // Log each message to console for verification
-          this.chatHistory.forEach(chat => {
-            // console.log('Message from API:', chat.message);
-          });
-          
-          console.log('Chat history loaded:', this.chatHistory);
-        },
-        error => {
-          console.error('Error loading chat history:', error);
-        }
-      );
-    }
+  ngOnDestroy() {
+    this.socket.disconnect();
   }
 
   joinRoom() {
-    if (this.customer1 && this.customer2 && this.adoptionId) {
-      console.log('room joined ');
-      this.socket.emit('join room', {
-        customer1: this.customer1,
-        customer2: this.customer2,
-        adoptionId: this.adoptionId
-      });
-        console.log('cus1', this.customer1, this.customer2, this.adoptionId);
-
-    }
+    const sortedCustomers = [this.customer1, this.customer2].sort();
+    const roomName = `${sortedCustomers[0]}-${sortedCustomers[1]}-${this.adoptionId}`;
+    this.socket.emit('join room', {
+      customer1: this.customer1,
+      customer2: this.customer2,
+      adoptionId: this.adoptionId
+    });
+    console.log(`Joined room: ${roomName}`);
+    console.log('Customer 1:', this.customer1);
+    console.log('Customer 2:', this.customer2);
   }
 
   sendMessage() {
-    console.log('message send ');
-    console.log('cus11', this.customer1, this.customer2, this.adoptionId);
-
-    if (this.message.trim() && this.customer1 && this.customer2 && this.adoptionId) {
-      this.socket.emit('chat message', {
+    const message = this.newMessage.trim();
+    if (message) {
+      // Generate a unique message ID
+      const messageId = `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      const messageData = {
         customer1: this.customer1,
         customer2: this.customer2,
         adoptionId: this.adoptionId,
-        message: this.message
-      });
-      this.message = '';
+        message: message,
+        messageId: messageId,
+        client: this.customer1  // Unique client identifier
+      };
+
+      // Emit message with unique identifier
+      this.socket.emit('chat message', messageData);
       
-      // Add a small delay before refreshing chat history to allow the message to be saved
-      setTimeout(() => {
-        this.loadChatHistory();
-      }, 100);
+      // Add message to local list
+      this.messages.push({
+        ...messageData,
+        time: new Date().toISOString(),
+        isCurrentUserSender: true
+      });
+
+      this.newMessage = '';
+      
+      setTimeout(() => this.scrollToBottom(), 100);
     }
   }
 
-  loadChatDetails() {
-    const apiUrl = 'https://petba.in/Api/api/index.php/chatlist';
+  loadChatHistoryAsync() {
+    this.isLoading = true;
     const payload = {
-      c_id: this.customer_id
+      sender_id: parseInt(this.customer1),
+      receiver_id: parseInt(this.customer2),
+      adoption_id: parseInt(this.adoptionId)
     };
 
-    this.http.post<any>(apiUrl, payload).subscribe(
+    this.http.post<any>(this.loadChatUrl, payload).subscribe(
       response => {
-        if (response && response.chatlist) {
-            const chatDetails: ChatDetails | undefined = response.chatlist.find((chat: ChatDetails) => 
-            chat.adoption_id === this.adoptionId && 
-            (chat.sender_id === this.customer1 || chat.receiver_id === this.customer1)
-            );
+        if (response && response.chatData) {
+          // Process chat history to normalize it
+          this.messages = response.chatData.map((msg: any) => ({
+            ...msg,
+            messageId: `msg_${msg.id}`, // Add a unique identifier
+            isCurrentUserSender: msg.from_id === this.customer1
+          }));
+          console.log('Chat history loaded:', this.messages);
 
-          if (chatDetails) {
-            this.adoptionImage = chatDetails.adoption_image;
-            this.petName = chatDetails.petname;
-            this.chatName = chatDetails.receiver_name === this.customer_id ? chatDetails.sender_name : chatDetails.receiver_name;
-
-            // Log the values to the console
-            console.log('Adoption Image:', this.adoptionImage);
-            console.log('Pet Name:', this.petName);
-            console.log('Chat Name:', this.chatName);
-          } else {
-            console.error('Chat details not found for the given adoption ID and customer ID');
-          }
+          setTimeout(() => {
+            this.scrollToBottom();
+            this.isLoading = false;
+          }, 300);
         } else {
           console.error('Invalid response format:', response);
+          this.isLoading = false;
         }
       },
       error => {
-        console.error('Error loading chat details:', error);
+        console.error('Error loading chat history:', error);
+        this.isLoading = false;
       }
     );
+  }
+
+  scrollToBottom() {
+    if (this.content) {
+      this.content.scrollToBottom(300);
+    }
   }
 }

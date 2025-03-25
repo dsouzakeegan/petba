@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Chat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="chat-container">
+ 
+  <div *ngFor="let message of messages">
+    <div [ngClass]="{'message-sender': message.customer1 === customer1, 'message-receiver': message.customer1 !== customer1}">
+      <p>{{ message.message }}</p>
+    </div>
+  </div>
+</ion-content>
+ 
+<ion-footer>
+  <ion-toolbar>
+    <ion-input [(ngModel)]="newMessage" placeholder="Type a message"></ion-input>
+    <ion-button (click)="sendMessage(newMessage)">Send</ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+
+css 
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.message {
+  max-width: 70%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  word-wrap: break-word;
+  font-size: larger;
+  font-weight: bolder;
+// margin: 0;
+// font-size: 16px;
+// color: #000;
+// padding: 0;
+}
+
+.message-sender {
+  text-align: right;
+    background-color: #9cc4fc;
+    border-radius: 10px 10px 0 10px;
+    padding: 8px;
+    margin: 5px 0;
+    max-width: 80%;
+    margin-left: auto;
+    color: black;
+    font-size: 18px;
+  
+}
+
+.message-receiver {
+  text-align: left;
+    background-color: #f1f0f0;
+    border-radius: 10px 10px 10px 0;
+    padding: 8px;
+    margin: 5px 0;
+    max-width: 80%;
+    margin-right: auto;
+    color: black;
+    
+}
+
+.message-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+
+

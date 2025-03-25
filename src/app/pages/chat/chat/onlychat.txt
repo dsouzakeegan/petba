@@ -1,0 +1,130 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { io } from 'socket.io-client'; // Import socket.io-client
+import { IonicModule } from '@ionic/angular'; // Import IonicModule
+import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
+import { CommonModule } from '@angular/common'; // Import CommonModule
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-chat',
+  templateUrl: './chat.page.html',
+  styleUrls: ['./chat.page.scss'],
+   standalone: true,
+    imports: [IonicModule,FormsModule, HttpClientModule, CommonModule]
+})
+export class ChatPage implements OnInit, OnDestroy {
+  customer1: string = '';  // Current customer ID
+  customer2: string = '';  // Other customer ID
+  adoptionId: string = ''; // Adoption ID
+  socket: any;             // Socket.IO instance
+  messages: any[] = []; // Store messages for display
+  newMessage: string = ''; // Add this property to fix the error
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    this.customer1 = userData.userData?.customer_id || 'NA';
+
+    // Initialize socket connection when the component is initialized
+    this.socket = io('http://localhost:5000'); // Adjust the backend URL if needed
+  
+    // Subscribe to route parameters
+    this.route.paramMap.subscribe(params => {
+      // Set the customer1 and customer2 from the route parameters
+     // this.customer1 = params.get('customer_id') || '';  // Set from route params
+      const receiverId = params.get('receiver_id') || ''; // Get the receiver ID
+      const senderId = params.get('sender_id') || '';    // Get the sender ID
+      this.adoptionId = params.get('adoption_id') || ''; // Get the adoption ID
+        
+      console.log('senderId:', senderId);
+      console.log('receiverId:', receiverId);
+      // Assign customer2 based on whether customer1 is the sender or receiver
+       this.customer2 = this.customer1 === receiverId ? senderId : receiverId;
+      
+      // this.customer2 = receiverId;
+  
+      // Join the room once IDs are set
+      this.joinRoom();
+  
+      // Load chat history after joining the room
+      this.loadChatHistoryAsync();
+    });
+  
+    // Listen for incoming messages from the socket
+    this.socket.on('chat message', (data: { customer1: string, customer2: string, adoptionId: string, message: string }) => {
+      console.log('Received message:', data.message);
+      console.log('From:', data.customer1); 
+      // If the received message is from someone other than the current customer1
+      // if (data.customer1 != this.customer1) {
+      //   // Add the message to the messages array only if it's not from the current customer
+      //   this.messages.push(data);
+      // }
+
+      if (data.customer1 !== this.customer1) {
+        this.messages.push(data);
+      }
+    });
+  }
+  
+
+  ngOnDestroy() {
+    // Cleanup the socket connection when the component is destroyed
+    if (this.socket) {
+      this.socket.disconnect();
+    }
+  }
+
+  joinRoom() {
+    const sortedCustomers = [this.customer1, this.customer2].sort();
+    const roomName = `${sortedCustomers[0]}-${sortedCustomers[1]}-${this.adoptionId}`;
+
+    // Emit 'join room' event to the backend
+    this.socket.emit('join room', {
+      customer1: this.customer1,
+      customer2: this.customer2,
+      adoptionId: this.adoptionId
+    });
+
+    console.log(`Joined room: ${roomName}`);
+    console.log('Customer 1:', this.customer1);
+    console.log('Customer 2:', this.customer2); 
+
+  }
+
+  sendMessage(message: string) {
+    if (message.trim()) {
+      // Emit 'chat message' event with the message data
+      const messageData = {
+        customer1: this.customer1,
+        customer2: this.customer2,
+        adoptionId: this.adoptionId,
+        message: message
+      };
+  
+      this.socket.emit('chat message', messageData);
+   
+      this.messages.push(messageData);   
+      this.newMessage = '';  
+    }
+  }
+
+  // Load chat history (you can replace this with an actual API call if needed)
+  loadChatHistoryAsync() {
+    // Replace this with an actual call to your backend to load previous messages
+    console.log('Loading chat history for adoption ID:', this.adoptionId);
+
+  }
+
+  // Scroll to bottom of the chat window (optional)
+  scrollToBottom() {
+    setTimeout(() => {
+      const chatBox = document.getElementById('chatBox');
+      if (chatBox) {
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    }, 100);
+  }
+}

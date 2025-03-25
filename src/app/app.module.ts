@@ -14,6 +14,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { OfflineScreenModule } from './components/offline-screen/offline-screen.module';
 import { NotificationService } from './services/notification.service';
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyANLkvq73CjqYy8O8YX0AoWA8i-XWH7Ho4",
   authDomain: "meencart-63510.firebaseapp.com",

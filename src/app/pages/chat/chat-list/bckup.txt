@@ -36,7 +36,6 @@ export class ChatListPage implements OnInit {
     this.getChatLists(this.customer_id); // Replace '48' with the actual customer ID
 
     console.log('User Data in local storage from chat page', userData);
-    // console.log('userName', this.firstname);
   }
 
   getChatLists(customerId: string) {
@@ -71,21 +70,11 @@ export class ChatListPage implements OnInit {
   }
 
   openChat(chat: any) {
-    console.log('Opening chat with details:', chat);
-    
-    // Navigation with additional data
-    this.navCtrl.navigateForward(['/chat', chat.sender_id, chat.receiver_id, chat.adoption_id], {
-      state: {
-        adoption_image: chat.adoption_image,
-        petname: chat.petname,
-        receiver_name: chat.receiver_name,
-        sender_name: chat.sender_name,
-        firstname: this.firstname
-
-      }
-    });
+    console.log('Opening chat with ID:', chat.chat_id);
+    this.navCtrl.navigateForward(['/chat', chat.sender_id, chat.receiver_id, chat.adoption_id]);
   }
 }
+
 
 
 
